@@ -1,0 +1,1 @@
+<?phpclass who_we_are extends controller{    function index()    {        $this->title = __("Who we are?");        $this->ariane = "> " . $this->title;    }}
