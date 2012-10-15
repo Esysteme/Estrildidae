@@ -249,4 +249,3 @@ UPDATE `geolocalisation_city` b
 INNER JOIN geolocalisation_country a ON a.iso = b.id_country
 SET b.id_geolocalisation_country=a.iso
 */
-?>

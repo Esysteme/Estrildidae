@@ -9,6 +9,8 @@ class user extends controller {
 		$this->title = __("Members");
 		$this->ariane = "> " . $this->title;
 
+		$this->layout_name ="admin";
+		
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT a.id, a.firstname, a.name, b.id_country, b.libelle, COUNT( d.point ) AS points, e.name as rank, date_last_connected
