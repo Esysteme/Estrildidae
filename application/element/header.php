@@ -139,8 +139,8 @@ echo __(Date("l")) . " " . Date("d") . " " . __(Date("F")) . " - " . Date("H:i:s
 
 
 <?php
-$menu = array(__("Home"), __("Species"), __("Medias"), __("Members"), __("Who we are?"), __("FAQ"), __("Partner"), __("Download"), __("Contact us"), __("Forum"));
-$link = array("home/", "species/family/Estrildidae", "media/", "user/", "who_we_are/", "faq/", "partner/", "download/", "contact_us/", "forum/");
+$menu = array(__("Home"), __("Species"), __("Authors"),__("Medias"), __("Members"), __("Who we are?"), __("FAQ"), __("Partner"), __("Download"), __("Contact us"), __("Forum"));
+$link = array("home/", "species/family/Estrildidae", "author/","media/", "user/", "who_we_are/", "faq/", "partner/", "download/", "contact_us/", "forum/");
 
 echo "<ul class=\"menu\">";
 

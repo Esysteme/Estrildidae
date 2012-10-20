@@ -25,8 +25,8 @@ class bot_iucn extends controller {
 		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
-		
-		
+
+
 		$k = 0;
 		for ($i = 1277; $i > 500; $i--) // 1277 pages is a max of IUCN
 		{
@@ -40,8 +40,8 @@ class bot_iucn extends controller {
 
 				$summary = iucn::get_species_summary($species['reference_id']);
 				//print_r($summary);
-				
-				
+
+
 				if ($_SQL->sql_num_rows($res) == 1)
 				{
 					$ob = $_SQL->sql_fetch_object($res);
@@ -87,19 +87,19 @@ class bot_iucn extends controller {
 					$species_source_data['species_source_data']['id_species_source_detail'] = $id_species_source_detail;
 					$species_source_data['species_source_data']['type'] = "summary";
 					$species_source_data['species_source_data']['date'] = date("c");
-					$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($summary),9));
+					$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($summary), 9));
 
-					
+
 					/*
-					$sql = "INSERT INTO species_source_data SET
-						id_species_source_detail = '".$id_species_source_detail."',
-						id_species_source_detail = 'summary',
-						id_species_source_detail = now(),
-						id_species_source_detail = '".gzencode(json_encode($summary),9)."';
-							
-"
-					*/
-					
+					  $sql = "INSERT INTO species_source_data SET
+					  id_species_source_detail = '".$id_species_source_detail."',
+					  id_species_source_detail = 'summary',
+					  id_species_source_detail = now(),
+					  id_species_source_detail = '".gzencode(json_encode($summary),9)."';
+
+					  "
+					 */
+
 					if (!$_SQL->sql_save($species_source_data))
 					{
 						debug($_SQL->sql_error());
@@ -109,9 +109,9 @@ class bot_iucn extends controller {
 				}
 
 				sleep(2);
-				
+
 				$k++;
-				echo $k." [".date("Y-m-d H:i:s")."] ".$species['scientific_name']." added !\n";
+				echo $k . " [" . date("Y-m-d H:i:s") . "] " . $species['scientific_name'] . " added !\n";
 			}
 
 			sleep(5);
@@ -153,6 +153,91 @@ class bot_iucn extends controller {
 
 		debug($id_species);
 		//debug($id_phylum);
+		exit;
+	}
+
+	function get_classification_schemes() {
+
+		$this->layout_name = false;
+
+		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
+		include_once(LIBRARY . "Glial/species/species.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+
+		$sql = "select id, id_species_main, reference_id FROM species_source_detail WHERE id_species_source_main=1 order by reference_id";
+		$res = $_SQL->sql_query($sql);
+
+
+		$i = 1;
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+
+			$habitat = iucn::get_species_classification($ob->reference_id);
+
+			$species_source_data = array();
+			$species_source_data['species_source_data']['id_species_source_detail'] = $ob->id;
+			$species_source_data['species_source_data']['type'] = "classification";
+			$species_source_data['species_source_data']['date'] = date("c");
+			$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($habitat), 9));
+
+			if (!$_SQL->sql_save($species_source_data))
+			{
+				debug($_SQL->sql_error());
+				debug($species_source_data);
+				die();
+			}
+
+			echo $i." reference_id : ".$ob->reference_id."\n";
+			
+			sleep(1);
+			$i++;
+		}
+
+		exit;
+	}
+	
+	
+	function get_bibliography() {
+
+		$this->layout_name = false;
+
+		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
+		include_once(LIBRARY . "Glial/species/species.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+
+		$sql = "select id, id_species_main, reference_id FROM species_source_detail WHERE id_species_source_main=1 order by reference_id";
+		$res = $_SQL->sql_query($sql);
+
+
+		$i = 1;
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+
+			$habitat = iucn::get_species_bibliography($ob->reference_id);
+
+			$species_source_data = array();
+			$species_source_data['species_source_data']['id_species_source_detail'] = $ob->id;
+			$species_source_data['species_source_data']['type'] = "bibliography";
+			$species_source_data['species_source_data']['date'] = date("c");
+			$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($habitat), 9));
+
+			if (!$_SQL->sql_save($species_source_data))
+			{
+				debug($_SQL->sql_error());
+				debug($species_source_data);
+				die();
+			}
+
+			echo $i." reference_id : ".$ob->id."\n";
+			
+			sleep(1);
+			$i++;
+		}
+
 		exit;
 	}
 

@@ -20,7 +20,7 @@ class photo extends controller {
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
-
+		
 		$sql = "select * from user_main 
 INNER JOIN geolocalisation_city ON geolocalisation_city.id = user_main.id_geolocalisation_city
 where is_valid ='1' order by points DESC LIMIT 50";
@@ -352,7 +352,7 @@ WHERE b.id_species_family ='438' AND id_history_etat=1";
 					{
 						$ob = $_SQL->sql_fetch_object($res);
 
-						$species_picture_main['species_picture_main']['id_author'] = $ob->id;
+						$species_picture_main['species_picture_main']['id_species_author'] = $ob->id;
 					}
 					else
 					{
@@ -363,13 +363,13 @@ WHERE b.id_species_family ='438' AND id_history_etat=1";
 						}
 						else
 						{
-							$species_picture_main['species_picture_main']['id_author'] = $_SQL->sql_insert_id();
+							$species_picture_main['species_picture_main']['id_species_author'] = $_SQL->sql_insert_id();
 						}
 					}
 				}
 				else
 				{
-					$species_picture_main['species_picture_main']['id_author'] = 1;
+					$species_picture_main['species_picture_main']['id_species_author'] = 1;
 				}
 			}
 

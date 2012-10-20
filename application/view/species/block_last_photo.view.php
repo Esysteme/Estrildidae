@@ -30,7 +30,7 @@ foreach($data as $pic)
 	///				thecus/www/species/image/crop/158x158/Eukaryota/Animalia/Chordata/Aves/Passeriformes/Estrildidae/Lonchura/Lonchura_striata/281-Lonchura_striata.jpg
 	//<img src="/thecus/www/species/image/crop/250x250/Eukaryota/Animalia/Chordata/Aves/Passeriformes/Estrildidae/Lonchura/Lonchura striata/281-Lonchura striata.jpg" width="250" height="250">
 	echo '<a href="'.LINK.'species/nominal/'.$pic['species'].'/"> 
-	<img src="'.IMG.''.$url.'" width="250" height="250" alt="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" title="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" /> 
+	<img src="'.FARM1.''.$url.'" width="250" height="250" alt="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" title="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" /> 
 	<span>'.$pic[$GLOBALS['_LG']->Get()].'</span> 
 	</a>';
 }

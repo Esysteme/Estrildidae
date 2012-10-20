@@ -46,6 +46,7 @@ echo '<div style="height:250px; overflow:hidden"><img src="' . $url . '" title="
 
 echo "<div class=\"title_box\">Biométrie</div>";
 
+/*
 echo "<div class=\"biometrie\"><span>11 A??’A‚A  12 cm</span>Taille : </div>";
 echo "<div class=\"biometrie\" style=\"background:#e5e5e5\"><span>15 A??’A‚A  16 cm</span>Envergure : </div>";
 echo "<div class=\"biometrie\"><span>11 grammes</span>Poids : </div>";
@@ -53,7 +54,7 @@ echo "<div class=\"biometrie\" style=\"background:#e5e5e5\"><span>4 - 6</span>No
 echo "<div class=\"biometrie\"><span>14 jours</span>Incubation : </div>";
 echo "<div class=\"biometrie\" style=\"background:#e5e5e5\"><span>21 jours</span>Sortie du nid : </div>";
 echo "<div class=\"biometrie\"><span>2.5</span>DiamA??’A‚A?tre de la bague : </div>";
-
+*/
 
 
 echo '<div class="title_box">'.__("IUCN conservation status").'</div>';
@@ -139,7 +140,9 @@ echo "</div>";
 //echo "<img src=\"pictures/main/244px-Status_iucn3.1_LC-fr.svg.png\" border=\"0\" />";
 
 echo "<div class=\"title_box\">Distribution</div>";
-echo "<img src=\"" . IMG . "main/repartition.png\" width=\"250\" height=\"169\" border=\"0\" />";
+
+
+//echo "<img src=\"" . IMG . "main/repartition.png\" width=\"250\" height=\"169\" border=\"0\" />";
 
 
 

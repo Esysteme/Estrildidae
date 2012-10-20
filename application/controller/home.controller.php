@@ -12,7 +12,7 @@ class home extends controller
 		$this->code_javascript[] = "$('.slidepane').slidepane({
         slideWidth:676, 
         slideSpeed:500, 
-        autoPlay:true, 
+        autoPlay:false, 
         autoPlayInterval:5000, 
         cycle:true, 
         keysControl:true, 

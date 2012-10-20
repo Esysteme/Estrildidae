@@ -4,11 +4,26 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+echo "<div id=\"menu_admin_crop\">";
+echo "<div class=\"title_box\"><a href=\"\">" . __('Photo') . "</a></div>";
+echo "<div>";
+echo '<img src="' . IMG . 'user/acspike_male_user_icon.png" alt="" />';
+echo "</div>";
+
+
+
+
+echo "<div class = \"title_box\"><a href=\"\">" . __('My friends') . "</a></div>";
+echo "<div class = \"title_box\"><a href=\"\">" . __('Visitors') . "</a></div>";
+echo "</div>";
+
 
 
 include_once(LIBRARY."Glial/species/species.php");
 
 
+
+echo '<div style="margin-left:260px;">';
 
 echo '<h3>'.__("Photo valided").'</h3>';
 echo '<div id="photo">';
@@ -105,3 +120,4 @@ echo '<div class="clear"></div>';
 
 
 
+echo "</div>";
