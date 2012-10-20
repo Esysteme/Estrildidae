@@ -2,6 +2,6 @@
 
 
 
-echo "Gliale 2.0 - app/index.php";
+echo "Gliale 2.1 - app/index.php";
 
 ?>
