@@ -189,16 +189,15 @@ class bot_iucn extends controller {
 				die();
 			}
 
-			echo $i." reference_id : ".$ob->reference_id."\n";
-			
+			echo $i . " reference_id : " . $ob->reference_id . "\n";
+
 			sleep(1);
 			$i++;
 		}
 
 		exit;
 	}
-	
-	
+
 	function get_bibliography() {
 
 		$this->layout_name = false;
@@ -210,7 +209,12 @@ class bot_iucn extends controller {
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 
-		$sql = "select id, id_species_main, reference_id FROM species_source_detail WHERE id_species_source_main=1 order by reference_id";
+		$sql = "select a.id, id_species_main, reference_id FROM species_source_detail a
+			inner join species_source_data b on b.id_species_source_detail = a.id
+			WHERE id_species_source_main=1
+			GROUP BY reference_id
+			HAVING count(1) =1 
+order by FLOOR(`reference_id`)";
 		$res = $_SQL->sql_query($sql);
 
 
@@ -232,8 +236,8 @@ class bot_iucn extends controller {
 				die();
 			}
 
-			echo $i." reference_id : ".$ob->id."\n";
-			
+			echo $i . " reference_id : " . $ob->reference_id . "\n";
+
 			sleep(1);
 			$i++;
 		}
@@ -241,6 +245,103 @@ class bot_iucn extends controller {
 		exit;
 	}
 
+	function import_habitat() {
+		echo "Start !\n";
+
+
+		$this->layout_name = false;
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$sql = "SELECT * FROM species_source_data where type ='classifica'";
+		$res = $_SQL->sql_query($sql);
+
+		$i =0;
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+			$i++;
+
+			//echo $ob->data."\n";
+
+
+			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)),true);
+
+			if (!empty($data['Habitats']))
+			{
+				foreach ($data['Habitats'] as $line)
+				{
+					$habitat = array();
+					$habitat['species_habitat']['rank'] = $line['code'];
+					$habitat['species_habitat']['libelle'] = trim($line['libelle']);
+					
+					if (! $_SQL->sql_save($habitat))
+					{
+						debug($habitat);
+						exit;
+						
+					}
+				}
+				
+				echo $i."[".date("Y-m-d H:i:s")."] {$line['code']} {$line['libelle']}\n";
+			}
+
+			//debug($data);
+		}
+		exit;
+	}
+
+	
+	
+	function import_bibliography() {
+		echo "Start !\n";
+
+
+		$this->layout_name = false;
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$sql = "SELECT * FROM species_source_data where type ='bibliograp'";
+		$res = $_SQL->sql_query($sql);
+
+		$i =0;
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+			$i++;
+
+			//echo $ob->data."\n";
+
+
+			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)),true);
+
+
+			
+			if (!empty($data['book']))
+			{
+				foreach ($data['book'] as $line)
+				{
+					
+					if (empty($line))
+					{
+						continue;
+					}
+					
+					$book = array();
+					
+					$book['bibliography']['text'] = $_SQL->sql_real_escape_string(trim($line));
+					$book['bibliography']['crc32'] = crc32($_SQL->sql_real_escape_string(trim($line)));
+					echo $i."[".date("Y-m-d H:i:s")."] {$line}\n";
+					if (! $_SQL->sql_save($book))
+					{
+						debug($book);
+						debug($_SQL->sql_error());
+						exit;
+						
+					}
+				}
+				
+				//echo $i."[".date("Y-m-d H:i:s")."] {$line}\n";
+			}
+
+			//debug($data);
+		}
+		exit;
+	}
 }
 
 //260177

@@ -51,9 +51,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		if (from() == "administration.controller.php")
 		{
 
-			$sql = "select count(1) as cpt from species_picture_in_wait a
-inner join species_tree_id b ON a.id_species_main = b.id_species_main
-WHERE b.id_species_family ='438' AND id_history_etat=1";
+			$sql = "select count(1) as cpt from species_picture_in_wait where id_history_etat=1";
 
 			$res = $_SQL->sql_query($sql);
 			$data = $_SQL->sql_to_array($res);
@@ -623,10 +621,10 @@ WHERE b.id_species_family ='438' AND id_history_etat=1";
 			INNER JOIN species_picture_main b ON b.id_species_main = a.id_species_main
 			INNER JOIN species_main c ON c.id = a.id_species_main
 			INNER JOIN species_tree_name e ON e.id = a.id_species_main
-			INNER JOIN species_translation z ON z.id_row = a.id_species_main and id_table = 7
+			LEFT JOIN species_translation z ON z.id_row = a.id_species_main and id_table = 7
 			WHERE b.id = '" . mysql_real_escape_string($_GET['id_species_picture_main']) . "'";
 
-			$id_species_picture_main = 1;
+			$id_species_picture_main = $_GET['id_species_picture_main'];
 		}
 		else
 		{
@@ -644,7 +642,7 @@ WHERE b.id_species_family ='438' AND id_history_etat=1";
 			}
 			else
 			{
-				$contrainte .= " AND id_species_family = 438 ";
+				//$contrainte .= " AND id_species_family = 438 ";
 			}
 
 			/*
