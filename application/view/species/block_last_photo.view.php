@@ -18,12 +18,15 @@ foreach($data as $pic)
 	$pic['species'] = str_replace(" ","_",$pic['species_']);
 	$url = "crop/".SIZE_MINIATURE_BIG."x".SIZE_MINIATURE_BIG."/Eukaryota/".$pic['kingdom']."/".$pic['phylum']."/".$pic['class']."/".$pic['order2']."/".$pic['family']."/".$pic['genus']."/".$pic['species']."/".$pic['id_photo']."-".$pic['species'].".jpg";
 	
-	if (! file_exists($url))
+
+	
+	if (! file_exists(TMP.$url))
 	{
 		if (generate_crop($pic,SIZE_MINIATURE_BIG,DATA, TMP."crop/"))
 		{
 			echo "not good";
 		}
+		
 	}
 	
 	

@@ -16,7 +16,14 @@ if ($GLOBALS['_SITE']['IdUser'] != -1)
 }
 echo '</h3>';
 
-echo '<a href="' . $var['url_context'] . '" target="_BLANK"><img src="' . FARM1 . 'crop/890x/' . $path . '/' . $picture_name . '" /></a><br />';
+
+if ($var['width'] > 890)
+{
+	$var['height'] = ceil($var['height']/$var['width']*890);
+	$var['width'] = 890;
+}
+
+echo '<a href="' . $var['url_context'] . '" target="_BLANK"><img src="' . FARM1 . 'crop/890x/' . $path . '/' . $picture_name . '" width="'.$var['width'].'" height="'.$var['height'].'" /></a><br />';
 
 
 echo '<h3>' . __("Details") . '</h3>';
