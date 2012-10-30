@@ -1079,6 +1079,16 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 		$data = $_SQL->sql_to_array($res);
 		return $data[0]["cpt"];
 	}
+	
+	function send_confirmation()
+	{
+		
+		include_once(LIBRARY . "Glial/user/user.php");
+		
+		glial\user::get_user_not_confirmed();
+		
+		exit;
+	}
 
 }
 
