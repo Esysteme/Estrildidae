@@ -19,9 +19,6 @@ class species_source_detail extends sql {
 		'id_species_main' => array(
 			'reference_to' => array('The constraint to species_main.id isn\'t respected.', 'species_main', 'id')
 		),
-		'id_species_sub' => array(
-			'reference_to' => array('The constraint to species_sub.id isn\'t respected.', 'species_sub', 'id')
-		),
 		'id_species_source_main' => array(
 			'reference_to' => array('The constraint to species_source_main.id isn\'t respected.', 'species_source_main', 'id')
 		),

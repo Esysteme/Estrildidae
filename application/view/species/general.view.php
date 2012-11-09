@@ -42,6 +42,22 @@ else
 
 echo '<div style="height:250px; overflow:hidden"><img src="' . $url . '" title="' . $title . '" alt="' . $alt . '" border="0" width="250" height="250" /></div>';
 
+echo '<div class="title_box">' . __("Scientific classification") . '</div>';
+
+
+echo '<table class="classification">';
+echo '<tr><td>' . __('Kingdom') . ' :</td><td><a href="' . LINK . 'species/kingdom/' . $data['species'][0]['kingdom'] . '">' . __($data['species'][0]['kingdom']) . '</a></td></tr>';
+echo '<tr><td>' . __('Phylum') . ' :</td><td><a href="' . LINK . 'species/phylum/' . $data['species'][0]['phylum'] . '">' . __($data['species'][0]['phylum']) . '</a></td></tr>';
+echo '<tr><td>' . __('Class') . ' :</td><td><a href="' . LINK . 'species/classe/' . $data['species'][0]['class'] . '">' . __($data['species'][0]['class']) . '</a></td></tr>';
+echo '<tr><td>' . __('Order') . ' :</td><td><a href="' . LINK . 'species/order/' . $data['species'][0]['order'] . '">' . __($data['species'][0]['order']) . '</a></td></tr>';
+echo '<tr><td>' . __('Family') . ' :</td><td><a href="' . LINK . 'species/family/' . $data['species'][0]['family'] . '">' . __($data['species'][0]['family']) . '</a></td></tr>';
+echo '<tr><td>' . __('Genus') . ' :</td><td><a href="' . LINK . 'species/genus/' . $data['species'][0]['genus'] . '">' . $data['species'][0]['genus'] . '</a></td></tr>';
+echo '<tr><td>' . __('Species') . ' :</td><td><a href="' . LINK . 'species/nominal/' . str_replace(" ", "_", $data['species'][0]['nominal']) . '">' . $data['species'][0]['nominal'] . '</a></td></tr>';
+
+
+echo '</table>';
+
+
 
 echo "<div class=\"title_box\">Biométrie</div>";
 
@@ -54,6 +70,15 @@ echo "<div class=\"title_box\">Biométrie</div>";
   echo "<div class=\"biometrie\" style=\"background:#e5e5e5\"><span>21 jours</span>Sortie du nid : </div>";
   echo "<div class=\"biometrie\"><span>2.5</span>DiamA??’A‚A?tre de la bague : </div>";
  */
+
+
+
+
+
+
+
+
+
 
 
 echo '<div class="title_box">' . __("IUCN conservation status") . '</div>';
@@ -137,7 +162,22 @@ echo "</div>";
 
 //echo "<img src=\"pictures/main/244px-Status_iucn3.1_LC-fr.svg.png\" border=\"0\" />";
 
-echo "<div class=\"title_box\">Distribution</div>";
+
+if (count($data['geographic_range']) != 0)
+{
+	echo "<div class=\"title_box\">Distribution</div>";
+
+
+	$country_iso = array();
+	foreach ($data['geographic_range'] as $line)
+	{
+		$country_iso[] = $line['iso'];
+	}
+	
+	echo '<img src="https://chart.googleapis.com/chart?cht=map:fixed=-60,-180,80,180&chs=250x150&chld='
+	. implode("|", $country_iso)
+	. '&chco=B3BCC0&chco=B3BCC0|086EB8" height="150" width="250" />';
+}
 
 
 //echo "<img src=\"" . IMG . "main/repartition.png\" width=\"250\" height=\"169\" border=\"0\" />";
@@ -168,25 +208,24 @@ foreach ($data['translation'] as $tab)
 		{
 			if (count($synonyms) > 0)
 			{
-				echo '('.implode(", ",$synonyms).')';
+				echo '(' . implode(", ", $synonyms) . ')';
 			}
-			
+
 			echo "</div>";
 			$synonyms = array();
-			
 		}
 		echo '<div>';
 		//echo '<img src="' . IMG . '/language/'.$tab['language'].'.gif" width="18" height="12" border="0">';
-		echo '<b>'.$tab['print_name'].' :</b> ' . $tab['text']. ' ';
+		echo '<b>' . $tab['print_name'] . ' :</b> ' . $tab['text'] . ' ';
 		$lg = $tab['language'];
-		
-		$j= 1;
+
+		$j = 1;
 	}
 	else
 	{
 		$synonyms[] = $tab['text'];
 	}
-	
+
 	$i++;
 }
 
@@ -195,6 +234,11 @@ echo '</div>';
 
 
 echo "<h3 class=\"item\">" . __("Geographic range") . "</h3>";
+
+
+$iso = array();
+
+
 
 if (count($data['geographic_range']) != 0)
 {
@@ -208,9 +252,28 @@ if (count($data['geographic_range']) != 0)
 			echo "<br /><b>" . $name . "</b> : ";
 		}
 
+
+
 		echo '<img class="country" src="' . IMG . '/country/type2/' . strtolower($line['iso']) . '.png" width="16" height="11"> <a href="' . LINK . 'species/country/' . strtolower($line['iso']) . '/' . $data['info'][0]['family'] . '/">' . $line['libelle'] . "</a>, ";
 	}
+
+	echo "<br /><br />";
+	
+	
+	
+	
+	
+	echo '<div id="map_canvas"></div>';
+	
+	
+	echo '<img src="https://chart.googleapis.com/chart?cht=map:fixed=-60,-180,80,180&chs=625x400&chld='
+	. implode("|", $country_iso)
+	. '&chco=B3BCC0&chco=B3BCC0|086EB8" height="400" width="625" />';
 }
+
+
+
+
 
 //debug($data['geographic_range']);
 

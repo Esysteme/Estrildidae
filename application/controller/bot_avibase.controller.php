@@ -15,7 +15,6 @@ class bot_avibase extends controller {
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-
 		$ret = avibase::get_species_by_reference();
 
 		debug($ret);
@@ -244,11 +243,63 @@ class bot_avibase extends controller {
 		foreach ($tab as $value)
 		{
 			$ob = explode(";", $value);
-			echo $ob['6']."\n";
+			echo $ob['6'] . "\n";
 
 			$sql = "UPDATE language SET print_name = '" . $_SQL->sql_real_escape_string($ob['6']) . "' WHERE iso3 = '" . $ob[0] . "'";
 			$_SQL->sql_query($sql);
 		}
+	}
+
+	function import_source_to_itis() {
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$sql = "SELECT id_species_main,	id_species_sub,reference_id, data, b.id FROM species_source_detail a
+		INNER JOIN 	species_source_data b ON a.id = b.id_species_source_detail 
+		WHERE  a.id_species_source_main = 2";
+
+		$res = $_SQL->sql_query($sql);
+		$i = 0;
+
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+			$i++;
+			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)), true);
+
+			
+			if ($ob->id_species_sub != 0)
+			{
+				continue;
+			}
+			
+			
+			if (!empty($data['TSN']))
+			{
+				echo $i . " [" . date("Y-m-d H:i:s") . "] " . $data['Order'] . " - " . $data['Family'] . " - " . $data['Scientific'] . " : ".$data['TSN']."\n";
+				
+				$source = array();
+				$source['species_source_detail']['id_species_main'] = $ob->id_species_main;
+				$source['species_source_detail']['id_species_sub'] = $ob->id_species_sub;
+				$source['species_source_detail']['id_species_source_main'] = 4;
+				$source['species_source_detail']['reference_url'] = "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=".$data['TSN'];
+				$source['species_source_detail']['reference_id'] = $data['TSN'];
+				$source['species_source_detail']['date_created'] = date("c");
+				$source['species_source_detail']['date_updated'] = date("c");
+				
+				
+				$out =  $_SQL->sql_save($source);
+				
+				/*
+				if (! $out)
+				{
+					debug($source);
+					debug($_SQL->sql_error());
+					die();
+				}*/
+				
+			}
+		}
+		
+		
+		exit;
 	}
 
 }

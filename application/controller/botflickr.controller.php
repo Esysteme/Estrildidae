@@ -20,20 +20,17 @@ class botflickr extends controller {
 		}
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 		$this->layout_name = 'admin';
-		
-		
+
+
 		$sql = "SELECT *,(select count(1) from species_picture_id d where d.photo_id = b.photo_id group by d.photo_id) as cpt
 			FROM species_picture_search a 
 			inner join species_picture_id b ON a.id = b.id_species_picture_search
 			WHERE a.id_species_main = 9222";
-		
+
 		$res = $_SQL->sql_query($sql);
 		$data['img'] = $_SQL->sql_to_array($res);
-		
+
 		$this->set('data', $data);
-		
-		
-		
 	}
 
 	function family() {
@@ -258,17 +255,58 @@ where a.id_family = 438 order by rand()";
 
 		$data = flickr::get_links_to_photos("lonchura atricapilla");
 
-
 		print_r($data);
-
 
 		//http://farm8.staticflickr.com/7022/6657652857_34d38960ab_z.jpg
 		//http://farm8.staticflickr.com/7022/6657652857_34d38960ab_b.jpg
 
-
-
-
 		exit;
+	}
+
+	function import_geolocalisation() {
+		$this->layout_name = false;
+		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+		include_once (LIB . "wlHtmlDom.php");
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+		$sql = "SELECT * FROM species_picture_main where data != ''";
+
+		$res = $_SQL->sql_query($sql);
+
+		$i = 0;
+		while ($ob = $_SQL->sql_fetch_object($res)) {
+
+			$data = unserialize(base64_decode($ob->data));
+
+
+			if (!empty($data['gps']['latitude']) && $data['gps']['latitude'] != 0)
+			{
+				$i++;
+				echo $i . " [" . date("Y-m-d H:i:s") . "] photo : " . $data['url'] . "\n";
+
+				$sql = "UPDATE species_picture_main SET latitude = '" . $data['gps']['latitude'] . "', longitude = '" . $data['gps']['longitude'] . "' WHERE id = '" . $ob->id . "'";
+				$_SQL->sql_query($sql);
+
+				/*
+				  $pic = array();
+
+				  $pic['species_picture_main']['id'] = $ob->id;
+				  $pic['species_picture_main']['latitude'] = $data['gps']['latitude'];
+				  $pic['species_picture_main']['longitude'] = $data['gps']['longitude'];
+
+				  echo $i . " [" . date("Y-m-d H:i:s") . "] photo : ".$data['url']."\n";
+
+				  if (! $_SQL->sql_save($pic))
+				  {
+				  debug($pic);
+				  debug($_SQL->sql_error());
+				  die();
+				  }
+
+				  unset($pic);
+				 */
+			}
+		}
 	}
 
 }

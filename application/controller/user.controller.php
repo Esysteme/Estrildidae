@@ -1089,6 +1089,13 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 		
 		exit;
 	}
+	
+	
+	function block_shoutbox()
+	{
+		
+	}
+	
 
 }
 
