@@ -2,7 +2,7 @@
 
 class author extends controller {
 
-	public $module_group = "Articles";
+	public $module_group = "Species";
 
 	function index() {
 		
@@ -87,6 +87,43 @@ class author extends controller {
 		
 		
 		
+		$this->set("data", $data);
+		
+	}
+	
+	
+	function admin_manage()
+	{
+		
+		if (from() == "administration.controller.php")
+		{
+			$module = array();
+			$module['picture'] = "administration/author-icon.png";
+			$module['name'] = __("Authors");
+			$module['description'] = __("Upload, convert and edit a picture");
+
+			return $module;
+		}
+		
+		$this->layout_name = "admin";
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+		$this->title = __("Manage authors");
+		$this->ariane = '> <a href="'.LINK.'administration/">'.__("Administration").'</a> > ' . $this->title;
+		
+		
+		
+		
+		$sql = "SELECT a.id, a.surname, 
+			(SELECT COUNT( 1 ) FROM species_picture_main b WHERE b.id_species_author = a.id) as valid,
+			
+			FROM species_author a
+			order by valid desc";
+		
+		
+		$res = $_SQL->sql_query($sql);
+		$data = $_SQL->sql_to_array($res);
+
 		$this->set("data", $data);
 		
 	}

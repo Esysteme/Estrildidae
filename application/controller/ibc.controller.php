@@ -63,5 +63,22 @@ class ibc extends controller {
 		//debug($data);
 		
 	}
+	
+	
+	function get_order_and_family()
+	{
+		$this->view = false;
+		$this->layout_name = false;
+		
+		include_once(LIBRARY . "Glial/parser/ibc/ibc.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+		$data = glial\parser\ibc\ibc::get_order_and_family();
+		
+		debug($data);
+		
+	}
 
 }

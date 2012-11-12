@@ -20,7 +20,7 @@ class photo extends controller {
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
-		
+
 		$sql = "select * from user_main 
 INNER JOIN geolocalisation_city ON geolocalisation_city.id = user_main.id_geolocalisation_city
 where is_valid ='1' order by points DESC LIMIT 50";
@@ -34,14 +34,62 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 	function admin_import() {
 
-		$module['picture'] = "administration/photo.gif";
-		$module['name'] = __("Pictures");
-		$module['description'] = __("Upload, convert and edit a picture");
 
-		return $module;
+		if (from() == "administration.controller.php")
+		{
+			$module['picture'] = "administration/photo.gif";
+			$module['name'] = __("Pictures");
+			$module['description'] = __("Upload, convert and edit a picture");
+
+			return $module;
+		}
+
+		$this->layout_name = "admin";
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+		$this->title = __("Import a picture");
+		$this->ariane = '> <a href="'.LINK.'administration/">'.__("Administration").'</a> > ' . $this->title;
+
+
+		$url = "http://www.birdquest-tours.com/gallery.cfm?TourTitle=&GalleryRegionID=0&GalleryCategoryID=0&Country=Type+here+to+search..&Photographer=Type+here+to+search..&Species=Hunstein%27s+Mannikin";
+
+		$this->javascript = array("jquery.1.3.2.js", "jquery.autocomplete.min.js");
+		
+		
+		$table = "species_picture_in_wait";
+		$field = "id_species_main";
+		
+		$this->code_javascript[] = '$("#'.$table.'-'.$field.'-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
+					
+					mustMatch: true,
+					autoFill: true,
+					max: 100,
+					scrollHeight: 302,
+					delay:1
+					});
+					$("#'.$table.'-'.$field.'-auto").result(function(event, data, formatted) {
+						if (data)
+							$("#'.$table.'-'.$field.'").val(data[1]);
+					});';
+		
+		$table = "species_picture_in_wait";
+		$field = "id_species_main";
+		
+		$this->code_javascript[] = '$("#'.$table.'-'.$field.'-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
+					
+					mustMatch: true,
+					autoFill: true,
+					max: 100,
+					scrollHeight: 302,
+					delay:1
+					});
+					$("#'.$table.'-'.$field.'-auto").result(function(event, data, formatted) {
+						if (data)
+							$("#'.$table.'-'.$field.'").val(data[1]);
+					});';
+		
+		
 	}
-	
-
 
 	function admin_crop() {
 
@@ -1257,8 +1305,8 @@ AND a.id_history_etat =1";
 
 
 		$this->set('data', $data);
-		
-		
+
+
 		debug($data);
 	}
 
