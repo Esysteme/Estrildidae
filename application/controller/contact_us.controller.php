@@ -6,6 +6,19 @@ class contact_us extends controller
 	
 	function index()
 	{
+		
+		if ($_SERVER['REQUEST_METHOD'] == "POST")
+		{
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
 		$this->title = __("Contact us");
 		$this->ariane = "> ".$this->title;
 		
@@ -30,7 +43,6 @@ class contact_us extends controller
 		{
 			$("#user_main-id_geolocalisation_city-auto").val("");
 			$("#user_main-id_geolocalisation_city").val("");
-
 		} ); 
 
 		';

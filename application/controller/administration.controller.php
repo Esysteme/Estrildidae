@@ -474,5 +474,22 @@ class administration extends Controller {
 			}
 		}
 	}
+	
+	function insert_backup_table()
+	{
+		$this->view = false;
+		$this->layout_name = false;
+		
+		include_once(LIBRARY . "Glial/sgbd/mysql/backup.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
+		$data = glial\sgbd\mysql\backup::insert();
+		
+		//debug($data);
+		
+		
+	}
 
 }

@@ -80,5 +80,28 @@ class ibc extends controller {
 		debug($data);
 		
 	}
+	
+	
+	function get_pic()
+	{
+		$this->view = false;
+		$this->layout_name = false;
+		
+		include_once(LIBRARY . "Glial/parser/ibc/ibc.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+		
+		
+		//$data = glial\parser\ibc\ibc::get_photo_and_infos('grey-shrike-thrush-colluricincla-harmonica/male-singing');
+		$data = glial\parser\ibc\ibc::get_photo_and_infos('brown-kiwi-apteryx-australis/northern-brown-kiwi-now-considered-distinct-species-photographed-');
+		
+		
+		//$data = glial\parser\ibc\ibc::get_video_and_infos('great-white-pelican-pelecanus-onocrotalus/large-group-flight');
+		
+		
+		
+		debug($data);
+		
+	}
 
 }

@@ -4,6 +4,7 @@ class home extends controller
 {
 	function index()
 	{
+		$this->layout_name = 'home';
 		
 		$this->title = __("Home");
 		$this->ariane = " > ".__("The encyclopedia that you can improve !");
