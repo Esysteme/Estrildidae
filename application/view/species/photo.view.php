@@ -26,7 +26,7 @@ foreach ($data['photo'] as $var)
 	$path = "Eukaryota/{$var['kingdom']}/{$var['phylum']}/{$var['class']}/{$var['order']}/{$var['family']}/{$var['genus']}/" . $species_name;
 	$picture_name = $var['id_photo'] . "-" . $species_name . ".jpg";
 	$img = FARM1 . "crop/" . SIZE_MINIATURE_SMALL . "x" . SIZE_MINIATURE_SMALL . "/" . $path . DS . $picture_name;
-	$url = "#" . LINK . "species/nominal/" . $species_name . "/photo_detail/" . $var['id_photo'] . "/photo_detail>content_1";
+	$url = LINK . "species/nominal/" . $species_name . "/photo/photo_detail/" . $var['id_photo'] . "/";
 
 
 

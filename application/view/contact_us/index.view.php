@@ -5,9 +5,6 @@
 
 
 
-
-
-
 echo "<h3 class=\"item\">".__("Formulaire de contact","fr")."</h3>";
 
 
@@ -61,9 +58,3 @@ echo "</table>";
 
 
 echo "</form>";
-
-
-
-
-
-?>

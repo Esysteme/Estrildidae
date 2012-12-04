@@ -22,7 +22,7 @@ foreach($data as $tab)
 	}
 	echo "<td><img class=\"country\" src=\"".IMG."/country/type1/".$tab['iso'].".gif\" width=\"18\" height=\"12\" /></td>";
 	echo "<td><a href=\"".LINK."user/profil/".$tab['id']."\">".$tab['firstname']." ".$tab['name']."</a></td>";
-	echo "<td>".$tab['date_last_connected']."</td>";
+	echo "<td>".substr($tab['date_last_connected'],0,-3)."</td>";
 	echo "<tr>";
 }
 
