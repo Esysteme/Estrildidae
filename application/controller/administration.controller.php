@@ -1,10 +1,12 @@
 <?php
 
-class administration extends Controller {
+class administration extends Controller
+{
 
 	public $module_group = "Administration";
 
-	function index() {
+	function index()
+	{
 
 		$this->layout_name = "admin";
 		$this->title = __("Administration");
@@ -17,27 +19,25 @@ class administration extends Controller {
 		// Use default autoload implementation 		 		
 		spl_autoload_register();
 
-		if (is_dir($dir))
+		if ( is_dir($dir) )
 		{
 			$dh = opendir($dir);
 
-			if ($dh)
+			if ( $dh )
 			{
 
 				include_once LIBRARY . 'Glial/acl/acl.php';
 				$acl = new acl($GLOBALS['_SITE']['id_group']);
 
-				while (($file = readdir($dh)) !== false) {
-
-					if (strstr($file, '.controller.php'))
+				while ( ($file = readdir($dh)) !== false )
+				{
+					if ( strstr($file, '.controller.php') )
 					{
 
-						if (filetype($dir . $file) != "file")
+						if ( filetype($dir . $file) != "file" )
 						{
 							continue;
 						}
-
-
 
 						//spl_autoload($dir . $file);
 						$class_name = explode(".", $file);
@@ -46,16 +46,16 @@ class administration extends Controller {
 						$tab = get_class_methods($nom);
 						$tab2 = get_class_methods("Controller");
 						$tab3 = array_diff($tab, $tab2);
-						foreach ($tab3 as $name)
+						foreach ( $tab3 as $name )
 						{
 
-							if ($acl->is_allowed($nom, $name))
+							if ( $acl->is_allowed($nom, $name) )
 							{
 
-								if (strstr($name, 'admin'))
+								if ( strstr($name, 'admin') )
 								{
 
-									if (property_exists($nom, "module_group"))
+									if ( property_exists($nom, "module_group") )
 									{
 										$tmp = $class->$name();
 										$this->data['link'][$class->module_group][$tmp['name']] = $class->$name();
@@ -76,28 +76,30 @@ class administration extends Controller {
 		$this->set("data", $this->data);
 	}
 
-	function admin_table() {
+	function admin_table()
+	{
 
 		$module = array();
 		$module['picture'] = "administration/tables.png";
 		$module['name'] = __("Tables");
 		$module['description'] = __("Make the dictionary of field");
 
-		if (from() !== "administration.controller.php")
+		if ( from() !== "administration.controller.php" )
 		{
 
-			if (ENVIRONEMENT)
+			if ( ENVIRONEMENT )
 			{
 				$dir = TMP . "database/";
 
-				if (is_dir($dir))
+				if ( is_dir($dir) )
 				{
 					$dh = opendir($dir);
-					if ($dh)
+					if ( $dh )
 					{
-						while (($file = readdir($dh)) !== false) {
+						while ( ($file = readdir($dh)) !== false )
+						{
 
-							if (substr($file, 0, 1) === ".")
+							if ( substr($file, 0, 1) === "." )
 							{
 								continue;
 							}
@@ -109,11 +111,13 @@ class administration extends Controller {
 
 				$sql = "SHOW TABLES";
 				$res = $GLOBALS['_SQL']->sql_query($sql);
-				while ($table = $GLOBALS['_SQL']->sql_fetch_array($res)) {
+				while ( $table = $GLOBALS['_SQL']->sql_fetch_array($res) )
+				{
 					$fp = fopen(TMP . "/database/" . $table[0] . ".table.txt", "w");
 					$sql = "DESCRIBE `" . $table[0] . "`";
 					$res2 = $GLOBALS['_SQL']->sql_query($sql);
-					while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res2)) {
+					while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res2) )
+					{
 						$data['field'][] = $ob->Field;
 					}
 
@@ -128,21 +132,23 @@ class administration extends Controller {
 		return $module;
 	}
 
-	function admin_init() {
+	function admin_init()
+	{
 		$module = array();
 		$module['picture'] = "administration/gear_32.png";
 		$module['name'] = __("Access Control List");
 		$module['description'] = __("Update the right of users and groups");
 
-		if (from() !== "administration.controller.php")
+		if ( from() !== "administration.controller.php" )
 			$this->init();
 		//echo from();
 		return $module;
 	}
 
-	function init() {
+	function init()
+	{
 
-		if (true) //ENVIRONEMENT
+		if ( true ) //ENVIRONEMENT
 		{
 			$dir = APP_DIR . DS . "controller" . DS;
 			$sql = "TRUNCATE TABLE acl_controller";
@@ -152,17 +158,18 @@ class administration extends Controller {
 			$sql = "TRUNCATE TABLE acl_action_group";
 			$GLOBALS['_SQL']->sql_query($sql);
 
-			if (is_dir($dir))
+			if ( is_dir($dir) )
 			{
 				$dh = opendir($dir);
-				if ($dh)
+				if ( $dh )
 				{
-					while (($file = readdir($dh)) !== false) {
+					while ( ($file = readdir($dh)) !== false )
+					{
 
-						if (strstr($file, '.controller.php'))
+						if ( strstr($file, '.controller.php') )
 						{
 
-							if (filetype($dir . $file) != "file" || substr($file, 0, 1) === ".")
+							if ( filetype($dir . $file) != "file" || substr($file, 0, 1) === "." )
 							{
 								continue;
 							}
@@ -170,7 +177,7 @@ class administration extends Controller {
 							$class_name = explode(".", $file);
 							$name = $class_name[0];
 
-							if (!class_exists($name))
+							if ( !class_exists($name) )
 							{
 								include($dir . $file);
 							}
@@ -182,17 +189,17 @@ class administration extends Controller {
 
 							$acl_controller['acl_controller']['name'] = $name;
 
-							if (!$acl_action['acl_action']['id_acl_controller'] = $GLOBALS['_SQL']->sql_save($acl_controller))
+							if ( !$acl_action['acl_action']['id_acl_controller'] = $GLOBALS['_SQL']->sql_save($acl_controller) )
 							{
 								echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . "<br />";
 							}
 
 							unset($acl_controller['acl_controller']);
-							foreach ($tab3 as $name)
+							foreach ( $tab3 as $name )
 							{
 								$acl_action['acl_action']['name'] = $name;
 
-								if (!$GLOBALS['_SQL']->sql_save($acl_action))
+								if ( !$GLOBALS['_SQL']->sql_save($acl_action) )
 								{
 									echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist<br />";
 								}
@@ -270,7 +277,8 @@ class administration extends Controller {
 
 			$data = array();
 
-			while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+			while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res) )
+			{
 				$data[$ob->id_group][$ob->id_controller][$ob->id_action] = 1;
 			}
 
@@ -287,7 +295,8 @@ class administration extends Controller {
 		//return $module;
 	}
 
-	private function add_acl($group, $tree) {
+	private function add_acl($group, $tree)
+	{
 		$tree_id = explode("/", $tree);
 		/*
 		  debug($tree);
@@ -296,27 +305,27 @@ class administration extends Controller {
 		  debug(count($tree_id));
 		 */   //test if not exist
 
-		if (count($tree_id) == 1)
+		if ( count($tree_id) == 1 )
 		{
 			$sql = "select count(1) as cpt from `group` where name = '" . $group . "'";
 			$res = $GLOBALS['_SQL']->sql_query($sql);
 			$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
 
-			if ($ob->cpt != 1)
+			if ( $ob->cpt != 1 )
 			{
 				die("Group unknow !");
 			}
 		}
-		elseif (count($tree_id) == 2)
+		elseif ( count($tree_id) == 2 )
 		{
 
-			if ($tree_id['1'] === "")
+			if ( $tree_id['1'] === "" )
 			{
 				$sql = "select count(1) as cpt from `acl_controller` where name = '" . $tree_id['0'] . "'";
 				$res = $GLOBALS['_SQL']->sql_query($sql);
 				$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
 
-				if ($ob->cpt < 1)
+				if ( $ob->cpt < 1 )
 				{
 					die("Controller unknow !");
 				}
@@ -327,7 +336,7 @@ class administration extends Controller {
 				$res = $GLOBALS['_SQL']->sql_query($sql);
 				$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
 
-				if ($ob->cpt < 1)
+				if ( $ob->cpt < 1 )
 				{
 					echo "group : " . $group . "<br />";
 					die("Acion unknow (" . $tree_id['1'] . ") !");
@@ -336,7 +345,7 @@ class administration extends Controller {
 		}
 
 
-		if (count($tree_id) == 1)
+		if ( count($tree_id) == 1 )
 		{
 			$sql = "REPLACE INTO acl_action_group (id_acl_action, id_group) SELECT b.id as acl_action, c.id FROM acl_controller a
 		INNER JOIN acl_action b ON a.id = b.id_acl_controller
@@ -344,10 +353,10 @@ class administration extends Controller {
 		WHERE c.name = '" . $group . "'";
 		}
 		else
-		if (count($tree_id) == 2)
+		if ( count($tree_id) == 2 )
 		{
 
-			if ($tree_id['1'] === "")
+			if ( $tree_id['1'] === "" )
 			{
 				$sql = "REPLACE INTO acl_action_group (id_acl_action, id_group) SELECT b.id as acl_action, c.id FROM acl_controller a
 			INNER JOIN acl_action b ON a.id = b.id_acl_controller
@@ -370,7 +379,8 @@ class administration extends Controller {
 		$GLOBALS['_SQL']->sql_query($sql);
 	}
 
-	function generate_model() {
+	function generate_model()
+	{
 
 		//php index.php administration generate_model
 
@@ -379,13 +389,14 @@ class administration extends Controller {
 		$sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='species' and TABLE_TYPE = 'BASE TABLE'";
 		$res = $GLOBALS['_SQL']->sql_query($sql);
 
-		while ($ob2 = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+		while ( $ob2 = $GLOBALS['_SQL']->sql_fetch_object($res) )
+		{
 
 			$table = $ob2->TABLE_NAME;
 
 			$file = APP_DIR . "/model/" . $table . ".php";
 
-			if (!file_exists($file))
+			if ( !file_exists($file) )
 			{
 				$fp = fopen($file, "w");
 
@@ -406,7 +417,8 @@ class administration extends Controller {
 				unset($data);
 				unset($field);
 
-				while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res3)) {
+				while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res3) )
+				{
 					$field[] = "\"" . $ob->Field . "\"";
 
 					$data[$table][$i]['field'] = $ob->Field;
@@ -417,44 +429,44 @@ class administration extends Controller {
 				$text .= $array[1];
 				$text .= "\";\n\nvar \$field = array(" . implode(",", $field) . ");\n\nvar \$validate = array(\n";
 
-				foreach ($data[$table] as $field)
+				foreach ( $data[$table] as $field )
 				{
-					if ($field['field'] == "id")
+					if ( $field['field'] == "id" )
 					{
 						continue;
 					}
-					if (mb_substr($field['field'], 0, 2) === "id")
+					if ( mb_substr($field['field'], 0, 2) === "id" )
 					{
 						$text .= "\t'" . $field['field'] . "' => array(\n\t\t'reference_to' => array('The constraint to " . mb_substr($field['field'], 3) . ".id isn\'t respected.','" . mb_substr($field['field'], 3) . "', 'id')\n\t),\n";
 					}
-					elseif (mb_substr($field['field'], 0, 2) === "ip")
+					elseif ( mb_substr($field['field'], 0, 2) === "ip" )
 					{
 						$text .= "\t'" . $field['field'] . "' => array(\n\t\t'ip' => array('your IP is not valid')\n\t),\n";
 					}
-					elseif ($field['field'] === "email")
+					elseif ( $field['field'] === "email" )
 					{
 						$text .= "\t'" . $field['field'] . "' => array(\n\t\t'email' => array('your email is not valid')\n\t),\n";
 					}
 					else
 					{
 
-						if (mb_strstr($field['type'], "int"))
+						if ( mb_strstr($field['type'], "int") )
 						{
 							$text .= "\t'" . $field['field'] . "' => array(\n\t\t'numeric' => array('This must be an int.')\n\t),\n";
 						}
-						elseif (mb_strstr($field['type'], "time"))
+						elseif ( mb_strstr($field['type'], "time") )
 						{
 							$text .= "\t'" . $field['field'] . "' => array(\n\t\t'time' => array('This must be a time.')\n\t),\n";
 						}
-						elseif (mb_strstr($field['type'], "date"))
+						elseif ( mb_strstr($field['type'], "date") )
 						{
 							$text .= "\t'" . $field['field'] . "' => array(\n\t\t'date' => array('This must be a date.')\n\t),\n";
 						}
-						elseif (mb_strstr($field['type'], "datetime"))
+						elseif ( mb_strstr($field['type'], "datetime") )
 						{
 							$text .= "\t'" . $field['field'] . "' => array(\n\t\t'not_empty' => array('This must be a date time.')\n\t),\n";
 						}
-						elseif (mb_strstr($field['type'], "float"))
+						elseif ( mb_strstr($field['type'], "float") )
 						{
 							$text .= "\t'" . $field['field'] . "' => array(\n\t\t'decimal' => array('This must be a float.')\n\t),\n";
 						}
@@ -474,22 +486,20 @@ class administration extends Controller {
 			}
 		}
 	}
-	
+
 	function insert_backup_table()
 	{
 		$this->view = false;
 		$this->layout_name = false;
-		
+
 		include_once(LIBRARY . "Glial/sgbd/mysql/backup.php");
 		include_once (LIB . "wlHtmlDom.php");
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
-		
+
 		$data = glial\sgbd\mysql\backup::insert();
-		
+
 		//debug($data);
-		
-		
 	}
 
 }
