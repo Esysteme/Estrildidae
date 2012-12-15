@@ -13,15 +13,15 @@ echo "<table class=\"form\" width=\"100%\">";
 
 echo "<tr>";
 echo "<td class=\"first\">".__("Email")." :</td>";
-echo "<td>".input("user_main","email","textform")."</td>";
+echo "<td>".input("contact_us","email","textform")."</td>";
 echo "</tr>";
 echo "<tr>";
 echo "<td class=\"first\">".__("Name")." :</td>";
-echo "<td>".input("user_main","name","textform")."</td>";
+echo "<td>".input("contact_us","name","textform")."</td>";
 echo "</tr>";
 echo "<tr>";
 echo "<td class=\"first\">".__("Firstname")." :</td>";
-echo "<td>".input("user_main","firstname","textform")."</td>";
+echo "<td>".input("contact_us","firstname","textform")."</td>";
 echo "</tr>";
 
 
@@ -29,14 +29,12 @@ echo "</tr>";
 
 echo "<tr>";
 echo "<td class=\"first\">".__("Country")." :</td>";
-echo "<td>".select("user_main","id_geolocalisation_country",$data['geolocalisation_country'],"","textform")."</td>";
+echo "<td>".select("contact_us","id_geolocalisation_country",$data['geolocalisation_country'],"","textform")."</td>";
 echo "</tr>";
 echo "<tr>";
 echo "<td class=\"first\">".__("City")." :</td>";
-echo "<td>".autocomplete("user_main","id_geolocalisation_city","textform")."</td>";
+echo "<td>".autocomplete("contact_us","id_geolocalisation_city","textform")."</td>";
 echo "</tr>";
-
-
 
 
 /*

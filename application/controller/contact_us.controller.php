@@ -11,23 +11,27 @@ class contact_us extends controller
 		{
 			
 			
+			$data = array();
+			$data['contact_us'] = $_POST['contact_us'];
 			
+			
+			debug($data);
+			
+			die();
 			
 			
 		}
-		
-		
 		
 		
 		$this->title = __("Contact us");
 		$this->ariane = "> ".$this->title;
 		
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
-		
+				
 		$this->javascript = array("jquery.1.3.2.js", "jquery.autocomplete.min.js");
-		$this->code_javascript[] = '$("#user_main-id_geolocalisation_city-auto").autocomplete("' . LINK . 'user/city/", {
+		$this->code_javascript[] = '$("#contact_us-id_geolocalisation_city-auto").autocomplete("' . LINK . 'user/city/", {
 		extraParams: {
-			country: function() {return $("#user_main-id_geolocalisation_country").val();}
+			country: function() {return $("#contact_us-id_geolocalisation_country").val();}
 		},
 		mustMatch: true,
 		autoFill: true,
@@ -35,14 +39,14 @@ class contact_us extends controller
 		scrollHeight: 302,
 		delay:0
 		});
-		$("#user_main-id_geolocalisation_city-auto").result(function(event, data, formatted) {
+		$("#contact_us-id_geolocalisation_city-auto").result(function(event, data, formatted) {
 			if (data)
-				$("#user_main-id_geolocalisation_city").val(data[1]);
+				$("#contact_us-id_geolocalisation_city").val(data[1]);
 		});
-		$("#user_main-id_geolocalisation_country").change( function() 
+		$("#contact_us-id_geolocalisation_country").change( function() 
 		{
-			$("#user_main-id_geolocalisation_city-auto").val("");
-			$("#user_main-id_geolocalisation_city").val("");
+			$("#contact_us-id_geolocalisation_city-auto").val("");
+			$("#contact_us-id_geolocalisation_city").val("");
 		} ); 
 
 		';
@@ -55,9 +59,6 @@ class contact_us extends controller
 		$this->set('data', $this->data);
 	
 	}
-	
-	
-
 
 }
 

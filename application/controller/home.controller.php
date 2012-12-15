@@ -34,11 +34,6 @@ class home extends controller
 		});
 		";
 
-
-		
-	
-	
-	
 	}
 
 	

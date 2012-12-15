@@ -64,7 +64,7 @@ class administration extends Controller
 								}
 							}
 						}
-
+						
 						//echo "fichier : $file : type : " . filetype($dir . $file) . "\n<br />";
 					}
 				}
