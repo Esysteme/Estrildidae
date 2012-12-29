@@ -1,6 +1,6 @@
 <?php
 
-class administration extends Controller
+class administration extends controller
 {
 
 	public $module_group = "Administration";

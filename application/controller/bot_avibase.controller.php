@@ -1,14 +1,17 @@
 <?php
 
-class bot_avibase extends controller {
+class bot_avibase extends controller
+{
 
 	public $module_group = "BOT";
 
-	function index() {
+	function index()
+	{
 		
 	}
 
-	function test() {
+	function test()
+	{
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
@@ -21,7 +24,8 @@ class bot_avibase extends controller {
 		exit;
 	}
 
-	function get_infos_from_source() {
+	function get_infos_from_source()
+	{
 
 
 		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
@@ -35,7 +39,8 @@ class bot_avibase extends controller {
 
 
 		$i = 0;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 			$i++;
 			$ret = avibase::get_species_by_reference($ob->reference_id);
 
@@ -46,7 +51,7 @@ class bot_avibase extends controller {
 			$data['species_source_data']['data'] = base64_encode(gzencode(json_encode($ret), 9));
 
 
-			if (!$_SQL->sql_save($data))
+			if ( !$_SQL->sql_save($data) )
 			{
 				debug($_SQL->sql_error());
 				debug($data);
@@ -63,7 +68,8 @@ class bot_avibase extends controller {
 	  DELETE a FROM species_source_data a INNER JOIN tmp_tbl b ON a.id = b.id;
 	 */
 
-	function parse_get_infos() {
+	function parse_get_infos()
+	{
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 		$sql = "SELECT id_species_main,	id_species_sub,reference_id, data, b.id FROM species_source_detail a
 		INNER JOIN 	species_source_data b ON a.id = b.id_species_source_detail 
@@ -75,14 +81,15 @@ class bot_avibase extends controller {
 		$i = 0;
 
 
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 
 			$i++;
 			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)), true);
 
 			echo "\n" . $i . " [" . date("Y-m-d H:i:s") . "] " . $data['Order'] . " - " . $data['Family'] . " - " . $data['Scientific'] . " : ";
 
-			foreach ($data['Language'] as $lang => $text)
+			foreach ( $data['Language'] as $lang => $text )
 			{
 
 				$lang = trim(str_replace("(Brazil)", "", $lang));
@@ -90,7 +97,7 @@ class bot_avibase extends controller {
 				$sql = "SELECT * FROM language WHERE print_name = '" . $lang . "'";
 				$res2 = $_SQL->sql_query($sql);
 
-				if ($_SQL->sql_num_rows($res2) == 1)
+				if ( $_SQL->sql_num_rows($res2) == 1 )
 				{
 					$ob2 = $_SQL->sql_fetch_object($res2);
 
@@ -108,7 +115,7 @@ class bot_avibase extends controller {
 				}
 			}
 
-			foreach ($data['Synonyms'] as $lang => $tab)
+			foreach ( $data['Synonyms'] as $lang => $tab )
 			{
 
 				$to_replace = array(", Southern", "(Brazil)", "(Colombia)", "(Venezuela)", "(Balears)", "(Uruguay)", "(Dominican Rep.)", " Creole French");
@@ -117,11 +124,11 @@ class bot_avibase extends controller {
 				$sql = "SELECT * FROM language WHERE print_name = '" . $lang . "'";
 				$res2 = $_SQL->sql_query($sql);
 
-				if ($_SQL->sql_num_rows($res2) == 1)
+				if ( $_SQL->sql_num_rows($res2) == 1 )
 				{
 
 					$ob2 = $_SQL->sql_fetch_object($res2);
-					foreach ($tab as $text)
+					foreach ( $tab as $text )
 					{
 						$this->insert_scientific_name_translation($ob->id_species_main, $ob->id_species_sub, $ob2->iso3, $text);
 
@@ -146,7 +153,8 @@ class bot_avibase extends controller {
 		exit;
 	}
 
-	function insert_scientific_name_translation($id_species, $id_species_sub, $lang, $text) {
+	function insert_scientific_name_translation($id_species, $id_species_sub, $lang, $text)
+	{
 		//22720
 
 
@@ -161,7 +169,7 @@ class bot_avibase extends controller {
 
 		$res = $_SQL->sql_query($sql);
 
-		if ($_SQL->sql_num_rows($res) == 0)
+		if ( $_SQL->sql_num_rows($res) == 0 )
 		{
 			$sql = "SELECT count(1) as cpt FROM scientific_name_translation 
 			WHERE id_species_main = '" . $_SQL->sql_real_escape_string($id_species) . "'
@@ -176,7 +184,7 @@ class bot_avibase extends controller {
 			$data['scientific_name_translation']['id_species_sub'] = $id_species_sub;
 			$data['scientific_name_translation']['language'] = $lang;
 			$data['scientific_name_translation']['text'] = $text;
-			if ($ob->cpt == 0)
+			if ( $ob->cpt == 0 )
 			{
 				$data['scientific_name_translation']['is_valid'] = 1;
 			}
@@ -187,7 +195,7 @@ class bot_avibase extends controller {
 
 			$id_ret = $_SQL->sql_save($data);
 
-			if (!$id_ret)
+			if ( !$id_ret )
 			{
 				debug($id_ret);
 				debug($_SQL->sql_error());
@@ -201,7 +209,8 @@ class bot_avibase extends controller {
 		}
 	}
 
-	function update_language() {
+	function update_language()
+	{
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 		$charset = array(
@@ -224,7 +233,7 @@ class bot_avibase extends controller {
 			"es" => "ISO-8859-1"
 		);
 
-		foreach ($charset as $key => $value)
+		foreach ( $charset as $key => $value )
 		{
 			$sql = "UPDATE language SET charset = '" . $_SQL->sql_real_escape_string($value) . "' WHERE iso = '" . $key . "'";
 			//$sql = "INSERT IGNORE language (iso) values ('".$key."')";
@@ -235,12 +244,13 @@ class bot_avibase extends controller {
 		exit;
 	}
 
-	function update_language2() {
+	function update_language2()
+	{
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 		$tab = file("lang.csv");
 
-		foreach ($tab as $value)
+		foreach ( $tab as $value )
 		{
 			$ob = explode(";", $value);
 			echo $ob['6'] . "\n";
@@ -250,7 +260,8 @@ class bot_avibase extends controller {
 		}
 	}
 
-	function import_source_to_itis() {
+	function import_source_to_itis()
+	{
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 		$sql = "SELECT id_species_main,	id_species_sub,reference_id, data, b.id FROM species_source_detail a
@@ -260,46 +271,86 @@ class bot_avibase extends controller {
 		$res = $_SQL->sql_query($sql);
 		$i = 0;
 
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 			$i++;
 			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)), true);
 
-			
-			if ($ob->id_species_sub != 0)
+
+			if ( $ob->id_species_sub != 0 )
 			{
 				continue;
 			}
-			
-			
-			if (!empty($data['TSN']))
+
+
+			if ( !empty($data['TSN']) )
 			{
-				echo $i . " [" . date("Y-m-d H:i:s") . "] " . $data['Order'] . " - " . $data['Family'] . " - " . $data['Scientific'] . " : ".$data['TSN']."\n";
-				
+				echo $i . " [" . date("Y-m-d H:i:s") . "] " . $data['Order'] . " - " . $data['Family'] . " - " . $data['Scientific'] . " : " . $data['TSN'] . "\n";
+
 				$source = array();
 				$source['species_source_detail']['id_species_main'] = $ob->id_species_main;
 				$source['species_source_detail']['id_species_sub'] = $ob->id_species_sub;
 				$source['species_source_detail']['id_species_source_main'] = 4;
-				$source['species_source_detail']['reference_url'] = "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=".$data['TSN'];
+				$source['species_source_detail']['reference_url'] = "http://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=" . $data['TSN'];
 				$source['species_source_detail']['reference_id'] = $data['TSN'];
 				$source['species_source_detail']['date_created'] = date("c");
 				$source['species_source_detail']['date_updated'] = date("c");
-				
-				
-				$out =  $_SQL->sql_save($source);
-				
+
+
+				$out = $_SQL->sql_save($source);
+
 				/*
-				if (! $out)
-				{
-					debug($source);
-					debug($_SQL->sql_error());
-					die();
-				}*/
-				
+				  if (! $out)
+				  {
+				  debug($source);
+				  debug($_SQL->sql_error());
+				  die();
+				  } */
 			}
 		}
-		
-		
+
+
 		exit;
+	}
+
+	function get_pic()
+	{
+		$this->view = false;
+		$this->layout_name = false;
+
+		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
+		include_once (LIB . "wlHtmlDom.php");
+
+
+		$data = glial\parser\avibase\avibase::get_regions();
+		$data = glial\parser\avibase\avibase::get_regions();
+		//$data = glial\parser\avibase\avibase::get_ids('auvi01');
+		//$data = $this->get_all_ids();
+		debug($data);
+	}
+
+	function get_all_ids()
+	{
+		$this->view = false;
+		$this->layout_name = false;
+
+		
+		echo LIBRARY . "Glial/parser/avibase/avibase.php";
+
+
+		
+		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
+		include_once(LIB . "wlHtmlDom.php");
+
+		$data = array();
+		$regions = glial\parser\avibase\avibase::get_regions();
+		$i = 0;
+		while ( isset($regions[$i]) )
+		{
+			$data = array_merge($data, avibase::get_ids($regions[$i]));
+			$i++;
+		}
+		return ($data);
 	}
 
 }

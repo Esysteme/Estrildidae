@@ -1,33 +1,48 @@
 <?php
 
-
 class contact_us extends controller
 {
-	
+
 	function index()
 	{
-		
-		if ($_SERVER['REQUEST_METHOD'] == "POST")
-		{
-			
-			
-			$data = array();
-			$data['contact_us'] = $_POST['contact_us'];
-			
-			
-			debug($data);
-			
-			die();
-			
-			
-		}
-		
-		
-		$this->title = __("Contact us");
-		$this->ariane = "> ".$this->title;
-		
+
+
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
-				
+
+
+
+		if ( $_SERVER['REQUEST_METHOD'] == "POST" )
+		{
+			$contact_us = array();
+			$contact_us['contact_us'] = $_POST['contact_us'];
+
+
+
+			debug($contact_us);
+
+			if ( ! $GLOBALS['_SQL']->sql_save($contact_us) )
+			{
+				debug($contact_us);
+				debug($_SQL->sql_error());
+				die();
+			}
+			/*
+			  if (! $_SQL->sql_save($data))
+			  {
+			  debug($data);
+
+			  echo ">>>>>>>>>>>>>>>>>>>>";
+			  //debug($_SQL->sql_error());
+
+			  die();
+			  } */
+		}
+
+		$this->title = __("Contact us");
+		$this->ariane = "> " . $this->title;
+
+
+
 		$this->javascript = array("jquery.1.3.2.js", "jquery.autocomplete.min.js");
 		$this->code_javascript[] = '$("#contact_us-id_geolocalisation_city-auto").autocomplete("' . LINK . 'user/city/", {
 		extraParams: {
@@ -51,26 +66,12 @@ class contact_us extends controller
 
 		';
 
-		
+
 		$sql = "SELECT id, libelle from geolocalisation_country where libelle != '' order by libelle asc";
 		$res = $_SQL->sql_query($sql);
 		$this->data['geolocalisation_country'] = $_SQL->sql_to_array($res);
 
 		$this->set('data', $this->data);
-	
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-?>
