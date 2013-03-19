@@ -1,5 +1,7 @@
 <?php
 
+use \glial\synapse\singleton;
+
 class administration extends controller
 {
 
@@ -64,7 +66,7 @@ class administration extends controller
 								}
 							}
 						}
-						
+
 						//echo "fichier : $file : type : " . filetype($dir . $file) . "\n<br />";
 					}
 				}
@@ -148,6 +150,9 @@ class administration extends controller
 	function init()
 	{
 
+		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
+		
 		if ( true ) //ENVIRONEMENT
 		{
 			$dir = APP_DIR . DS . "controller" . DS;
@@ -165,7 +170,6 @@ class administration extends controller
 				{
 					while ( ($file = readdir($dh)) !== false )
 					{
-
 						if ( strstr($file, '.controller.php') )
 						{
 
@@ -186,10 +190,13 @@ class administration extends controller
 							$tab2 = get_class_methods("Controller");
 							$tab3 = array_diff($tab, $tab2);
 
-
+							$acl_controller = array();
 							$acl_controller['acl_controller']['name'] = $name;
 
-							if ( !$acl_action['acl_action']['id_acl_controller'] = $GLOBALS['_SQL']->sql_save($acl_controller) )
+							
+							$acl_action['acl_action']['id_acl_controller'] = $_SQL->sql_save($acl_controller);
+							
+							if ( ! $acl_action['acl_action']['id_acl_controller'])
 							{
 								echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . "<br />";
 							}
@@ -199,7 +206,7 @@ class administration extends controller
 							{
 								$acl_action['acl_action']['name'] = $name;
 
-								if ( !$GLOBALS['_SQL']->sql_save($acl_action) )
+								if ( ! $_SQL->sql_save($acl_action) )
 								{
 									echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist<br />";
 								}
@@ -402,7 +409,10 @@ class administration extends controller
 
 				echo "FILE : " . $file . "\n";
 
-				$text = "<?php\n\nclass " . $table . " extends sql\n{\nvar \$schema = \"";
+				$text = "<?php\n\nnamespace application\model;
+use glial\synapse\model;
+
+class " . $table . " extends model\n{\nvar \$schema = \"";
 
 				$sql = "SHOW CREATE TABLE `" . $table . "`";
 				$res2 = $GLOBALS['_SQL']->sql_query($sql);
@@ -495,11 +505,13 @@ class administration extends controller
 		include_once(LIBRARY . "Glial/sgbd/mysql/backup.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$data = glial\sgbd\mysql\backup::insert();
 
 		//debug($data);
 	}
+
+
 
 }

@@ -1,8 +1,13 @@
 <?php
 
-class forum_main extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class forum_main extends model
 {
-var $schema = "CREATE TABLE `forum_main` (
+
+	var $schema = "CREATE TABLE `forum_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_forum_category` int(11) DEFAULT NULL,
   `name` varchar(80) CHARACTER SET utf8 DEFAULT 'New forum',
@@ -27,74 +32,73 @@ var $schema = "CREATE TABLE `forum_main` (
   PRIMARY KEY (`id`),
   KEY `id_forum_category` (`id_forum_category`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1";
+	var $field = array("id", "id_forum_category", "name", "description", "redirect_url", "moderators", "num_topics", "num_posts", "last_post", "last_post_id", "last_poster", "sort_by", "disp_position", "id_species_kingdom", "id_species_phylum", "id_species_class", "id_species_order", "id_species_family", "id_species_genus", "id_species_main", "is_species_sub");
+	var $validate = array(
+		'id_forum_category' => array(
+			'reference_to' => array('The constraint to forum_category.id isn\'t respected.', 'forum_category', 'id')
+		),
+		'name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'description' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'redirect_url' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'moderators' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'num_topics' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'num_posts' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'last_post' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'last_post_id' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'last_poster' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'sort_by' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'disp_position' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'id_species_kingdom' => array(
+			'reference_to' => array('The constraint to species_kingdom.id isn\'t respected.', 'species_kingdom', 'id')
+		),
+		'id_species_phylum' => array(
+			'reference_to' => array('The constraint to species_phylum.id isn\'t respected.', 'species_phylum', 'id')
+		),
+		'id_species_class' => array(
+			'reference_to' => array('The constraint to species_class.id isn\'t respected.', 'species_class', 'id')
+		),
+		'id_species_order' => array(
+			'reference_to' => array('The constraint to species_order.id isn\'t respected.', 'species_order', 'id')
+		),
+		'id_species_family' => array(
+			'reference_to' => array('The constraint to species_family.id isn\'t respected.', 'species_family', 'id')
+		),
+		'id_species_genus' => array(
+			'reference_to' => array('The constraint to species_genus.id isn\'t respected.', 'species_genus', 'id')
+		),
+		'id_species_main' => array(
+			'reference_to' => array('The constraint to species_main.id isn\'t respected.', 'species_main', 'id')
+		),
+		'is_species_sub' => array(
+			'numeric' => array('This must be an int.')
+		),
+	);
 
-var $field = array("id","id_forum_category","name","description","redirect_url","moderators","num_topics","num_posts","last_post","last_post_id","last_poster","sort_by","disp_position","id_species_kingdom","id_species_phylum","id_species_class","id_species_order","id_species_family","id_species_genus","id_species_main","is_species_sub");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_forum_category' => array(
-		'reference_to' => array('The constraint to forum_category.id isn\'t respected.','forum_category', 'id')
-	),
-	'name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'description' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'redirect_url' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'moderators' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'num_topics' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'num_posts' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'last_post' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'last_post_id' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'last_poster' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'sort_by' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'disp_position' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'id_species_kingdom' => array(
-		'reference_to' => array('The constraint to species_kingdom.id isn\'t respected.','species_kingdom', 'id')
-	),
-	'id_species_phylum' => array(
-		'reference_to' => array('The constraint to species_phylum.id isn\'t respected.','species_phylum', 'id')
-	),
-	'id_species_class' => array(
-		'reference_to' => array('The constraint to species_class.id isn\'t respected.','species_class', 'id')
-	),
-	'id_species_order' => array(
-		'reference_to' => array('The constraint to species_order.id isn\'t respected.','species_order', 'id')
-	),
-	'id_species_family' => array(
-		'reference_to' => array('The constraint to species_family.id isn\'t respected.','species_family', 'id')
-	),
-	'id_species_genus' => array(
-		'reference_to' => array('The constraint to species_genus.id isn\'t respected.','species_genus', 'id')
-	),
-	'id_species_main' => array(
-		'reference_to' => array('The constraint to species_main.id isn\'t respected.','species_main', 'id')
-	),
-	'is_species_sub' => array(
-		'numeric' => array('This must be an int.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

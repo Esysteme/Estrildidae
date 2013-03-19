@@ -1,8 +1,13 @@
 <?php
 
-class language2 extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class language2 extends model
 {
-var $schema = "CREATE TABLE `language2` (
+
+	var $schema = "CREATE TABLE `language2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iso` char(2) NOT NULL,
   `iso3` char(3) NOT NULL,
@@ -16,41 +21,40 @@ var $schema = "CREATE TABLE `language2` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `iso3` (`iso3`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8180 DEFAULT CHARSET=utf8";
+	var $field = array("id", "iso", "iso3", "iso5", "print_name", "english", "french", "language", "inverted_name", "charset");
+	var $validate = array(
+		'iso' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'iso3' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'iso5' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'print_name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'english' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'french' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'language' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'inverted_name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'charset' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","iso","iso3","iso5","print_name","english","french","language","inverted_name","charset");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'iso' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'iso3' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'iso5' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'print_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'english' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'french' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'language' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'inverted_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'charset' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

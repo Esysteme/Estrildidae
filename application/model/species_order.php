@@ -1,6 +1,11 @@
 <?php
 
-class species_order extends sql {
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_order extends model
+{
 
 	var $schema = "CREATE TABLE `species_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -22,10 +27,10 @@ class species_order extends sql {
 		'scientific_name' => array(
 			'not_empty' => array('This field is requiered.')
 		),
-
 	);
 
-	function get_validate() {
+	function get_validate()
+	{
 		return $this->validate;
 	}
 

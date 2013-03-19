@@ -1,8 +1,13 @@
 <?php
 
-class geolocalisation_city extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class geolocalisation_city extends model
 {
-var $schema = "CREATE TABLE `geolocalisation_city` (
+
+	var $schema = "CREATE TABLE `geolocalisation_city` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_geolocalisation_country` int(11) NOT NULL,
   `id_country` varchar(10) NOT NULL DEFAULT '0',
@@ -18,44 +23,43 @@ var $schema = "CREATE TABLE `geolocalisation_city` (
   KEY `id_geolocalisation_country` (`id_geolocalisation_country`),
   KEY `libelle` (`libelle`)
 ) ENGINE=InnoDB AUTO_INCREMENT=198798 DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_geolocalisation_country", "id_country", "libelle", "capital", "population", "latitude", "longitude", "code_zip", "code_insee", "distance");
+	var $validate = array(
+		'id_geolocalisation_country' => array(
+			'reference_to' => array('The constraint to geolocalisation_country.id isn\'t respected.', 'geolocalisation_country', 'id')
+		),
+		'id_country' => array(
+			'reference_to' => array('The constraint to country.id isn\'t respected.', 'country', 'id')
+		),
+		'libelle' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'capital' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'population' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'latitude' => array(
+			'decimal' => array('This must be a float.')
+		),
+		'longitude' => array(
+			'decimal' => array('This must be a float.')
+		),
+		'code_zip' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'code_insee' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'distance' => array(
+			'decimal' => array('This must be a float.')
+		),
+	);
 
-var $field = array("id","id_geolocalisation_country","id_country","libelle","capital","population","latitude","longitude","code_zip","code_insee","distance");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_geolocalisation_country' => array(
-		'reference_to' => array('The constraint to geolocalisation_country.id isn\'t respected.','geolocalisation_country', 'id')
-	),
-	'id_country' => array(
-		'reference_to' => array('The constraint to country.id isn\'t respected.','country', 'id')
-	),
-	'libelle' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'capital' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'population' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'latitude' => array(
-		'decimal' => array('This must be a float.')
-	),
-	'longitude' => array(
-		'decimal' => array('This must be a float.')
-	),
-	'code_zip' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'code_insee' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'distance' => array(
-		'decimal' => array('This must be a float.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

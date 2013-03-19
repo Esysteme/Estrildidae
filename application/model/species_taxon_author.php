@@ -1,24 +1,28 @@
 <?php
 
-class species_taxon_author extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_taxon_author extends model
 {
-var $schema = "CREATE TABLE `species_taxon_author` (
+
+	var $schema = "CREATE TABLE `species_taxon_author` (
   `id` int(11) NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `Name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+	var $field = array("id", "name");
+	var $validate = array(
+		'name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","name");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

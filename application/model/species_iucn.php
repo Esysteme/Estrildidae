@@ -1,8 +1,13 @@
 <?php
 
-class species_iucn extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_iucn extends model
 {
-var $schema = "CREATE TABLE `species_iucn` (
+
+	var $schema = "CREATE TABLE `species_iucn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code_iucn` char(2) NOT NULL,
   `libelle` varchar(50) NOT NULL,
@@ -10,23 +15,22 @@ var $schema = "CREATE TABLE `species_iucn` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `code_iucn` (`code_iucn`,`libelle`)
 ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8";
+	var $field = array("id", "code_iucn", "libelle", "cf_order");
+	var $validate = array(
+		'code_iucn' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'libelle' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'cf_order' => array(
+			'numeric' => array('This must be an int.')
+		),
+	);
 
-var $field = array("id","code_iucn","libelle","cf_order");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'code_iucn' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'libelle' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'cf_order' => array(
-		'numeric' => array('This must be an int.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

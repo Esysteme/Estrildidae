@@ -1,8 +1,13 @@
 <?php
 
-class translation_no extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class translation_no extends model
 {
-var $schema = "CREATE TABLE `translation_no` (
+
+	var $schema = "CREATE TABLE `translation_no` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_history_etat` int(11) NOT NULL,
   `key` char(40) NOT NULL,
@@ -17,29 +22,28 @@ var $schema = "CREATE TABLE `translation_no` (
   UNIQUE KEY `key` (`key`),
   KEY `id_history_etat` (`id_history_etat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_history_etat", "key", "source", "text", "date_inserted", "date_updated", "translate_auto", "file_found", "line_found");
+	var $validate = array(
+		'id_history_etat' => array(
+			'reference_to' => array('The constraint to history_etat.id isn\'t respected.', 'history_etat', 'id')
+		),
+		'key' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'source' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'text' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'file_found' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","id_history_etat","key","source","text","date_inserted","date_updated","translate_auto","file_found","line_found");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_history_etat' => array(
-		'reference_to' => array('The constraint to history_etat.id isn\'t respected.','history_etat', 'id')
-	),
-	'key' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'source' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'text' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'file_found' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

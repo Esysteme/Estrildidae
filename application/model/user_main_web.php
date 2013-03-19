@@ -1,8 +1,13 @@
 <?php
 
-class user_main_web extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class user_main_web extends model
 {
-var $schema = "CREATE TABLE `user_main_web` (
+
+	var $schema = "CREATE TABLE `user_main_web` (
   `id` int(11) NOT NULL,
   `id_user_main` int(11) NOT NULL,
   `ip_creation` varchar(15) NOT NULL,
@@ -16,41 +21,40 @@ var $schema = "CREATE TABLE `user_main_web` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_user_main` (`id_user_main`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_user_main", "ip_creation", "hostname", "localisation_country", "localisation_area", "navigateur", "language", "longitude", "latitude");
+	var $validate = array(
+		'id_user_main' => array(
+			'reference_to' => array('The constraint to user_main.id isn\'t respected.', 'user_main', 'id')
+		),
+		'ip_creation' => array(
+			'ip' => array('your IP is not valid')
+		),
+		'hostname' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'localisation_country' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'localisation_area' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'navigateur' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'language' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'longitude' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'latitude' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","id_user_main","ip_creation","hostname","localisation_country","localisation_area","navigateur","language","longitude","latitude");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_user_main' => array(
-		'reference_to' => array('The constraint to user_main.id isn\'t respected.','user_main', 'id')
-	),
-	'ip_creation' => array(
-		'ip' => array('your IP is not valid')
-	),
-	'hostname' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'localisation_country' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'localisation_area' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'navigateur' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'language' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'longitude' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'latitude' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

@@ -1,8 +1,13 @@
 <?php
 
-class data_departments extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class data_departments extends model
 {
-var $schema = "CREATE TABLE `data_departments` (
+
+	var $schema = "CREATE TABLE `data_departments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_country` varchar(2) NOT NULL,
   `id_department` varchar(2) NOT NULL,
@@ -12,32 +17,31 @@ var $schema = "CREATE TABLE `data_departments` (
   `code` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=106 DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_country", "id_department", "id_region", "name", "name_clean", "code");
+	var $validate = array(
+		'id_country' => array(
+			'reference_to' => array('The constraint to country.id isn\'t respected.', 'country', 'id')
+		),
+		'id_department' => array(
+			'reference_to' => array('The constraint to department.id isn\'t respected.', 'department', 'id')
+		),
+		'id_region' => array(
+			'reference_to' => array('The constraint to region.id isn\'t respected.', 'region', 'id')
+		),
+		'name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'name_clean' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'code' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","id_country","id_department","id_region","name","name_clean","code");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_country' => array(
-		'reference_to' => array('The constraint to country.id isn\'t respected.','country', 'id')
-	),
-	'id_department' => array(
-		'reference_to' => array('The constraint to department.id isn\'t respected.','department', 'id')
-	),
-	'id_region' => array(
-		'reference_to' => array('The constraint to region.id isn\'t respected.','region', 'id')
-	),
-	'name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'name_clean' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'code' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

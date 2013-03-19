@@ -1,5 +1,7 @@
 <?php
 
+use glial\synapse\singleton;
+
 class user extends controller {
 
 	public $module_group = "Users & access management";
@@ -11,7 +13,7 @@ class user extends controller {
 
 		$this->layout_name ="admin";
 		
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT a.id, a.firstname, a.name, b.id_country, b.libelle, COUNT( d.point ) AS points, e.name as rank, date_last_connected
 			FROM user_main a
@@ -22,7 +24,7 @@ class user extends controller {
 			WHERE a.is_valid =  '1'
 			GROUP BY a.id, e.name, b.libelle
 			ORDER BY points DESC,  date_last_connected desc
-			LIMIT 50";
+			LIMIT 100";
 
 		$res = $_SQL->sql_query($sql);
 		$data = $_SQL->sql_to_array($res);
@@ -32,7 +34,7 @@ class user extends controller {
 
 	function login($bypass = false) {
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		if ($_SERVER['REQUEST_METHOD'] == "POST" || $bypass)
 		{
@@ -124,7 +126,7 @@ class user extends controller {
 		die(); // voir dans le boot.php
 
 		global $_SITE;
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$_SITE['IdUser'] = -1;
 		$_SITE['id_group'] = 1;
 
@@ -216,7 +218,7 @@ class user extends controller {
 
 
 		$this->layout_name = false;
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT libelle, id FROM geolocalisation_city WHERE libelle LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' 
 		AND id_geolocalisation_country='" . $_SQL->sql_real_escape_string($_GET['country']) . "' ORDER BY libelle LIMIT 0,100";
@@ -237,7 +239,7 @@ class user extends controller {
 
 
 		$this->layout_name = false;
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT firstname, name, id FROM species_author WHERE name LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' OR firstname LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%'
 		ORDER BY name, firstname LIMIT 0,100";
@@ -274,7 +276,7 @@ class user extends controller {
 
 		';
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT id, libelle from geolocalisation_country where libelle != '' order by libelle asc";
 		$res = $_SQL->sql_query($sql);
@@ -401,7 +403,7 @@ class user extends controller {
 		if (!empty($_POST['user_main']['email']))
 		{
 
-			$_SQL = Singleton::getInstance(SQL_DRIVER);
+			$_SQL = singleton::getInstance(SQL_DRIVER);
 
 			$sql = "SELECT * FROM user_main WHERE email='" . $_SQL->sql_real_escape_string($_POST['user_main']['email']) . "'";
 
@@ -474,7 +476,7 @@ class user extends controller {
 
 	function password_recover($param) {
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 
 		$this->title = __("Recover your password");
@@ -551,7 +553,7 @@ class user extends controller {
 	}
 
 	function block_last_registered() {
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "select a.name, a.firstname, lower(b.iso) as iso, a.date_created, a.id from user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
@@ -563,7 +565,7 @@ class user extends controller {
 	
 	
 	function block_last_online() {
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "select a.name, a.firstname, lower(b.iso) as iso, a.date_last_connected, a.id from user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
@@ -586,7 +588,7 @@ class user extends controller {
 
 	function confirmation($data) {
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT * FROM user_main WHERE email = '" . $_SQL->sql_real_escape_string($data[0]) . "'";
 		$res = $_SQL->sql_query($sql);
@@ -636,7 +638,7 @@ class user extends controller {
 	}
 
 	private function log($id_user, $success) {
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$data = array();
 		$data['user_main_login']['id_user_main'] = $id_user;
@@ -748,7 +750,7 @@ GROUP BY d.id";
 			exit;
 		}
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 
 		$sql = "SELECT * FROM user_main a
@@ -997,7 +999,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 
 
 		$this->layout_name = false;
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT name, firstname, id FROM user_main WHERE 
 			firstname != 'BOT'
@@ -1023,7 +1025,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 			$this->data['item'] = '';
 		}
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$this->layout_name = "admin";
 
@@ -1065,7 +1067,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 	}
 
 	private function get_new_mail() {
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT count(1) as cpt FROM mailbox_main
 			WHERE id_user_main__box = '" . $GLOBALS['_SITE']['IdUser'] . "'

@@ -1,6 +1,10 @@
 <?php
 
-class contact_us extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class contact_us extends model
 {
 
 	var $schema = "CREATE TABLE `contact_us` (
@@ -29,23 +33,12 @@ class contact_us extends sql
 		'id_geolocalisation_city' => array(
 			'reference_to' => array('The constraint to geolocalisation_city.id isn\'t respected.', 'geolocalisation_city', 'id')
 		),
-		'message' => array(
-			'numeric' => array('This must be an int.')
-		),
 		'ip' => array(
 			'ip' => array('your IP is not valid')
-		),
-		'date' => array(
-			'time' => array('This must be a time.')
 		),
 		'email' => array(
 			'email' => array('your email is not valid')
 		),
 	);
-
-	function get_validate()
-	{
-		return $this->validate;
-	}
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use glial\synapse\singleton;
+
 class author extends controller {
 
 	public $module_group = "Species";
@@ -11,7 +13,7 @@ class author extends controller {
 
 		$this->layout_name ="admin";
 		
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		
 		
 		$sql = "SELECT a.id, a.surname, 
@@ -38,7 +40,7 @@ class author extends controller {
 		$this->layout_name ="admin";
 		
 	
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$sql = "SELECT * FROM species_author a
 			WHERE id = '".$param[0]."'";
 		$res = $_SQL->sql_query($sql);
@@ -106,7 +108,7 @@ class author extends controller {
 		}
 		
 		$this->layout_name = "admin";
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$this->title = __("Manage authors");
 		$this->ariane = '> <a href="'.LINK.'administration/">'.__("Administration").'</a> > ' . $this->title;

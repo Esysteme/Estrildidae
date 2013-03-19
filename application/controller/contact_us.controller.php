@@ -1,13 +1,14 @@
 <?php
 
+use \glial\synapse\singleton;
+
 class contact_us extends controller
 {
 
 	function index()
 	{
 
-
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 
 
@@ -15,27 +16,43 @@ class contact_us extends controller
 		{
 			$contact_us = array();
 			$contact_us['contact_us'] = $_POST['contact_us'];
+			$contact_us['contact_us']['date'] = date('c');
+			$contact_us['contact_us']['ip'] = $_SERVER['REMOTE_ADDR'];
 
-
-
-			debug($contact_us);
-
-			if ( ! $GLOBALS['_SQL']->sql_save($contact_us) )
+			if ( $_SQL->sql_save($contact_us) )
 			{
-				debug($contact_us);
-				debug($_SQL->sql_error());
-				die();
+				$msg = $GLOBALS['_LG']->getTranslation(__('Your message has been sent'));
+				$title = $GLOBALS['_LG']->getTranslation(__("Success"));
+				set_flash("success", $title, $msg);
+
+				
+				header("location: " . LINK . "contact_us/");
+				exit;
 			}
-			/*
-			  if (! $_SQL->sql_save($data))
-			  {
-			  debug($data);
+			else
+			{
+				
+				$error = $_SQL->sql_error();
+				$_SESSION['ERROR'] = $error;
+				
+				$msg = $GLOBALS['_LG']->getTranslation(__('Please verify your informations'));
+				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
+				set_flash("error", $title, $msg);
+				
+				
+				foreach ($_POST['contact_us'] as $var => $val)
+				{
+					$ret[] = "contact_us:" . $var . ":" . urlencode($val);
+				}
 
-			  echo ">>>>>>>>>>>>>>>>>>>>";
-			  //debug($_SQL->sql_error());
+				$param = implode("/", $ret);
+				
+				header("location: " . LINK . "contact_us/index/" . $param);
+				
+	
+				exit;
 
-			  die();
-			  } */
+			}
 		}
 
 		$this->title = __("Contact us");

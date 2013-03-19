@@ -1,23 +1,27 @@
 <?php
 
-class species_distribution_information extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_distribution_information extends model
 {
-var $schema = "CREATE TABLE `species_distribution_information` (
+
+	var $schema = "CREATE TABLE `species_distribution_information` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8";
+	var $field = array("id", "libelle");
+	var $validate = array(
+		'libelle' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","libelle");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'libelle' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

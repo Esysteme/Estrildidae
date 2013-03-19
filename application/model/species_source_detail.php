@@ -1,6 +1,11 @@
 <?php
 
-class species_source_detail extends sql {
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_source_detail extends model
+{
 
 	var $schema = "CREATE TABLE `species_source_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -30,7 +35,8 @@ class species_source_detail extends sql {
 		),
 	);
 
-	function get_validate() {
+	function get_validate()
+	{
 		return $this->validate;
 	}
 

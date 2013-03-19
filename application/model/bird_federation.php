@@ -1,8 +1,13 @@
 <?php
 
-class bird_federation extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class bird_federation extends model
 {
-var $schema = "CREATE TABLE `bird_federation` (
+
+	var $schema = "CREATE TABLE `bird_federation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -10,23 +15,22 @@ var $schema = "CREATE TABLE `bird_federation` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `tag` (`tag`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+	var $field = array("id", "tag", "name", "website");
+	var $validate = array(
+		'tag' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'website' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","tag","name","website");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'tag' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'website' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

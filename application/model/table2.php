@@ -1,8 +1,13 @@
 <?php
 
-class table2 extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class table2 extends model
 {
-var $schema = "CREATE TABLE `table2` (
+
+	var $schema = "CREATE TABLE `table2` (
   `Id` varchar(200) NOT NULL,
   `Part2B` varchar(200) NOT NULL,
   `Part2T` varchar(200) NOT NULL,
@@ -13,38 +18,37 @@ var $schema = "CREATE TABLE `table2` (
   `Comment` varchar(200) NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+	var $field = array("Id", "Part2B", "Part2T", "Part1", "Scope", "Language_Type", "Ref_Name", "Comment");
+	var $validate = array(
+		'Id' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Part2B' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Part2T' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Part1' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Scope' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Language_Type' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Ref_Name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'Comment' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("Id","Part2B","Part2T","Part1","Scope","Language_Type","Ref_Name","Comment");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'Id' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Part2B' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Part2T' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Part1' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Scope' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Language_Type' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Ref_Name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'Comment' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

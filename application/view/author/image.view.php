@@ -37,8 +37,8 @@ foreach ($data['photo'] as $var)
 	$img = FARM1 . "crop/" . SIZE_MINIATURE_SMALL . "x" . SIZE_MINIATURE_SMALL . "/" . $path . DS . $picture_name;
 	
 	
-	$url = LINK."species/nominal/".$species_name."/photo";
-	$url .= "#".LINK."species/nominal/".$species_name."/photo_detail/".$var['id_photo']."/photo_detail>content_1";
+	$url = LINK."species/nominal/".$species_name."/photo/photo_detail/".$var['id_photo'];
+	
 	
 	species_tree::html_pic($url, $img, $var['nominal'], $var['nominal']."\n(".$var['info_photo'].")");
 	

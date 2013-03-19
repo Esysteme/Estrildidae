@@ -52,16 +52,6 @@ class bot_xeno_canto extends controller {
 			{
 				
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
 			}
 			
 			if ($_SQL->sql_num_rows($res) == 0)
@@ -74,6 +64,11 @@ class bot_xeno_canto extends controller {
 		
 		
 		exit;
+	}
+	
+	function get_all_kmz()
+	{
+		
 	}
 
 }

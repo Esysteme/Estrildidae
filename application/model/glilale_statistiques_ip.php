@@ -1,8 +1,13 @@
 <?php
 
-class glilale_statistiques_ip extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class glilale_statistiques_ip extends model
 {
-var $schema = "CREATE TABLE `glilale_statistiques_ip` (
+
+	var $schema = "CREATE TABLE `glilale_statistiques_ip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ip` char(15) NOT NULL,
   `hostname` varchar(150) NOT NULL,
@@ -20,53 +25,52 @@ var $schema = "CREATE TABLE `glilale_statistiques_ip` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `IP` (`ip`)
 ) ENGINE=MyISAM AUTO_INCREMENT=842 DEFAULT CHARSET=utf8";
+	var $field = array("id", "ip", "hostname", "isp", "organization", "proxy", "type", "assignment", "country", "area", "city", "latitude", "longitude", "area_code");
+	var $validate = array(
+		'ip' => array(
+			'ip' => array('your IP is not valid')
+		),
+		'hostname' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'isp' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'organization' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'proxy' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'type' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'assignment' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'country' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'area' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'city' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'latitude' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'longitude' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'area_code' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","ip","hostname","isp","organization","proxy","type","assignment","country","area","city","latitude","longitude","area_code");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'ip' => array(
-		'ip' => array('your IP is not valid')
-	),
-	'hostname' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'isp' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'organization' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'proxy' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'type' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'assignment' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'country' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'area' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'city' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'latitude' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'longitude' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'area_code' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

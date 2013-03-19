@@ -1,8 +1,13 @@
 <?php
 
-class link__species_authorities__species_main extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class link__species_authorities__species_main extends model
 {
-var $schema = "CREATE TABLE `link__species_authorities__species_main` (
+
+	var $schema = "CREATE TABLE `link__species_authorities__species_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_species_authorities` int(11) NOT NULL,
   `id_species_main` int(11) NOT NULL,
@@ -18,26 +23,25 @@ var $schema = "CREATE TABLE `link__species_authorities__species_main` (
   CONSTRAINT `link__species_authorities__species_main_ibfk_2` FOREIGN KEY (`id_scientific_name_translation__common_name`) REFERENCES `scientific_name_translation` (`id`),
   CONSTRAINT `link__species_authorities__species_main_ibfk_3` FOREIGN KEY (`id_scientific_name_translation__scientific_name`) REFERENCES `scientific_name_translation` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_species_authorities", "id_species_main", "id_scientific_name_translation__common_name", "id_scientific_name_translation__scientific_name");
+	var $validate = array(
+		'id_species_authorities' => array(
+			'reference_to' => array('The constraint to species_authorities.id isn\'t respected.', 'species_authorities', 'id')
+		),
+		'id_species_main' => array(
+			'reference_to' => array('The constraint to species_main.id isn\'t respected.', 'species_main', 'id')
+		),
+		'id_scientific_name_translation__common_name' => array(
+			'reference_to' => array('The constraint to scientific_name_translation__common_name.id isn\'t respected.', 'scientific_name_translation__common_name', 'id')
+		),
+		'id_scientific_name_translation__scientific_name' => array(
+			'reference_to' => array('The constraint to scientific_name_translation__scientific_name.id isn\'t respected.', 'scientific_name_translation__scientific_name', 'id')
+		),
+	);
 
-var $field = array("id","id_species_authorities","id_species_main","id_scientific_name_translation__common_name","id_scientific_name_translation__scientific_name");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_species_authorities' => array(
-		'reference_to' => array('The constraint to species_authorities.id isn\'t respected.','species_authorities', 'id')
-	),
-	'id_species_main' => array(
-		'reference_to' => array('The constraint to species_main.id isn\'t respected.','species_main', 'id')
-	),
-	'id_scientific_name_translation__common_name' => array(
-		'reference_to' => array('The constraint to scientific_name_translation__common_name.id isn\'t respected.','scientific_name_translation__common_name', 'id')
-	),
-	'id_scientific_name_translation__scientific_name' => array(
-		'reference_to' => array('The constraint to scientific_name_translation__scientific_name.id isn\'t respected.','scientific_name_translation__scientific_name', 'id')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

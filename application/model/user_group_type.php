@@ -1,6 +1,8 @@
-<?php
+F<?php
+namespace application\model;
+use glial\synapse\model;
 
-class user_group_type extends sql
+class user_group_type extends model
 {
 var $schema = "CREATE TABLE `user_group_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

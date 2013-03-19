@@ -1,8 +1,13 @@
 <?php
 
-class licence extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class licence extends model
 {
-var $schema = "CREATE TABLE `licence` (
+
+	var $schema = "CREATE TABLE `licence` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `link` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -12,29 +17,28 @@ var $schema = "CREATE TABLE `licence` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `libelle` (`libelle`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+	var $field = array("id", "libelle", "link", "date_inserted", "cf_order", "icon");
+	var $validate = array(
+		'libelle' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'link' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'date_inserted' => array(
+			'time' => array('This must be a time.')
+		),
+		'cf_order' => array(
+			'numeric' => array('This must be an int.')
+		),
+		'icon' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","libelle","link","date_inserted","cf_order","icon");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'libelle' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'link' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'date_inserted' => array(
-		'time' => array('This must be a time.')
-	),
-	'cf_order' => array(
-		'numeric' => array('This must be an int.')
-	),
-	'icon' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

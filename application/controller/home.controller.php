@@ -10,7 +10,10 @@ class home extends controller
 		$this->ariane = " > ".__("The encyclopedia that you can improve !");
 		
 		$this->javascript = array("jquery-1.4.4.min.js","jquery.mousewheel.min.js","jquery.slidepane.min.js", "jawdropper_slider.js");
-		$this->code_javascript[] = "$('.slidepane').slidepane({
+		
+		/*
+		$this->code_javascript[] = "
+		$('.slidepane').slidepane({
         slideWidth:676, 
         slideSpeed:500, 
         autoPlay:false, 
@@ -18,7 +21,9 @@ class home extends controller
         cycle:true, 
         keysControl:true, 
         mouseControl:true, 
-        startSlide:1});
+        startSlide:1});";*/
+		
+		$this->code_javascript[] = "
 		
 		$(document).ready(function() {
 			$('#slider').jdSlider({ 

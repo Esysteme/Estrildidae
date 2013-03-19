@@ -1,6 +1,11 @@
 <?php
 
-class species_main extends sql {
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_main extends model
+{
 
 	var $schema = "CREATE TABLE `species_main` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -31,10 +36,10 @@ class species_main extends sql {
 		'scientific_name' => array(
 			'not_empty' => array('This field is requiered.')
 		),
-
 	);
 
-	function get_validate() {
+	function get_validate()
+	{
 		return $this->validate;
 	}
 

@@ -1,8 +1,13 @@
 <?php
 
-class language extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class language extends model
 {
-var $schema = "CREATE TABLE `language` (
+
+	var $schema = "CREATE TABLE `language` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `iso` char(2) NOT NULL,
   `iso3` char(3) NOT NULL,
@@ -15,35 +20,34 @@ var $schema = "CREATE TABLE `language` (
   UNIQUE KEY `iso3` (`iso3`),
   KEY `print_name` (`print_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8192 DEFAULT CHARSET=utf8";
+	var $field = array("id", "iso", "iso3", "print_name", "language", "charset", "scope", "language_type");
+	var $validate = array(
+		'iso' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'iso3' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'print_name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'language' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'charset' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'scope' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+		'language_type' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","iso","iso3","print_name","language","charset","scope","language_type");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'iso' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'iso3' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'print_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'language' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'charset' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'scope' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'language_type' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

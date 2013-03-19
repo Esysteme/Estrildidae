@@ -1,5 +1,8 @@
 <?php
-$_SQL = Singleton::getInstance(SQL_DRIVER);
+
+use glial\synapse\singleton;
+
+$_SQL = singleton::getInstance(SQL_DRIVER);
 
 
 $sql = "select count(1) as cpt from user_main";
@@ -111,32 +114,13 @@ echo __(Date("l")) . " " . Date("d") . " " . __(Date("F")) . " - " . Date("H:i:s
 ";
 ?>
 
-
 		</div>
-
-
-
 		<div id="banner">
-
 			<div class="terre">
-
-				<embed src="<?php echo IMG ?>main/terre.swf" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" wmode="transparent" type="application/x-shockwave-flash" height="40" width="40"> 
-				<noscript>
-				<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0" width="40" height="40"> 
-					<param name="movie" value="<?php echo IMG ?>main/terre.swf" />
-					<param name="quality" value="high" />
-					<param name="wmode" value="transparent" /> 
-					<embed src="<?php echo IMG ?>main/terre.swf" width="40" height="40" quality="high" pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" wmode="transparent"></embed>
-				</object> </noscript>
-				<!--<a style="margin-left:290px" href=""><img src="pictures/credits/468x60.png" height="60" width="468" />-->
+				<img src="<?php echo IMG; ?>main/terre.png" height="40" width="40" />
 			</div>
-
 		</div>
-
-
 		<div id="menu">
-
-
 
 <?php
 $menu = array(__("Home"), __("Species"), __("Authors"),__("Medias"), __("Members"), __("Who we are?"), __("FAQ"), __("Partner"), __("Download"), __("Contact us"), __("Forum"));

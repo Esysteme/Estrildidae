@@ -1,6 +1,9 @@
 <?php
 
-class species_translation extends sql
+namespace application\model;
+use glial\synapse\model;
+
+class species_translation extends model
 {
 var $schema = "CREATE TABLE `species_translation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,72 +32,72 @@ var $schema = "CREATE TABLE `species_translation` (
   UNIQUE KEY `IdTable` (`id_table`,`id_row`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9713 DEFAULT CHARSET=utf8";
 
-var $field = array("id","id_table","id_row","scientific_name","fr","en","de","es","nl","it","ja","cs","pl","zh-CN","ru","fi","pt","da","no","sk","se","is");
+var $field = array("id", "id_table", "id_row", "scientific_name", "fr", "en", "de", "es", "nl", "it", "ja", "cs", "pl", "zh-CN", "ru", "fi", "pt", "da", "no", "sk", "se", "is");
 
 var $validate = array(
-	'id_table' => array(
-		'reference_to' => array('The constraint to table.id isn't respected.','table', 'id')
+'id_table' => array(
+'reference_to' => array('The constraint to table.id isn't respected.','table', 'id')
 	),
 	'id_row' => array(
-		'reference_to' => array('The constraint to row.id isn't respected.','row', 'id')
-	),
-	'scientific_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'fr' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'en' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'de' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'es' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'nl' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'it' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'ja' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'cs' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'pl' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'zh-CN' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'ru' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'fi' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'pt' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'da' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'no' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'sk' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'se' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-	'is' => array(
-		'not_empty' => array('This field is requiered.')
-	),
+		'reference_to' => array('The constraint to row.id isn't respected.', 'row', 'id')
+),
+ 'scientific_name' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'fr' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'en' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'de' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'es' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'nl' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'it' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'ja' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'cs' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'pl' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'zh-CN' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'ru' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'fi' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'pt' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'da' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'no' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'sk' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'se' => array(
+'not_empty' => array('This field is requiered.')
+),
+ 'is' => array(
+'not_empty' => array('This field is requiered.')
+),
 );
 
 function get_validate()

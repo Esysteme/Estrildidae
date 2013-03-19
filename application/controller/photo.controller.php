@@ -1,6 +1,7 @@
 <?php
 
 // id_species_picture_main:118538
+use glial\synapse\singleton;
 
 class photo extends controller {
 
@@ -18,7 +19,7 @@ class photo extends controller {
 		$this->title = __("Members");
 		$this->ariane = "> " . $this->title;
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 
 		$sql = "select * from user_main 
@@ -45,7 +46,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		}
 
 		$this->layout_name = "admin";
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$this->title = __("Import a picture");
 		$this->ariane = '> <a href="'.LINK.'administration/">'.__("Administration").'</a> > ' . $this->title;
@@ -94,7 +95,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 	function admin_crop() {
 
 		$this->layout_name = "admin";
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		if (from() == "administration.controller.php")
 		{
@@ -744,7 +745,7 @@ ORDER BY a.id asc";
 			$res22 = $_SQL->sql_query($sql);
 			$this->data['history'] = $_SQL->sql_to_array($res22);
 
-			$_LG = Singleton::getInstance("Language");
+			$_LG = singleton::getInstance("Language");
 			$lg = explode(",", LANGUAGE_AVAILABLE);
 			$nbchoice = count($lg);
 
@@ -1233,7 +1234,7 @@ $('#searchLoc').trigger('click');
 
 
 		$this->layout_name = false;
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT id, scientific_name as libelle FROM `" . mysql_real_escape_string($table) . "` WHERE `" . $id_table[$table] . "` = " . mysql_real_escape_string($id) . " order By scientific_name";
 		$res = $_SQL->sql_query($sql);
@@ -1258,7 +1259,7 @@ $('#searchLoc').trigger('click');
 	function dl_picture() {
 		$this->layout_name = false;
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$sql = "SELECT * from species_picture_in_wait";
 
 
@@ -1298,7 +1299,7 @@ INNER JOIN species_tree_nominal b ON a.id_species_main = b.id_nominal
 WHERE b.id_family =  '438' and id_species_main=10098
 AND a.id_history_etat =1";
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$res = $_SQL->sql_query($sql);
 
 		$data['photo'] = $_SQL->sql_to_array($res);
@@ -1314,7 +1315,7 @@ AND a.id_history_etat =1";
 		$this->layout_name = false;
 		$sql = "select id,name from species_picture_in_wait order by id";
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$res = $_SQL->sql_query($sql);
 
 

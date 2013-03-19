@@ -1,23 +1,27 @@
 <?php
 
-class history_etat extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class history_etat extends model
 {
-var $schema = "CREATE TABLE `history_etat` (
+
+	var $schema = "CREATE TABLE `history_etat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `libelle` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4";
+	var $field = array("id", "libelle");
+	var $validate = array(
+		'libelle' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","libelle");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'libelle' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

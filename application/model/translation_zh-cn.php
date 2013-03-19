@@ -1,6 +1,11 @@
 <?php
 
-class translation_zhcn extends sql {
+namespace application\model;
+
+use glial\synapse\model;
+
+class translation_zhcn extends model
+{
 
 	var $schema = "CREATE TABLE `translation_zh-cn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -34,10 +39,10 @@ class translation_zhcn extends sql {
 		'file_found' => array(
 			'not_empty' => array('This field is requiered.')
 		),
-
 	);
 
-	function get_validate() {
+	function get_validate()
+	{
 		return $this->validate;
 	}
 

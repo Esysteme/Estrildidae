@@ -1,8 +1,13 @@
 <?php
 
-class species_sub extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_sub extends model
 {
-var $schema = "CREATE TABLE `species_sub` (
+
+	var $schema = "CREATE TABLE `species_sub` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_species_main` int(11) NOT NULL,
   `id_species_pictures` int(11) NOT NULL,
@@ -16,21 +21,19 @@ var $schema = "CREATE TABLE `species_sub` (
   KEY `FK_IdSpeciesMain` (`id_species_main`),
   CONSTRAINT `FK_id_species_main` FOREIGN KEY (`id_species_main`) REFERENCES `species_main` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=260271 DEFAULT CHARSET=utf8";
+	var $field = array("id", "id_species_main", "id_species_pictures", "is_valid", "scientific_name", "date_created", "date_updated");
+	var $validate = array(
+		'id_species_main' => array(
+			'reference_to' => array('The constraint to species_main.id isn\'t respected.', 'species_main', 'id')
+		),
+		'scientific_name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","id_species_main","id_species_pictures","is_valid","scientific_name","date_created","date_updated");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'id_species_main' => array(
-		'reference_to' => array('The constraint to species_main.id isn\'t respected.','species_main', 'id')
-	),
-	'scientific_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

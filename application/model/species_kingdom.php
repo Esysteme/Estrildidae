@@ -1,8 +1,13 @@
 <?php
 
-class species_kingdom extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class species_kingdom extends model
 {
-var $schema = "CREATE TABLE `species_kingdom` (
+
+	var $schema = "CREATE TABLE `species_kingdom` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `scientific_name` varchar(50) NOT NULL,
   `is_valid` int(11) NOT NULL,
@@ -11,19 +16,16 @@ var $schema = "CREATE TABLE `species_kingdom` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `scientific_name` (`scientific_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8";
+	var $field = array("id", "scientific_name", "is_valid", "date_created", "date_updated");
+	var $validate = array(
+		'scientific_name' => array(
+			'not_empty' => array('This field is requiered.')
+		),
+	);
 
-var $field = array("id","scientific_name","is_valid","date_created","date_updated");
+	function get_validate()
+	{
+		return $this->validate;
+	}
 
-var $validate = array(
-	'scientific_name' => array(
-		'not_empty' => array('This field is requiered.')
-	),
-
-
-);
-
-function get_validate()
-{
-return $this->validate;
-}
 }

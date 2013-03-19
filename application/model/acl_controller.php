@@ -1,10 +1,13 @@
 <?php
 
-class acl_controller extends sql
+namespace application\model;
+
+use glial\synapse\model;
+
+class acl_controller extends model
 {
 
- 
-	// Nous donnons donc à Gliale la structure d'un enregistrement
+	// Nous donnons donc Ã  Gliale la structure d'un enregistrement
 	var $schema = "CREATE TABLE `UserMain` (
  `Id` int(11) NOT NULL auto_increment,
  `IsValid` int(11) NOT NULL,
@@ -24,31 +27,19 @@ class acl_controller extends sql
  UNIQUE KEY `email` (`Email`),
  UNIQUE KEY `login` (`Login`)
 ) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8";
- 
-	// Règles de validation des données
-	
+	// RÃ¨gles de validation des donnÃ©es
+
 	var $field = array();
-	
 	var $validate = array(
-	
-	
 		'name' => array(
 			'is_unique' => array('This email has already been taken.'),
-			'not_empty' => array("L'email doit être renseigné.")
+			'not_empty' => array("L'email doit Ãªtre renseignÃ©.")
 		)
 	);
-	
 
-
-	
 	function get_validate()
 	{
 		return $this->validate;
 	}
-	
+
 }
-
-
-
-
-?>
