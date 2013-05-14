@@ -69,6 +69,9 @@ echo "<meta name=\"runtime\" content=\"[PAGE_GENERATION]\" />\n";
 echo "<title>" . $GLIALE_TITLE . " - Estrildidae</title>\n";
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . CSS . "style.css\" />\n";
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . CSS . "extjs.css\" />\n";
+echo '<link type="text/css" href="http://fonts.googleapis.com/css?family=Coda" rel="stylesheet" />';
+
+
 //echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"javascripts/ext-3.0.0/resources/css/ext-all.css\" />\n";
 //echo "<link rel=\"shortcut icon\" href=\"esysteme/clavier.ico\" />\n";
 

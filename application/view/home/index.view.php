@@ -1,5 +1,5 @@
 <?php
-
+/*
 echo '<div class="slidepane_frame">
 <dl class="slidepane">
 	<dt>'.__('Editorial').'</dt>
@@ -96,7 +96,7 @@ Encourage the enhanced appreciation of the climate regulating functions of ecosy
 
 
 	</dl>';
-			
+			*/
 			
 /*
 	<dt></dt>
@@ -107,20 +107,15 @@ Encourage the enhanced appreciation of the climate regulating functions of ecosy
 
 */
 
+
+
+
+
+
 echo "<div id=\"box\">";
 
 
 
-
-
-
-
-
-
-
-
-
-/*
 echo "<div id=\"box-editorial\">";
 echo "<h3>".__("Editorial")."</h3>";
 
@@ -131,68 +126,46 @@ echo "<div class=\"box-contener\">";
 
 echo "<p>".__("A personal project,")."</p>";
 
-echo __("<p>L’idée est issue d’un constat simple : à ce jour aucun site internet ne propose de base de données complète sur les différentes espèces/sous-espèces permettant à chacun de trouver tout ce qu’il souhaite aussi bien des photos, des vidéos et tout autres articles etc ...</p>
+
+echo '<p>'.__('The idea comes from one simple fact: to date no website proposes a comprehensive database on the different species / subspecies, for everyone to find whatever he wants as many photos, videos and any other items ... ').'</p>
+<p> '.__('For information on a species, you often see many sites, making it extremely long and difficult search yet simple. The primary purpose of site is to be a photo or video to each subspecies and encourage the most species where there is very little data to see at all.').'</p>
+<p>'.__('To achieve the aim was not to create an aditional ordinary site asking contributors to produce the content, but simply to use all the Internet to automatically retrieve data using robots and search engines while respecting the rights authors and citing references.').'</p><p>'.__('To improve the rendering of this site I would recommend using Firefox for some reason the site of choice will not be accessible for users of Internet Explorer (browser does not comply with the standarts of the W3C ). ').'</p>
+<p class="right">'.__('Posted by').' : <a href="'.LINK.'user/profil/3">Aurélien LEQUOY</a></p><div class="clear"></div>';
+
+/*
+echo "<p>".__("L’idée est issue d’un constat simple : à ce jour aucun site internet ne propose de base de données complète sur les différentes espèces/sous-espèces permettant à chacun de trouver tout ce qu’il souhaite aussi bien des photos, des vidéos et tout autres articles etc ...")."</p>";
 <p>Pour obtenir des informations sur une espèce, il faut souvent consulter de nombreux sites, ce qui rend extrêmement longue et difficile une recherche pourtant simple. L'objectif premier de se site est de mettre une photo ou une vidéo devant chaque sous-espèce et d'encourager au maximum les espèces où l'on à très peu de données voir pas du tout.</p>
 <p>Pour y parvenir le but n'était pas de créer un site ordinaire suplémentaire demandant à des contributeurs de produire le contenu, mais d'utiliser tous simplement Internet afin de récupérer automatiquement les données grace à des robots et moteurs de recherche tout en respectant les droits d'auteurs et en citant les références.</p>
 <p>Afin d'amélioré le rendu de ce site je vous conseille d'utiliser Firefox, pour une raison de choix le site ne sera pas accessible pour les utilisateurs d'Internet Explorer (navigateur ne respectant pas les standarts du <a href=\"http://www.w3.org/\" target=\"_BLANK\">W3C</a>).</p>", "fr");
 
 echo "<p>".__("Posted by")." : <a href=\"\">Aurélien LEQUOY</a></p>
-";
+";*/
 
 echo "</div>";
 echo "</div>";
-*/
+
 
 
 
 
 echo "<div id=\"box-news\">";
-echo "<h3>".__("News")."</h3>";
+echo "<h3>".__("Articles")."</h3>";
 
 echo "<div class=\"box-contener\">";
 
 
-/*
-$sql = "select b.*,c.name,c.firstname,c.id as IdUser, c.iso 
-from ArticlesMain a
-INNER JOIN ArticlesHeader b ON a.Id = b.IdArticlesMain AND a.IdLang  = b.IdLang 
-INNER JOIN user_main c ON b.IdUserMain = c.Id
-WHERE a.Etat =1
-ORDER BY DateValidated DESC";
-
-$res = sql::sql_query($sql);
+$login = new controller("article", "block_article", "");
+$login->recursive = true;
+$login->get_controller();
+$login->display();
 
 
 
-echo "<table>";
 
-
-while($ob = mysql_fetch_object($res))
-{
-
-	echo "<tr><td>";
-	echo "<h4><a href=\"\"><img class=\"country\" src=\"".IMG."language/{$ob->IdLang}.gif\" height=\"12\" width=\"18\" /> ".__("{$ob->Title}")."</a></h4>";
-	echo "<div class=\"calendar\"><div class=\"month\">Dec</div><div class=\"day\">25</div><div class=\"year\">2010</div></div>";
-	echo "<span>".__("Posted by")." <img class=\"country\" src=\"".IMG."language/{$ob->CountryIP}.gif\" height=\"12\" width=\"18\" />
-	 <a href=\"\">{$ob->FirstName} {$ob->Name}</a>
-	 ".__("at")." ".substr($ob->Time,0,5)." CET</span>
-	<p>$ob->Message</p>";
-	echo "</tr>";
-
-}
-*/
-
-
-//echo "</table>";
 echo "</div>";
 echo "</div>";
 	
 	
-	
-	
-	
-
-
 
 echo "<div id=\"box-agenda\">";
 echo "<h3>".__("Agenda")."</h3>";

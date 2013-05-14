@@ -89,7 +89,7 @@ class administration extends controller
 		if ( from() !== "administration.controller.php" )
 		{
 
-			if ( ENVIRONEMENT )
+			if ( true ) //ENVIRONEMENT
 			{
 				$dir = TMP . "database/";
 

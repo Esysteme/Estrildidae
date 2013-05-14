@@ -1,4 +1,4 @@
-<?
+<?php
 
 class oiseaux_net extends controller {
 

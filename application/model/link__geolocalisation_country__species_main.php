@@ -27,5 +27,4 @@ class link__geolocalisation_country__species_main extends model
 	{
 		return $this->validate;
 	}
-
 }

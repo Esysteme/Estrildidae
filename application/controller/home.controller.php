@@ -9,6 +9,7 @@ class home extends controller
 		$this->title = __("Home");
 		$this->ariane = " > ".__("The encyclopedia that you can improve !");
 		
+		
 		$this->javascript = array("jquery-1.4.4.min.js","jquery.mousewheel.min.js","jquery.slidepane.min.js", "jawdropper_slider.js");
 		
 		/*

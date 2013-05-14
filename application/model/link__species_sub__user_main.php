@@ -46,12 +46,6 @@ var $validate = array(
 	'unknow' => array(
 		'numeric' => array('This must be an int.')
 	),
-	'date_created' => array(
-		'time' => array('This must be a time.')
-	),
-	'date_updated' => array(
-		'time' => array('This must be a time.')
-	),
 );
 
 function get_validate()

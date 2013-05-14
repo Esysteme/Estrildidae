@@ -3,11 +3,13 @@
 // id_species_picture_main:118538
 use glial\synapse\singleton;
 
-class photo extends controller {
+class photo extends controller
+{
 
 	public $module_group = "Media";
 
-	function test() {
+	function test()
+	{
 
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
@@ -15,7 +17,8 @@ class photo extends controller {
 		exit;
 	}
 
-	function index() {
+	function index()
+	{
 		$this->title = __("Members");
 		$this->ariane = "> " . $this->title;
 
@@ -33,10 +36,11 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		$this->set("data", $data);
 	}
 
-	function admin_import() {
+	function admin_import()
+	{
 
 
-		if (from() == "administration.controller.php")
+		if ( from() == "administration.controller.php" )
 		{
 			$module['picture'] = "administration/photo.gif";
 			$module['name'] = __("Pictures");
@@ -49,18 +53,18 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$this->title = __("Import a picture");
-		$this->ariane = '> <a href="'.LINK.'administration/">'.__("Administration").'</a> > ' . $this->title;
+		$this->ariane = '> <a href="' . LINK . 'administration/">' . __("Administration") . '</a> > ' . $this->title;
 
 
 		$url = "http://www.birdquest-tours.com/gallery.cfm?TourTitle=&GalleryRegionID=0&GalleryCategoryID=0&Country=Type+here+to+search..&Photographer=Type+here+to+search..&Species=Hunstein%27s+Mannikin";
 
 		$this->javascript = array("jquery.1.3.2.js", "jquery.autocomplete.min.js");
-		
-		
+
+
 		$table = "species_picture_in_wait";
 		$field = "id_species_main";
-		
-		$this->code_javascript[] = '$("#'.$table.'-'.$field.'-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
+
+		$this->code_javascript[] = '$("#' . $table . '-' . $field . '-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
 					
 					mustMatch: true,
 					autoFill: true,
@@ -68,15 +72,15 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					scrollHeight: 302,
 					delay:1
 					});
-					$("#'.$table.'-'.$field.'-auto").result(function(event, data, formatted) {
+					$("#' . $table . '-' . $field . '-auto").result(function(event, data, formatted) {
 						if (data)
-							$("#'.$table.'-'.$field.'").val(data[1]);
+							$("#' . $table . '-' . $field . '").val(data[1]);
 					});';
-		
+
 		$table = "species_picture_in_wait";
 		$field = "id_species_main";
-		
-		$this->code_javascript[] = '$("#'.$table.'-'.$field.'-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
+
+		$this->code_javascript[] = '$("#' . $table . '-' . $field . '-auto").autocomplete("' . LINK . 'species/get_species_id_by_scientific/", {
 					
 					mustMatch: true,
 					autoFill: true,
@@ -84,20 +88,19 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					scrollHeight: 302,
 					delay:1
 					});
-					$("#'.$table.'-'.$field.'-auto").result(function(event, data, formatted) {
+					$("#' . $table . '-' . $field . '-auto").result(function(event, data, formatted) {
 						if (data)
-							$("#'.$table.'-'.$field.'").val(data[1]);
+							$("#' . $table . '-' . $field . '").val(data[1]);
 					});';
-		
-		
 	}
 
-	function admin_crop() {
+	function admin_crop()
+	{
 
 		$this->layout_name = "admin";
 		$_SQL = singleton::getInstance(SQL_DRIVER);
 
-		if (from() == "administration.controller.php")
+		if ( from() == "administration.controller.php" )
 		{
 
 			$sql = "select count(1) as cpt from species_picture_in_wait where id_history_etat=1";
@@ -128,20 +131,20 @@ where is_valid ='1' order by points DESC LIMIT 50";
 //118570
 //id_photo // id_species_picture_main
 
-		if (!empty($_GET['id_species_picture_main']))
+		if ( !empty($_GET['id_species_picture_main']) )
 		{
-			if (!stristr($_SERVER['HTTP_REFERER'], 'admin_crop'))
+			if ( !stristr($_SERVER['HTTP_REFERER'], 'admin_crop') )
 			{
 				$_SESSION['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'];
 			}
 		}
 
-		if ($_SERVER['REQUEST_METHOD'] == "POST")
+		if ( $_SERVER['REQUEST_METHOD'] == "POST" )
 		{
 			debug($_POST);
 			//exit;
 
-			if (!empty($_POST['comment']))
+			if ( !empty($_POST['comment']) )
 			{
 
 				$comment = array();
@@ -156,7 +159,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$comment['comment__species_picture_main']['subscribe'] = $subscribe;
 
 
-				if ($_SQL->sql_save($comment))
+				if ( $_SQL->sql_save($comment) )
 				{
 					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
 					$msg = $GLOBALS['_LG']->getTranslation(__("Your comment has been added."));
@@ -182,7 +185,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 			//utilisé par l'ajout et le delete
 
-			if (!empty($_GET['id_species_picture_main']))
+			if ( !empty($_GET['id_species_picture_main']) )
 			{
 				$table = 'species_picture_main';
 			}
@@ -194,10 +197,10 @@ where is_valid ='1' order by points DESC LIMIT 50";
 			$species_picture_in_wait[$table]['id'] = $_POST['species_picture_main']['id'];
 			$species_picture_in_wait[$table]['id_species_picture_info'] = $_POST['species_picture_main']['id_species_picture_info2'];
 
-			if (!empty($_POST['idontknow']))
+			if ( !empty($_POST['idontknow']) )
 			{
 //we don't know so we require a new picture
-				if (!empty($_GET['id_species_picture_main']))
+				if ( !empty($_GET['id_species_picture_main']) )
 				{
 
 					header("location: " . $_SESSION['HTTP_REFERER']);
@@ -206,7 +209,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				else
 				{
 
-					if (!empty($_GET['id_species_main']))
+					if ( !empty($_GET['id_species_main']) )
 					{
 						header("location: " . LINK . "photo/admin_crop/id_species_main:" . $_GET['id_species_main'] . '/');
 					}
@@ -220,16 +223,16 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 
-			if (!empty($_POST['irefuse']))
+			if ( !empty($_POST['irefuse']) )
 			{
 
 				$_SQL->set_history_type(9);
-				if (!$_SQL->sql_save($species_picture_in_wait))
+				if ( !$_SQL->sql_save($species_picture_in_wait) )
 				{
 
 					$error = $_SQL->sql_error();
 
-					if (is_array($_SESSION['ERROR']))
+					if ( is_array($_SESSION['ERROR']) )
 					{
 
 						$_SESSION['ERROR'] = array_merge($_SESSION['ERROR'], $error);
@@ -240,7 +243,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					}
 
 
-					if (!empty($_SESSION['ERROR'][$table]['id_species_picture_info']))
+					if ( !empty($_SESSION['ERROR'][$table]['id_species_picture_info']) )
 					{
 						$_SESSION['ERROR'][$table]['id_species_picture_info2'] = $_SESSION['ERROR'][$table]['id_species_picture_info'];
 						unset($_SESSION['ERROR'][$table]['id_species_picture_info']);
@@ -253,7 +256,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					set_flash("error", $title, $msg);
 
 					$ret = array();
-					foreach ($_POST['species_picture_main'] as $var => $val)
+					foreach ( $_POST['species_picture_main'] as $var => $val )
 					{
 						$ret[] = "species_picture_main:" . $var . ":" . $val;
 					}
@@ -261,14 +264,14 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					$param = implode("/", $ret);
 
 //die();
-					if (!empty($_GET['id_species_picture_main']))
+					if ( !empty($_GET['id_species_picture_main']) )
 					{
 						header("location: " . LINK . "photo/admin_crop/" . $param . "/id_species_picture_main:" . $_POST['species_picture_main']['id']);
 					}
 					else
 					{
 
-						if (!empty($_GET['id_species_main']))
+						if ( !empty($_GET['id_species_main']) )
 						{
 							header("location: " . LINK . "photo/admin_crop/" . $param . "/id_species_main:" . $_GET['id_species_main']);
 						}
@@ -292,13 +295,13 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 
 
-				if (!empty($_GET['id_species_picture_main']))
+				if ( !empty($_GET['id_species_picture_main']) )
 				{
 					header("location: " . $_SESSION['HTTP_REFERER']);
 				}
 				else
 				{
-					if (!empty($_GET['id_species_main']))
+					if ( !empty($_GET['id_species_main']) )
 					{
 						header("location: " . LINK . "photo/admin_crop/id_species_main:" . $_GET['id_species_main']);
 					}
@@ -313,7 +316,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 			// clicked on accepted !!!!!!!!!!!!!!!!!!!!!!!!!
 
-			if (!empty($_GET['id_species_picture_main']))
+			if ( !empty($_GET['id_species_picture_main']) )
 			{
 
 				$species_picture_main['species_picture_main']['id'] = $_POST['species_picture_main']['id'];
@@ -338,19 +341,19 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 
-			if (empty($_GET['id_species_picture_main']))
+			if ( empty($_GET['id_species_picture_main']) )
 			{
 				$species_picture_main['species_picture_main']['date_validated'] = Date("Y-m-d H:i:s");
 				$glob = unserialize(base64_decode($_POST['img']));
 
-				switch ($glob['license']['text'])
+				switch ( $glob['license']['text'] )
 				{
 					case "Tous droits réservés":
 						$species_picture_main['species_picture_main']['id_licence'] = 1;
 						break;
 
 					case "Certains droits réservés (licence Creative Commons)":
-						switch ($glob['license']['url'])
+						switch ( $glob['license']['url'] )
 						{
 							case "http://creativecommons.org/licenses/by/2.0/":
 								$species_picture_main['species_picture_main']['id_licence'] = 5;
@@ -382,20 +385,20 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 
 
-				if (empty($glob['author']))
+				if ( empty($glob['author']) )
 				{
 					$glob['author'] = $species_picture_main['species_picture_main']['author'];
 				}
 
 
-				if (!empty($glob['author']))
+				if ( !empty($glob['author']) )
 				{
 					$author["species_author"]["surname"] = $glob['author'];
 
 					$sql = "SELECT id from species_author where surname ='" . $_SQL->sql_real_escape_string($glob['author']) . "'";
 					$res = $_SQL->sql_query($sql);
 
-					if ($_SQL->sql_num_rows($res) == 1)
+					if ( $_SQL->sql_num_rows($res) == 1 )
 					{
 						$ob = $_SQL->sql_fetch_object($res);
 
@@ -404,7 +407,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					else
 					{
 
-						if (!$_SQL->sql_save($author))
+						if ( !$_SQL->sql_save($author) )
 						{
 							die("problem insertion author");
 						}
@@ -420,7 +423,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 			}
 
-			if (empty($_GET['id_species_picture_main']))
+			if ( empty($_GET['id_species_picture_main']) )
 			{
 				$GLOBALS['_SQL']->set_history_type(1);
 			}
@@ -431,13 +434,13 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 
-			if ($_SQL->sql_save($species_picture_main))
+			if ( $_SQL->sql_save($species_picture_main) )
 			{
 
 
 //effacement de la ligne dans la table species_picture_in_wait
 //todo pb avec delete SELECT count(1) as cpt FROM history_action WHERE `id` = ''
-				if (empty($_GET['id_species_picture_main']))
+				if ( empty($_GET['id_species_picture_main']) )
 				{
 
 					$GLOBALS['_SQL']->set_history_type(11);
@@ -447,23 +450,23 @@ where is_valid ='1' order by points DESC LIMIT 50";
 // traitement des tag
 
 					$tag = array();
-					if (!empty($glob['tag']))
+					if ( !empty($glob['tag']) )
 					{
 						$link = array();
 
-						foreach ($glob['tag'] as $value)
+						foreach ( $glob['tag'] as $value )
 						{
 							unset($tag);
 							$tag['species_picture_tag']['tag'] = trim(mb_strtolower($value, 'UTF-8'));
 							$id_species_picture_tag = $_SQL->sql_save($tag);
 
-							if ($id_species_picture_tag)
+							if ( $id_species_picture_tag )
 							{
 								unset($link);
 								$link['link__species_picture__species_picture_tag']['id_species_picture_main'] = $species_picture_main['species_picture_main']['id'];
 								$link['link__species_picture__species_picture_tag']['id_species_picture_tag'] = $id_species_picture_tag;
 
-								if (!$_SQL->sql_save($link))
+								if ( !$_SQL->sql_save($link) )
 								{
 									debug($link);
 									debug($_SQL->sql_error());
@@ -504,7 +507,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 				$path_1024 = $url_dest . DS . $picture_name;
 
-				if ($this->data['species_picture_main'][0]["width"] > SIZE_BACKUP)
+				if ( $this->data['species_picture_main'][0]["width"] > SIZE_BACKUP )
 				{
 					include_once LIB . 'imageprocessor.lib.php';
 					$ImageProcessor = new ImageProcessor();
@@ -538,7 +541,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$ImageProcessor->Save($url_dest_pic_min . "/" . $picture_name, 100);
 
 
-				if (empty($_GET['id_species_picture_main']))
+				if ( empty($_GET['id_species_picture_main']) )
 				{
 
 					$title = $GLOBALS['_LG']->getTranslation(__("Picture croped"));
@@ -553,10 +556,10 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 
-				if (empty($_GET['id_species_picture_main']))
+				if ( empty($_GET['id_species_picture_main']) )
 				{
 
-					if (empty($_GET['id_species_main']))
+					if ( empty($_GET['id_species_main']) )
 					{
 						header("location: " . LINK . "photo/admin_crop/");
 					}
@@ -567,7 +570,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 				else
 				{
-					if (!empty($_SESSION['HTTP_REFERER']))
+					if ( !empty($_SESSION['HTTP_REFERER']) )
 					{
 						header("location: " . $_SESSION['HTTP_REFERER']);
 					}
@@ -585,7 +588,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$error = $_SQL->sql_error();
 				$_SESSION['ERROR'] = $error;
 
-				if (is_array($_SESSION['ERROR']))
+				if ( is_array($_SESSION['ERROR']) )
 				{
 
 					$_SESSION['ERROR'] = array_merge($_SESSION['ERROR'], $error);
@@ -595,11 +598,11 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					$_SESSION = $error;
 				}
 
-				if (count($_SESSION['ERROR']['species_picture_main']) != 0)
+				if ( count($_SESSION['ERROR']['species_picture_main']) != 0 )
 				{
 					$li = "invalid field :<br /><ul>";
 
-					foreach ($_SESSION['ERROR']['species_picture_main'] as $key => $value)
+					foreach ( $_SESSION['ERROR']['species_picture_main'] as $key => $value )
 					{
 						$li .= "<li>" . $key . " : " . __($value) . "</li>";
 					}
@@ -613,7 +616,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				set_flash("error", $title, $msg);
 
 				$ret = array();
-				foreach ($_POST['species_picture_main'] as $var => $val)
+				foreach ( $_POST['species_picture_main'] as $var => $val )
 				{
 					$ret[] = "species_picture_main:" . $var . ":" . $val;
 				}
@@ -621,10 +624,10 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$param = implode("/", $ret);
 
 
-				if (empty($_GET['id_species_picture_main']))
+				if ( empty($_GET['id_species_picture_main']) )
 				{
 
-					if (empty($_GET['id_species_main']))
+					if ( empty($_GET['id_species_main']) )
 					{
 						header("location: " . LINK . "photo/admin_crop/" . $param . "/id_photo:" . $_POST['species_picture_main']['id']);
 					}
@@ -662,7 +665,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 		 */
-		if (!empty($_GET['id_species_picture_main']))
+		if ( !empty($_GET['id_species_picture_main']) )
 		{
 
 			$sql = "SELECT a.id_species_main, a.*, c.`scientific_name`,b.id as id_photo, b.*, c.scientific_name,e.*,z.*
@@ -679,13 +682,13 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		{
 			$contrainte = "";
 
-			if (!empty($_GET['id_photo']))
+			if ( !empty($_GET['id_photo']) )
 			{
 				$contrainte .= " and b.id = '" . mysql_real_escape_string($_GET['id_photo']) . "' ";
 			}
 
 
-			if (!empty($_GET['id_species_main']))
+			if ( !empty($_GET['id_species_main']) )
 			{
 				$contrainte .= " AND b.id_species_main = '" . $_GET['id_species_main'] . "' ";
 			}
@@ -729,7 +732,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
 
-		if (mysql_num_rows($res) > 0)
+		if ( mysql_num_rows($res) > 0 )
 		{
 			$this->data['species'] = $_SQL->sql_to_array($res);
 
@@ -749,7 +752,7 @@ ORDER BY a.id asc";
 			$lg = explode(",", LANGUAGE_AVAILABLE);
 			$nbchoice = count($lg);
 
-			for ($i = 0; $i < $nbchoice; $i++)
+			for ( $i = 0; $i < $nbchoice; $i++ )
 			{
 				$this->data['geolocalisation_country'][$i]['libelle'] = $_LG->languagesUTF8[$lg[$i]];
 				$this->data['geolocalisation_country'][$i]['id'] = $lg[$i];
@@ -767,7 +770,7 @@ WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "
 		}
 		else
 		{
-			if (!empty($id_species_picture_main) || !empty($_GET['id_species_main']))
+			if ( !empty($id_species_picture_main) || !empty($_GET['id_species_main']) )
 			{
 				$title = $GLOBALS['_LG']->getTranslation(__("Warning"));
 				$msg = $GLOBALS['_LG']->getTranslation(__("The stock of photos is now empty!"));
@@ -781,12 +784,13 @@ WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "
 			}
 
 
-			if (!empty($_GET['id_species_main']))
+			if ( !empty($_GET['id_species_main']) )
 			{
 				$sql = "SELECT scientific_name from species_main where id ='" . $_SQL->sql_real_escape_string($_GET['id_species_main']) . "'";
 				$res = $_SQL->sql_query($sql);
 
-				while ($ob = $_SQL->sql_fetch_object($res)) {
+				while ( $ob = $_SQL->sql_fetch_object($res) )
+				{
 					$name = str_replace(' ', '_', $ob->scientific_name);
 
 					//$_SESSION['HTTP_REFERER']
@@ -805,7 +809,7 @@ WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "
 		}
 
 
-		if (!empty($this->data['species']['0']['crop']))
+		if ( !empty($this->data['species']['0']['crop']) )
 		{
 			$crop = explode(";", $this->data['species']['0']['crop']);
 		}
@@ -890,13 +894,14 @@ delay:0}
 		$res = $_SQL->sql_query($sql);
 
 		$i = 0;
-		while ($ob = mysql_fetch_object($res)) {
+		while ( $ob = mysql_fetch_object($res) )
+		{
 			$i++;
 
 			$this->data['pic_info'][$i]['id'] = $ob->id;
 			$this->data['pic_info'][$i]['libelle'] = __($ob->libelle);
 
-			if (empty($this->data['species']['0']['id_species_picture_info']))
+			if ( empty($this->data['species']['0']['id_species_picture_info']) )
 			{
 				$this->data['species']['0']['id_species_picture_info'] = 0;
 			}
@@ -908,13 +913,14 @@ delay:0}
 		$res = $_SQL->sql_query($sql);
 
 		$i = 0;
-		while ($ob = mysql_fetch_object($res)) {
+		while ( $ob = mysql_fetch_object($res) )
+		{
 			$i++;
 
 			$this->data['pic_info2'][$i]['id'] = $ob->id;
 			$this->data['pic_info2'][$i]['libelle'] = __($ob->libelle);
 
-			if (empty($this->data['species']['0']['id_species_picture_info2']))
+			if ( empty($this->data['species']['0']['id_species_picture_info2']) )
 			{
 				$this->data['species']['0']['id_species_picture_info2'] = 0;
 			}
@@ -922,7 +928,7 @@ delay:0}
 
 
 // should be removed
-		if (empty($this->data['species']['0']['data']))
+		if ( empty($this->data['species']['0']['data']) )
 		{
 
 			include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
@@ -933,7 +939,7 @@ delay:0}
 //use gliale\flickr;
 			$this->data['img'] = flickr::get_photo_info($this->data['species']['0']['url_context']);
 
-			if ($this->data['img'])
+			if ( $this->data['img'] )
 			{
 
 				unset($tmp);
@@ -942,7 +948,7 @@ delay:0}
 
 				$GLOBALS['_SQL']->set_history_user(9);
 				$GLOBALS['_SQL']->set_history_type(10);
-				if (!$_SQL->sql_save($tmp))
+				if ( !$_SQL->sql_save($tmp) )
 				{
 					die("Problem insertion data dans species_picture_in_wait");
 					set_flash("error", "Error", "Hum really strange !");
@@ -958,15 +964,15 @@ delay:0}
 
 		$file = TMP . "photos_in_wait/" . $this->data['species'][0]["name"];
 
-		if ($this->data['img'])
+		if ( $this->data['img'] )
 		{
-			if (file_exists($file))
+			if ( file_exists($file) )
 			{
 
 
 				$size = getimagesize($file);
 
-				switch ($size['mime'])
+				switch ( $size['mime'] )
 				{
 					case "image/gif":
 
@@ -998,9 +1004,9 @@ delay:0}
 			}
 		}
 
-		if (!file_exists($file))
+		if ( !file_exists($file) )
 		{
-			if (!file_exists($this->data['species']['0']['url_found']))
+			if ( !file_exists($this->data['species']['0']['url_found']) )
 			{
 
 
@@ -1019,7 +1025,7 @@ delay:0}
 			}
 		}
 
-		if ($this->data['species'][0]["width"] > SIZE_SITE_MAX)
+		if ( $this->data['species'][0]["width"] > SIZE_SITE_MAX )
 		{
 			include_once LIB . 'imageprocessor.lib.php';
 
@@ -1217,7 +1223,8 @@ $('#searchLoc').trigger('click');
 ";
 	}
 
-	function get_options($param) {
+	function get_options($param)
+	{
 //debug($param);
 
 		$table = $param[0];
@@ -1238,16 +1245,41 @@ $('#searchLoc').trigger('click');
 
 		$sql = "SELECT id, scientific_name as libelle FROM `" . mysql_real_escape_string($table) . "` WHERE `" . $id_table[$table] . "` = " . mysql_real_escape_string($id) . " order By scientific_name";
 		$res = $_SQL->sql_query($sql);
-		$this->data['elem'] = $_SQL->sql_to_array($res);
+
+		if ( $table == "species_sub" )
+		{
+			$select = array();
+			$i = 0;
+			while ( $ob = $_SQL->sql_fetch_object($res) )
+			{
+				$select[$i]['id'] = $ob->id;
+
+				$split_sub = explode(' ', $ob->libelle);
+				$select[$i]['libelle'] = $split_sub[2];
+
+				$i++;
+			}
+
+			$this->data['elem'] = $select;
+		}
+		else
+		{
+			$this->data['elem'] = $_SQL->sql_to_array($res);
+		}
+
+
+
 		$this->data['id'] = $id;
 		$this->set('data', $this->data);
 	}
 
-	function menu() {
+	function menu()
+	{
 		
 	}
 
-	function admin_movie() {
+	function admin_movie()
+	{
 
 		$module['picture'] = "administration/movie2.gif";
 		$module['name'] = __("Movies");
@@ -1256,7 +1288,8 @@ $('#searchLoc').trigger('click');
 		return $module;
 	}
 
-	function dl_picture() {
+	function dl_picture()
+	{
 		$this->layout_name = false;
 
 		$_SQL = singleton::getInstance(SQL_DRIVER);
@@ -1272,11 +1305,12 @@ inner join species_tree_id b on a.id_species_main = b.id_species_main where b.id
 		$i = 0;
 
 
-		while ($ob = mysql_fetch_object($res)) {
+		while ( $ob = mysql_fetch_object($res) )
+		{
 
 			$file = TMP . "photos_in_wait/" . $ob->name;
 
-			if (!file_exists($file))
+			if ( !file_exists($file) )
 			{
 				$cmd = "cd " . TMP . "photos_in_wait/; wget -nc" . $ob->url_found . "";
 				shell_exec($cmd);
@@ -1289,7 +1323,8 @@ inner join species_tree_id b on a.id_species_main = b.id_species_main where b.id
 		}
 	}
 
-	function moderate_photo() {
+	function moderate_photo()
+	{
 
 		$this->layout_name = "admin";
 
@@ -1311,7 +1346,8 @@ AND a.id_history_etat =1";
 		debug($data);
 	}
 
-	function one_shoot_update_photo_id() {
+	function one_shoot_update_photo_id()
+	{
 		$this->layout_name = false;
 		$sql = "select id,name from species_picture_in_wait order by id";
 
@@ -1320,7 +1356,8 @@ AND a.id_history_etat =1";
 
 
 		$i = 0;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 
 			$tab_id = explode("_", $ob->name);
 
@@ -1329,7 +1366,7 @@ AND a.id_history_etat =1";
 			$sql = "UPDATE species_picture_in_wait SET photo_id ='" . $_SQL->sql_real_escape_string($photo_id) . "' WHERE id ='" . $ob->id . "'";
 			$_SQL->sql_query($sql);
 
-			if ($i % 1000 == 0)
+			if ( $i % 1000 == 0 )
 			{
 				echo "line : " . $i . "\n";
 			}

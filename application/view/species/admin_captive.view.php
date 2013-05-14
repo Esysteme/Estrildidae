@@ -1,6 +1,25 @@
 <?php
 
+// think to update the one in javascript
+function generate_option($number)
+{
+	$output=array();
+	
+	for($i=0; $i<= $number; $i++ )
+	{
+		$var = array();
+		
+		$var['id'] = $i;
+		$var['libelle'] = $i;
+		
+		
+		$output[] = $var;
+	}
+	return $output;
+}
 
+
+debug($data);
 
 echo '<form action="" method="POST">';
 
@@ -34,22 +53,51 @@ echo '<table class="table" id="variante">
 
 </tr>';
 
-if ( !empty($_GET['filter']['nbrows']) )
-{
-	$nbrows = $_GET['filter']['nbrows'];
-}
-else
-{
-	$nbrows = 1;
-}
 
-for ( $i = 1; $i <= $nbrows; $i++ )
+
+for ( $i = 1; $i <= $data['nbrow']; $i++ )
 {
 	$disable = '';
-	if ( $nbrows == 1 )
+	if ( $data['nbrow'] == 1 )
 	{
 		$disable = 'disabled="disabled"';
+		$disable_delete = 'btGrey';
 	}
+	else
+	{
+		$disable_delete = 'btBlueTest';
+	}
+	
+	$id_corrected = $i -1;
+	if (empty($data['stock'][$id_corrected]))
+	{	
+		/*
+		$_GET["link__species_sub__user_main"][$i]["male"] = "0";
+		$_GET["link__species_sub__user_main"][$i]["female"] = "0";
+		$_GET["link__species_sub__user_main"][$i]["unknow"] = "0";
+		*/
+		
+		$data['stock'][$id_corrected]['list_subspecies'] = array();
+		$data['stock'][$id_corrected]['id_species_sub'] = "";
+		
+
+	}
+	else
+	{
+		
+		
+		$_GET["link__species_sub__user_main"][$i]["id_species_main"] = $data['stock'][$id_corrected]['id_species_main'];
+		$_GET["link__species_sub__user_main"][$i]["id_species_main-auto"] = $data['stock'][$id_corrected]['scientific_name'];
+		
+		$_GET["link__species_sub__user_main"][$i]["male"] = $data['stock'][$id_corrected]['male'];
+		$_GET["link__species_sub__user_main"][$i]["female"] = $data['stock'][$id_corrected]['female'];
+		$_GET["link__species_sub__user_main"][$i]["unknow"] = $data['stock'][$id_corrected]['unknow'];
+	}
+	
+	(empty($data['stock'][$id_corrected]['forsale_male']))? $data['stock'][$id_corrected]['forsale_male'] = 0: "";
+	(empty($data['stock'][$id_corrected]['forsale_female']))? $data['stock'][$id_corrected]['forsale_female'] = 0: "";
+	(empty($data['stock'][$id_corrected]['forsale_unknow']))? $data['stock'][$id_corrected]['forsale_unknow'] = 0: "";
+
 	
 	
 	echo '<tr id="tr-' . ($i) . '" class="blah">
@@ -58,14 +106,11 @@ for ( $i = 1; $i <= $nbrows; $i++ )
 	echo autocomplete("link__species_sub__user_main", "id_species_main", "textform species",$i);
 
 	echo '</td><td>';
-	echo select("link__species_sub__user_main", "id_species_sub", array(),"","textform subspecies",0,$i);
+	echo select("link__species_sub__user_main", "id_species_sub", $data['stock'][$id_corrected]['list_subspecies'],$data['stock'][$id_corrected]['id_species_sub'],"textform subspecies",0,$i);
 
 	
 	echo '</td><td>';
-	
-	empty($_GET["link__species_sub__user_main"][$i]["male"])? $_GET["link__species_sub__user_main"][$i]["male"] = "0":"";
-	empty($_GET["link__species_sub__user_main"][$i]["female"])? $_GET["link__species_sub__user_main"][$i]["female"] = "0":"";
-	empty($_GET["link__species_sub__user_main"][$i]["unknow"])? $_GET["link__species_sub__user_main"][$i]["unknow"] = "0":"";
+
 
 	echo input("link__species_sub__user_main", "male", "textform input-number male only_integer_positif", $i);
 	echo '</td><td>';
@@ -75,11 +120,11 @@ for ( $i = 1; $i <= $nbrows; $i++ )
 	
 	// a vendre
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__for_sale", "forsale_male", array("0"),"0","textform forsale_male int",0,$i);
+	echo select("link__species_sub__user_main__for_sale", "forsale_male", generate_option($_GET["link__species_sub__user_main"][$i]["male"]),"0","textform forsale_male int",0,$i);
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__for_sale", "forsale_female", array("0"),"0","textform forsale_female int",0,$i);
+	echo select("link__species_sub__user_main__for_sale", "forsale_female", generate_option($_GET["link__species_sub__user_main"][$i]["female"]),"0","textform forsale_female int",0,$i);
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__for_sale", "forsale_unknow", array("0"),"0","textform forsale_unknow int",0,$i);
+	echo select("link__species_sub__user_main__for_sale", "forsale_unknow",generate_option($_GET["link__species_sub__user_main"][$i]["unknow"]),"0","textform forsale_unknow int",0,$i);
 
 	echo '</td><td>';
 	echo input("link__species_sub__user_main__for_sale", "price", "textform price only_integer_positif", $i);
@@ -88,17 +133,17 @@ for ( $i = 1; $i <= $nbrows; $i++ )
 	//echo select("link__species_sub__user_main", "devise", array('€','$','£'),"0","textform devise int",0,$i);
 	//echange
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__exchange", "exchange_male", array("0"),"0","textform exchange_male int",0,$i);
+	echo select("link__species_sub__user_main__exchange", "exchange_male", generate_option($_GET["link__species_sub__user_main"][$i]["male"]),"0","textform exchange_male int",0,$i);
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__exchange", "exchange_female", array("0"),"0","textform exchange_female int",0,$i);
+	echo select("link__species_sub__user_main__exchange", "exchange_female", generate_option($_GET["link__species_sub__user_main"][$i]["female"]),"0","textform exchange_female int",0,$i);
 	echo '</td><td>';
-	echo select("link__species_sub__user_main__exchange", "exchange_unknow", array("0"),"0","textform exchange_unknow int",0,$i);
+	echo select("link__species_sub__user_main__exchange", "exchange_unknow", generate_option($_GET["link__species_sub__user_main"][$i]["unknow"]),"0","textform exchange_unknow int",0,$i);
 	
 	
 	
 	echo '</td>
 	<td>
-	<input id="delete-' . ($i) . '" class="delete-line button btGrey overlayW btMedium" type="button" value="Effacer" style="margin:0;" ' . $disable . ' />
+	<input id="delete-' . ($i) . '" class="delete-line button '.$disable_delete.' overlayW btMedium" type="button" value="Effacer" style="margin:0;" ' . $disable . ' />
 	</td>
 	</tr>';
 }

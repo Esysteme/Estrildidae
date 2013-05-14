@@ -34,24 +34,11 @@ class link__species_sub__user_main__for_sale extends model
 		'id_species_sub' => array(
 			'reference_to' => array('The constraint to species_sub.id isn\'t respected.', 'species_sub', 'id')
 		),
-		'male' => array(
-			'numeric' => array('This must be an int.')
-		),
-		'female' => array(
-			'numeric' => array('This must be an int.')
-		),
-		'unknow' => array(
-			'numeric' => array('This must be an int.')
-		),
+
 		'price' => array(
 			'numeric' => array('This must be an int.')
 		),
-		'date_created' => array(
-			'time' => array('This must be a time.')
-		),
-		'date_updated' => array(
-			'time' => array('This must be a time.')
-		),
+
 	);
 
 	function get_validate()
