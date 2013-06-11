@@ -42,27 +42,10 @@ class home extends controller
 
 	}
 
-	
-	
-	
+
 	function gabari()
 	{
 	
 	
-	
 	}
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-?>

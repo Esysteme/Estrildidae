@@ -31,16 +31,7 @@ class forum_post extends model
 		),
 		'hide_smilies' => array(
 			'numeric' => array('This must be an int.')
-		),
-		'posted' => array(
-			'time' => array('This must be a time.')
-		),
-		'edited' => array(
-			'time' => array('This must be a time.')
-		),
-		'edited_by' => array(
-			'numeric' => array('This must be an int.')
-		),
+		)
 	);
 
 	function get_validate()

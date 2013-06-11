@@ -36,14 +36,14 @@ define('DS', DIRECTORY_SEPARATOR);
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
 //The full path to the directory which holds "app", WITHOUT a trailing DS.
-define('ROOT', dirname(dirname(dirname(__FILE__))));
+define('ROOT', dirname(dirname(__FILE__)));
 
 //temp directory
-define("TMP", ROOT . DS . "tmp/");
-define("DATA", ROOT . DS . "data/");
+define("TMP", ROOT . DS . "tmp".DS);
+define("DATA", ROOT . DS . "data".DS);
 
 //The actual directory name for the "app".
-define('APP_DIR', dirname(dirname(__FILE__)));
+define('APP_DIR', dirname(dirname(__FILE__))."/application");
 
 //The actual directory name for the "config".
 define('CONFIG', ROOT . DS . "configuration" . DS);
@@ -74,12 +74,24 @@ define('WWW_ROOT', '/backup/species/');
 
 //define('WWW_ROOT', "http://www.estrildidae.net/");
 
+define('FARM1', "http://farm1.gdol.eu/");
+
+/*
+switch($_SERVER['SERVER_NAME'])
+{
+
+        case 'www.estrildidae.net': $taxo_tree = "/1/1/9/101/438"; break;
+        case 'www.gdol.eu': $taxo_tree = "/"; break;
+        default:  $taxo_tree = "/"; break;
+}
+define('TAXO_BRANCH', $taxo_tree);
+*/
+
 define('IMG', WWW_ROOT . "image" . DS);
 define('CSS', WWW_ROOT . "css" . DS);
 define('FILE', WWW_ROOT . "file" . DS);
 define('VIDEO', WWW_ROOT . "video" . DS);
 define('JS', WWW_ROOT . "js" . DS);
-
 
 
 
@@ -94,4 +106,5 @@ if (isset($_GET['url']) && $_GET['url'] === 'favicon.ico')
 		trigger_error("Gliale core could not be found. Check the value of CORE_PATH in application/webroot/index.php.  It should point to the directory containing your " . DS . "gliale core directory and your " . DS . "vendors root directory.", E_USER_ERROR);
 	}
 }
+
 
