@@ -496,6 +496,71 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 			}
 		}
 	}
+	
+	function save_database()
+	{
+		$this->layout_name = false;
+		$this->view = false;
+
+		$path = "/home/www/arkadin/data/database/arkadin/";
+
+
+		$sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='arkadin' and TABLE_TYPE = 'BASE TABLE'";
+		$res = $GLOBALS['_SQL']->sql_query($sql);
+		while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res) )
+		{
+			shell_exec("mkdir -p " . $path . "structure/table/" . $ob->TABLE_NAME);
+
+
+			// create structure table
+			$sql2 = "SHOW CREATE TABLE `" . $ob->TABLE_NAME . "`;";
+			$res2 = $GLOBALS['_SQL']->sql_query($sql2);
+
+			while ( $ob2 = $GLOBALS['_SQL']->sql_fetch_array($res2, MYSQL_NUM) )
+			{
+				echo 'create table : ' . $ob->TABLE_NAME . "\n";
+
+				file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/table.sql", $ob2[1].";");
+			}
+
+			// create index table
+
+			$sql3 = "SHOW INDEXES FROM `" . $ob->TABLE_NAME . "`";
+			$res3 = $GLOBALS['_SQL']->sql_query($sql3);
+
+
+			while ( $ob3 = $GLOBALS['_SQL']->sql_fetch_object($res3) )
+			{
+				echo 'create indexes : ' . $ob->TABLE_NAME . "\n";
+
+
+				if ( $ob3->Key_name == "PRIMARY" )
+				{
+					$index[] = "ALTER TABLE `" . $ob->TABLE_NAME . "` ADD PRIMARY KEY (  `" . $ob3->Column_name . "` );";
+				}
+				else
+				{
+					if ( $ob3->Non_unique == "1" )
+					{
+						$index[] = "CREATE UNIQUE INDEX `".$ob3->Key_name."`  ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
+					}
+					else
+					{
+						$index[] = "CREATE INDEX `".$ob3->Key_name."` ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
+					}
+				}
+			}
+
+			file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/index.sql", implode("\n",$index));
+		}
+
+		$sql33 = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='arkadin' and TABLE_TYPE = 'VIEW'";
+		$res33 = $GLOBALS['_SQL']->sql_query($sql33);
+		while ( $ob33 = $GLOBALS['_SQL']->sql_fetch_object($res33) )
+		{
+			shell_exec("mkdir -p " . $path . "structure/view/" . $ob33->TABLE_NAME);
+		}
+	}
 
 	function insert_backup_table()
 	{
