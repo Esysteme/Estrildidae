@@ -81,6 +81,14 @@ class administration extends controller
 	function admin_table()
 	{
 
+		if (ISCLI)
+		{
+
+			$this->view = false;
+			$this->layout_name = false;
+		}
+
+
 		$module = array();
 		$module['picture'] = "administration/tables.png";
 		$module['name'] = __("Tables");
@@ -140,6 +148,16 @@ class administration extends controller
 		$module['picture'] = "administration/gear_32.png";
 		$module['name'] = __("Access Control List");
 		$module['description'] = __("Update the right of users and groups");
+
+
+                if (ISCLI)
+                {
+
+                        $this->view = false;
+                        $this->layout_name = false;
+                }
+
+
 
 		if ( from() !== "administration.controller.php" )
 			$this->init();
