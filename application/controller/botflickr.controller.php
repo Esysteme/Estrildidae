@@ -1,5 +1,7 @@
 <?php
 
+use \glial\synapse\singleton;
+
 class botflickr extends controller {
 
 	public $module_group = "BOT";
@@ -18,7 +20,7 @@ class botflickr extends controller {
 			$module['description'] = __("Manage picture importation from Flickr's bot");
 			return $module;
 		}
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 		$this->layout_name = 'admin';
 
 
@@ -85,7 +87,7 @@ class botflickr extends controller {
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		$_SQL = singleton::getInstance(SQL_DRIVER);
 
 		$sql = "SELECT id_nominal , nominal,b.*  from species_tree_nominal a
 			LEFT JOIN species_translation b ON a.id_nominal = b.id_row AND b.id_table = 7
@@ -94,7 +96,9 @@ where a.id_family = 438 order by rand()";
 		$res = $_SQL->sql_query($sql);
 
 		while ($ob = $_SQL->sql_fetch_object($res)) {
-			$tab_name = array($ob->nominal, $ob->fr, $ob->en, $ob->de, $ob->es, $ob->nl, $ob->it, $ob->ja, $ob->cs, $ob->pl, $ob->fi, $ob->da, $ob->no, $ob->sk);
+			$tab_name = array($ob->nominal);
+			
+			//, $ob->fr, $ob->en, $ob->de, $ob->es, $ob->nl, $ob->it, $ob->ja, $ob->cs, $ob->pl, $ob->fi, $ob->da, $ob->no, $ob->sk);
 
 			foreach ($tab_name as $name)
 			{
@@ -253,7 +257,7 @@ where a.id_family = 438 order by rand()";
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$data = flickr::get_links_to_photos("lonchura atricapilla");
+		$data = flickr::get_links_to_photos("lonchura montana");
 
 		print_r($data);
 
@@ -262,6 +266,24 @@ where a.id_family = 438 order by rand()";
 
 		exit;
 	}
+	
+	function test2() {
+
+		$this->layout_name = false;
+		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+		include_once (LIB . "wlHtmlDom.php");
+		
+		
+		$url = "http://www.flickr.com/photos/75299599@N00/6657652857/";
+
+		$data = flickr::get_photo_info($url);
+
+		print_r($data);
+
+
+		exit;
+	}
+	
 
 	function import_geolocalisation() {
 		$this->layout_name = false;

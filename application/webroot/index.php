@@ -27,6 +27,10 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 
 
+//to know if we are in cli
+define('ISCLI', PHP_SAPI === 'cli');
+
+
 //Use the DS to separate the directories in other defines
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -35,9 +39,22 @@ define('DS', DIRECTORY_SEPARATOR);
  * a directory layout other than the way it is distributed.
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
-//The full path to the directory which holds "app", WITHOUT a trailing DS.
 
-define('ROOT',dirname(dirname(dirname(htmlspecialchars($_SERVER["SCRIPT_FILENAME"], ENT_QUOTES, "utf-8")))));
+if (ISCLI)
+{
+	if (substr($_SERVER["SCRIPT_FILENAME"],0,1) === "/")
+	{
+		define('ROOT',dirname(dirname(dirname(htmlspecialchars($_SERVER["SCRIPT_FILENAME"], ENT_QUOTES, "utf-8")))));
+	}
+	else
+	{
+		define('ROOT',dirname(dirname(dirname($_SERVER["PWD"]."/".$_SERVER["SCRIPT_FILENAME"]))));
+	}
+}
+else
+{
+	define('ROOT',dirname(dirname(dirname(htmlspecialchars($_SERVER["SCRIPT_FILENAME"], ENT_QUOTES, "utf-8")))));
+}
 
 
 //echo "ROOT: ".ROOT."\n"; 
