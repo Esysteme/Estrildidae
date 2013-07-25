@@ -81,7 +81,7 @@ class administration extends controller
 	function admin_table()
 	{
 
-		if (ISCLI)
+		if (IS_CLI)
 		{
 
 			$this->view = false;
