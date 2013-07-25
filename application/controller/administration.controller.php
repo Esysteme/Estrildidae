@@ -173,7 +173,7 @@ class administration extends controller
 		
 		if ( true ) //ENVIRONEMENT
 		{
-			echo "--".APP_DIR;
+			
 			
 			$dir = APP_DIR . DS . "controller" . DS;
 			$sql = "TRUNCATE TABLE acl_controller";
