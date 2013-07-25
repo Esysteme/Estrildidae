@@ -150,12 +150,12 @@ class administration extends controller
 		$module['description'] = __("Update the right of users and groups");
 
 
-                if (ISCLI)
-                {
+		if (ISCLI)
+		{
 
-                        $this->view = false;
-                        $this->layout_name = false;
-                }
+				$this->view = false;
+				$this->layout_name = false;
+		}
 
 
 
@@ -173,6 +173,8 @@ class administration extends controller
 		
 		if ( true ) //ENVIRONEMENT
 		{
+			echo "--".APP_DIR;
+			
 			$dir = APP_DIR . DS . "controller" . DS;
 			$sql = "TRUNCATE TABLE acl_controller";
 			$GLOBALS['_SQL']->sql_query($sql);

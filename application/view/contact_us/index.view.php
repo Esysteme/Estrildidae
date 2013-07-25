@@ -45,7 +45,7 @@ echo "</tr>";
 */
 echo "<tr>";
 echo "<td class=\"first\">".__("Message")." :</td>";
-echo "<td><textarea class=\"textform\"></textarea></td>";
+echo "<td><textarea name=\"contact_us[message]\" class=\"textform\"></textarea></td>";
 echo "</tr>";
 
 
