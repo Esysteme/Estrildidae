@@ -150,7 +150,7 @@ class administration extends controller
 		$module['description'] = __("Update the right of users and groups");
 
 
-		if (ISCLI)
+		if (IS_CLI)
 		{
 
 				$this->view = false;
