@@ -2,18 +2,21 @@
 
 use \glial\synapse\singleton;
 
-class botflickr extends controller {
+class botflickr extends controller
+{
 
 	public $module_group = "BOT";
 
-	function index() {
+	function index()
+	{
 		
 	}
 
-	function admin_flickr() {
+	function admin_flickr()
+	{
 
 
-		if (from() == "administration.controller.php")
+		if ( from() == "administration.controller.php" )
 		{
 			$module['picture'] = "administration/flickr.png";
 			$module['name'] = "Flickr";
@@ -35,18 +38,21 @@ class botflickr extends controller {
 		$this->set('data', $data);
 	}
 
-	function family() {
+	function family()
+	{
 
 		$res = $GLOBALS['_SQL']->sql_query($sql);
 
 
-		while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+		while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res) )
+		{
 			
 		}
 	}
 
-	private function get_licence($licence) {
-		switch ($licence['text'])
+	private function get_licence($licence)
+	{
+		switch ( $licence['text'] )
 		{
 			case "Tous droits réservés":
 			case "All Rights Reserved":
@@ -54,7 +60,7 @@ class botflickr extends controller {
 				break;
 
 			case "Certains droits réservés (licence Creative Commons)":
-				switch ($licence['url'])
+				switch ( $licence['url'] )
 				{
 					case "http://creativecommons.org/licenses/by/2.0/": $id_licence = 5;
 						break;
@@ -83,7 +89,8 @@ class botflickr extends controller {
 		return $id_licence;
 	}
 
-	function looking_for_family() {
+	function looking_for_family()
+	{
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
 
@@ -95,29 +102,30 @@ where a.id_family = 438 order by rand()";
 
 		$res = $_SQL->sql_query($sql);
 
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 			$tab_name = array($ob->nominal);
-			
+
 			//, $ob->fr, $ob->en, $ob->de, $ob->es, $ob->nl, $ob->it, $ob->ja, $ob->cs, $ob->pl, $ob->fi, $ob->da, $ob->no, $ob->sk);
 
-			foreach ($tab_name as $name)
+			foreach ( $tab_name as $name )
 			{
-				if (!empty($name))
+				if ( !empty($name) )
 				{
 					$data['link_photo'] = flickr::get_links_to_photos($name);
 
-					foreach ($data['link_photo'] as $url_to_get)
+					foreach ( $data['link_photo'] as $url_to_get )
 					{
 						$data['img'] = flickr::get_photo_info($url_to_get);
 
-						if ($data['img'])
+						if ( $data['img'] )
 						{
 							$tmp = array();
 							$sql = "SELECT count(1) as cpt, id FROM species_picture_in_wait where photo_id = '" . $data['img']['id'] . "'";
 							$res2 = $_SQL->sql_query($sql);
 							$ob2 = $_SQL->sql_fetch_object($res2);
 
-							if ($ob2->cpt != 0)
+							if ( $ob2->cpt != 0 )
 							{
 								echo "New photo found on : " . $url_to_get . "\n";
 								$tmp['species_picture_in_wait']['id'] = $ob2->id;
@@ -153,12 +161,12 @@ where a.id_family = 438 order by rand()";
 							$tmp['species_picture_in_wait']['longitude'] = $data['img']['longitude'];
 
 
-							if (trim($data['img']['image']['mime']) === "image/jpeg")
+							if ( trim($data['img']['image']['mime']) === "image/jpeg" )
 							{
 								$GLOBALS['_SQL']->set_history_user(9);
 
 
-								if (!$_SQL->sql_save($tmp))
+								if ( !$_SQL->sql_save($tmp) )
 								{
 									echo "#####################";
 									debug($GLOBALS['_SQL']->sql_error());
@@ -184,7 +192,8 @@ where a.id_family = 438 order by rand()";
 // select * from 
 	}
 
-	function update_search() {
+	function update_search()
+	{
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
 
@@ -198,11 +207,11 @@ where a.id_family = 438 order by rand()";
 
 		$res = $_SQL->sql_query($sql);
 
-		while ($ob = $_SQL->sql_fetch_object($res))
+		while ( $ob = $_SQL->sql_fetch_object($res) )
 		{
-			
-			echo $ob->nominal."\n";
-			
+
+			echo $ob->nominal . "\n";
+
 			$data['link_photo'] = flickr::get_links_to_photos($ob->name);
 
 			$search = array();
@@ -215,18 +224,18 @@ where a.id_family = 438 order by rand()";
 
 			$id_search = $_SQL->sql_save($search);
 
-			if ($id_search)
+			if ( $id_search )
 			{
-				foreach ($data['link_photo'] as $url_to_get)
+				foreach ( $data['link_photo'] as $url_to_get )
 				{
-					
-					if (empty($url_to_get['img']['url']))
+
+					if ( empty($url_to_get['img']['url']) )
 					{
 						print_r($url_to_get);
-						
+
 						die("pb pic");
 					}
-					
+
 					$pic_id = array();
 					$pic_id['species_picture_id']['id_species_picture_search'] = $id_search;
 					$pic_id['species_picture_id']['photo_id'] = flickr::get_photo_id($url_to_get['url']);
@@ -236,7 +245,7 @@ where a.id_family = 438 order by rand()";
 					$pic_id['species_picture_id']['height'] = $url_to_get['img']['height'];
 					$pic_id['species_picture_id']['author'] = $url_to_get['author'];
 
-					if (!$_SQL->sql_save($pic_id))
+					if ( !$_SQL->sql_save($pic_id) )
 					{
 						debug($pic_id);
 						debug($_SQL->sql_error());
@@ -248,14 +257,13 @@ where a.id_family = 438 order by rand()";
 				debug($search);
 				debug($_SQL->sql_error());
 			}
-
-			
 		}
 
 		exit;
 	}
 
-	function test() {
+	function test()
+	{
 
 		$this->layout_name = false;
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
@@ -270,14 +278,15 @@ where a.id_family = 438 order by rand()";
 
 		exit;
 	}
-	
-	function test2() {
+
+	function test2()
+	{
 
 		$this->layout_name = false;
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
-		
-		
+
+
 		$url = "http://www.flickr.com/photos/75299599@N00/6657652857/";
 		$url = "http://www.flickr.com/photos/81609886@N05/9304372638/in/photostream/";
 		$url2 = "http://www.flickr.com/photos/gregbm/map/?photo=6657652857";
@@ -290,9 +299,9 @@ where a.id_family = 438 order by rand()";
 
 		exit;
 	}
-	
 
-	function import_geolocalisation() {
+	function import_geolocalisation()
+	{
 		$this->layout_name = false;
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
@@ -303,12 +312,13 @@ where a.id_family = 438 order by rand()";
 		$res = $_SQL->sql_query($sql);
 
 		$i = 0;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ( $ob = $_SQL->sql_fetch_object($res) )
+		{
 
 			$data = unserialize(base64_decode($ob->data));
 
 
-			if (!empty($data['gps']['latitude']) && $data['gps']['latitude'] != 0)
+			if ( !empty($data['gps']['latitude']) && $data['gps']['latitude'] != 0 )
 			{
 				$i++;
 				echo $i . " [" . date("Y-m-d H:i:s") . "] photo : " . $data['url'] . "\n";
