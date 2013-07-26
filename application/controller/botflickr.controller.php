@@ -190,62 +190,66 @@ where a.id_family = 438 order by rand()";
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
-		$sql = "SELECT id_nominal , nominal,b.*  from species_tree_nominal a
-			LEFT JOIN species_translation b ON a.id_nominal = b.id_row AND b.id_table = 7
-where a.id_family = 438 order by rand()";
+		$sql = "SELECT id_nominal , a.nominal,b.id_species_sub,   b.language, b.text as name
+		from species_tree_nominal a
+		INNER JOIN scientific_name_translation b ON a.id_nominal= b.id_species_main
+		INNER JOIN language c ON b.language = c.iso3
+		where a.id_family = 438 AND b.id_species_sub = 0 order by rand()";
 
 		$res = $_SQL->sql_query($sql);
 
-		while ($ob = $_SQL->sql_fetch_object($res)) {
-			$tab_name = array($ob->nominal, $ob->fr, $ob->en, $ob->de, $ob->es, $ob->nl, $ob->it, $ob->ja, $ob->cs, $ob->pl, $ob->fi, $ob->da, $ob->no, $ob->sk);
-			$tab_lg = array("la", "fr", "en", "de", "es", "nl", "it", "ja", "cs", "pl", "fi", "da", "no", "sk");
+		while ($ob = $_SQL->sql_fetch_object($res))
+		{
+			
+			echo $ob->nominal."\n";
+			
+			$data['link_photo'] = flickr::get_links_to_photos($ob->name);
 
-			$i = 0;
-			foreach ($tab_name as $name)
+			$search = array();
+			$search['species_picture_search']['id_species_main'] = $ob->id_nominal;
+			$search['species_picture_search']['tag_search'] = $ob->name;
+			$search['species_picture_search']['language'] = $ob->language;
+			$search['species_picture_search']['total_found'] = (int) count($data['link_photo']);
+			$search['species_picture_search']['id_user_main'] = 9;
+			$search['species_picture_search']['date'] = date("c");
+
+			$id_search = $_SQL->sql_save($search);
+
+			if ($id_search)
 			{
-				if (!empty($name))
+				foreach ($data['link_photo'] as $url_to_get)
 				{
-					$data['link_photo'] = flickr::get_links_to_photos($name);
-
-					$search = array();
-					$search['species_picture_search']['id_species_main'] = $ob->id_nominal;
-					$search['species_picture_search']['tag_search'] = $name;
-					$search['species_picture_search']['language'] = $tab_lg[$i];
-					$search['species_picture_search']['total_found'] = (int) count($data['link_photo']);
-					$search['species_picture_search']['id_user_main'] = 9;
-					$search['species_picture_search']['date'] = date("c");
-
-					$id_search = $_SQL->sql_save($search);
-
-					if ($id_search)
+					
+					if (empty($url_to_get['img']['url']))
 					{
-						foreach ($data['link_photo'] as $url_to_get)
-						{
-							$pic_id = array();
-							$pic_id['species_picture_id']['id_species_picture_search'] = $id_search;
-							$pic_id['species_picture_id']['photo_id'] = flickr::get_photo_id($url_to_get['url']);
-							$pic_id['species_picture_id']['link'] = $url_to_get['url'];
-							$pic_id['species_picture_id']['miniature'] = $url_to_get['img']['url'];
-							$pic_id['species_picture_id']['width'] = $url_to_get['img']['width'];
-							$pic_id['species_picture_id']['height'] = $url_to_get['img']['height'];
-							$pic_id['species_picture_id']['author'] = $url_to_get['author'];
-
-							if (!$_SQL->sql_save($pic_id))
-							{
-								debug($pic_id);
-								debug($_SQL->sql_error());
-							}
-						}
+						print_r($url_to_get);
+						
+						die("pb pic");
 					}
-					else
+					
+					$pic_id = array();
+					$pic_id['species_picture_id']['id_species_picture_search'] = $id_search;
+					$pic_id['species_picture_id']['photo_id'] = flickr::get_photo_id($url_to_get['url']);
+					$pic_id['species_picture_id']['link'] = $url_to_get['url'];
+					$pic_id['species_picture_id']['miniature'] = $url_to_get['img']['url'];
+					$pic_id['species_picture_id']['width'] = $url_to_get['img']['width'];
+					$pic_id['species_picture_id']['height'] = $url_to_get['img']['height'];
+					$pic_id['species_picture_id']['author'] = $url_to_get['author'];
+
+					if (!$_SQL->sql_save($pic_id))
 					{
-						debug($search);
+						debug($pic_id);
 						debug($_SQL->sql_error());
 					}
 				}
-
-				$i++;
 			}
+			else
+			{
+				debug($search);
+				debug($_SQL->sql_error());
+			}
+
+			
 		}
 
 		exit;
@@ -275,8 +279,11 @@ where a.id_family = 438 order by rand()";
 		
 		
 		$url = "http://www.flickr.com/photos/75299599@N00/6657652857/";
+		$url = "http://www.flickr.com/photos/81609886@N05/9304372638/in/photostream/";
+		$url2 = "http://www.flickr.com/photos/gregbm/map/?photo=6657652857";
 
 		$data = flickr::get_photo_info($url);
+		//$data = flickr::get_gps($url2);
 
 		print_r($data);
 

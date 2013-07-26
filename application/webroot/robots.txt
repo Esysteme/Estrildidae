@@ -123,6 +123,7 @@ User-agent: HTTrack
 User-agent: HTTrack 3.0
 User-agent: TurnitinBot
 User-agent: QuepasaCreep 
-Disallow: /
+Crawl-delay: 5
+
 
 #Sitemap: http://www.easyexpat.com/sitemap.xml
