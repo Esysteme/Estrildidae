@@ -1,6 +1,9 @@
 <?php
 
-use \glial\synapse\singleton;
+use \glial\parser\flickr\Flickr;
+use \glial\synapse\Singleton;
+use \glial\shell\Color;
+
 
 class botflickr extends controller
 {
@@ -91,7 +94,7 @@ class botflickr extends controller
 
 	function looking_for_family()
 	{
-		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+		
 		include_once (LIB . "wlHtmlDom.php");
 
 		$_SQL = singleton::getInstance(SQL_DRIVER);
@@ -194,8 +197,10 @@ where a.id_family = 438 order by rand()";
 
 	function update_search()
 	{
-		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+		;
 		include_once (LIB . "wlHtmlDom.php");
+
+		
 
 		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
@@ -203,16 +208,19 @@ where a.id_family = 438 order by rand()";
 		from species_tree_nominal a
 		INNER JOIN scientific_name_translation b ON a.id_nominal= b.id_species_main
 		INNER JOIN language c ON b.language = c.iso3
-		where a.id_family = 438 AND b.id_species_sub = 0 order by rand()";
+		LEFT JOIN species_picture_search d ON d.tag_search = b.text AND c.iso3 = d.language
+		where a.id_family = 438 AND b.id_species_sub = 0 AND d.total_found is null
+		order by rand()";
 
 		$res = $_SQL->sql_query($sql);
 
 		while ( $ob = $_SQL->sql_fetch_object($res) )
 		{
 
-			echo $ob->nominal . "\n";
+			echo Color::getColoredString($ob->nominal, "black", "green") . "\n";
 
-			$data['link_photo'] = flickr::get_links_to_photos($ob->name);
+
+			$data['link_photo'] = Flickr::get_links_to_photos($ob->name);
 
 			$search = array();
 			$search['species_picture_search']['id_species_main'] = $ob->id_nominal;
@@ -220,42 +228,84 @@ where a.id_family = 438 order by rand()";
 			$search['species_picture_search']['language'] = $ob->language;
 			$search['species_picture_search']['total_found'] = (int) count($data['link_photo']);
 			$search['species_picture_search']['id_user_main'] = 9;
-			$search['species_picture_search']['date'] = date("c");
+			$search['species_picture_search']['date'] = date('Y-m-d H:i:s');
 
 			$id_search = $_SQL->sql_save($search);
 
 			if ( $id_search )
 			{
+				echo '[';
+				$i=1;
 				foreach ( $data['link_photo'] as $url_to_get )
 				{
+					//debug( $url_to_get);
+					echo $i.", ";
+					$i++;
+					
+					$author = array();
+					$author['species_author']['surname'] = $url_to_get['author'];
+					$author['species_author']['date'] = date('Y-m-d H:i:s');
 
+					$id_author = $_SQL->sql_save($author);
+
+					if (! $id_author )
+					{
+						//debug($author);
+						debug($_SQL->sql_error());
+						echo Color::getColoredString("Impossible to insert this author", "white", "red") . "\n";
+					}
+					
+					//delete from species_author where id > 1600
+					
+					
 					if ( empty($url_to_get['img']['url']) )
 					{
 						print_r($url_to_get);
-
 						die("pb pic");
 					}
 
 					$pic_id = array();
-					$pic_id['species_picture_id']['id_species_picture_search'] = $id_search;
+	
 					$pic_id['species_picture_id']['photo_id'] = flickr::get_photo_id($url_to_get['url']);
+					$pic_id['species_picture_id']['id_species_author'] = $id_author;
 					$pic_id['species_picture_id']['link'] = $url_to_get['url'];
 					$pic_id['species_picture_id']['miniature'] = $url_to_get['img']['url'];
-					$pic_id['species_picture_id']['width'] = $url_to_get['img']['width'];
-					$pic_id['species_picture_id']['height'] = $url_to_get['img']['height'];
-					$pic_id['species_picture_id']['author'] = $url_to_get['author'];
+					$pic_id['species_picture_id']['date'] = date('Y-m-d H:i:s');
 
-					if ( !$_SQL->sql_save($pic_id) )
+					//debug($pic_id);
+					
+					$id_picture = $_SQL->sql_save($pic_id);
+					
+					if ( ! $id_picture)
 					{
-						debug($pic_id);
+						//debug($pic_id);
 						debug($_SQL->sql_error());
+						
+						echo Color::getColoredString("Impossible to insert picture", "white", "red") . "\n";
+					}
+					else
+					{
+						$pic_id = array();
+						$pic_id['link__species_picture_id__species_picture_search']['id_species_picture_id'] = $id_picture;
+						$pic_id['link__species_picture_id__species_picture_search']['id_species_picture_search'] = $id_search;
+						$pic_id['link__species_picture_id__species_picture_search']['date'] = date('Y-m-d H:i:s');
+
+						if ( !$_SQL->sql_save($pic_id) )
+						{
+							//debug($pic_id);
+							debug($_SQL->sql_error());
+							echo Color::getColoredString("ERROR INSERTION link__species_picture_id__species_picture_search", "white", "red") . "\n";
+							
+						}
 					}
 				}
+				echo "]\n";
 			}
 			else
 			{
-				debug($search);
+				
 				debug($_SQL->sql_error());
+				echo Color::getColoredString("ERROR INSERTION species_picture_search", "white", "red") . "\n";
 			}
 		}
 
@@ -266,10 +316,10 @@ where a.id_family = 438 order by rand()";
 	{
 
 		$this->layout_name = false;
-		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+
 		include_once (LIB . "wlHtmlDom.php");
 
-		$data = flickr::get_links_to_photos("lonchura montana");
+		$data = Flickr::getLinksToPhotos("lonchura montana");
 
 		print_r($data);
 
@@ -291,7 +341,7 @@ where a.id_family = 438 order by rand()";
 		$url = "http://www.flickr.com/photos/81609886@N05/9304372638/in/photostream/";
 		$url2 = "http://www.flickr.com/photos/gregbm/map/?photo=6657652857";
 
-		$data = flickr::get_photo_info($url);
+		$data = flickr::getPhotoInfo($url);
 		//$data = flickr::get_gps($url2);
 
 		print_r($data);
@@ -346,6 +396,13 @@ where a.id_family = 438 order by rand()";
 				 */
 			}
 		}
+	}
+	
+	
+	function displayPicture($id_species)
+	{
+		$sql = "SELECT * FROM ";
+		
 	}
 
 }

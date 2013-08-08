@@ -123,6 +123,9 @@ class administration extends controller
 				$res = $GLOBALS['_SQL']->sql_query($sql);
 				while ( $table = $GLOBALS['_SQL']->sql_fetch_array($res) )
 				{
+					echo $table[0]."\n";
+					
+					
 					$fp = fopen(TMP . "/database/" . $table[0] . ".table.txt", "w");
 					$sql = "DESCRIBE `" . $table[0] . "`";
 					$res2 = $GLOBALS['_SQL']->sql_query($sql);
