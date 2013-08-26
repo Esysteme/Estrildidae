@@ -1,7 +1,9 @@
 <?php
 
-//include_once(LIBRARY . "glial/species/species.php");
+
 use \glial\species\Species;
+
+//include_once(LIBRARY . "glial/species/species.php");
 
 $scientific_name = "";
 
@@ -33,36 +35,3 @@ foreach ($data['photo'] as $var)
 }
 
 echo "</div>";
-
-
-$gg = Species::get($data['photo'][0]['id_nominal']);
-
-
-$author = -1;
-$tag_search = -1;
-foreach ($gg as $tab)
-{
-	if ($author != $tab['id_species_author'])
-	{
-		echo '<h3>'.$tab['id_species_author'].'</h3>';
-		$author = $tab['id_species_author'];
-	}
-	
-	if ($tag_search != $tab['tag_search'])
-	{
-		echo '<h3 style="color:red">'.$tab['tag_search'].'</h3>';
-		$tag_search = $tab['tag_search']; 
-	}
-	
-	if ($tab['gg'] > 1 )
-	{
-		
-		$border = "border-left:#00f 3px solid";
-	}
-	else
-	{
-		$border = "background:#fff; padding:2px";
-		
-	}
-	echo $tab['gg']. ' <img src="'.$tab['miniature'].'" style="'.$border.'" height="" width="" /> ';
-}

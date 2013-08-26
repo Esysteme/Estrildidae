@@ -2,7 +2,7 @@
 
 use glial\synapse\singleton;
 
-class comment extends controller {
+class comment extends Controller {
 
 	public $module_group = "Articles";
 

@@ -1,8 +1,13 @@
 <?php
 
-use \glial\synapse\singleton;
+//namespace Application;
 
-class administration extends controller
+use \glial\synapse\singleton;
+use \glial\acl\Acl;
+use \glial\synapse\Controller;
+
+
+class administration extends Controller
 {
 
 	public $module_group = "Administration";
@@ -15,11 +20,7 @@ class administration extends controller
 		$this->ariane = "> " . $this->title;
 		$dir = APP_DIR . DS . "controller/";
 		// Add your class dir to include path
-		set_include_path($dir);
-		// You can use this trick to make autoloader look for commonly used "My.class.php" type filenames
-		spl_autoload_extensions('.controller.php');
-		// Use default autoload implementation 		 		
-		spl_autoload_register();
+
 
 		if ( is_dir($dir) )
 		{
@@ -28,8 +29,8 @@ class administration extends controller
 			if ( $dh )
 			{
 
-				include_once LIBRARY . 'Glial/acl/acl.php';
-				$acl = new acl($GLOBALS['_SITE']['id_group']);
+				
+				$acl = new Acl($GLOBALS['_SITE']['id_group']);
 
 				while ( ($file = readdir($dh)) !== false )
 				{
@@ -40,6 +41,8 @@ class administration extends controller
 						{
 							continue;
 						}
+						
+						require_once($dir . $file);
 
 						//spl_autoload($dir . $file);
 						$class_name = explode(".", $file);
@@ -51,7 +54,7 @@ class administration extends controller
 						foreach ( $tab3 as $name )
 						{
 
-							if ( $acl->is_allowed($nom, $name) )
+							if ( $acl->isAllowed($nom, $name) )
 							{
 
 								if ( strstr($name, 'admin') )

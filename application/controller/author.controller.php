@@ -61,7 +61,7 @@ class author extends controller {
 		$data['photo'] = $_SQL->sql_to_array($res);
 		
 		//--INNER JOIN species_author d ON d.id = a.id_species_author
-		$sql = "SELECT distinct a.photo_id,e.width,e.miniature,e.height,a.id as id_photo FROM species_picture_in_wait a
+		$sql = "SELECT distinct a.photo_id,e.miniature,a.id as id_photo FROM species_picture_in_wait a
 			inner join species_tree_nominal b on a.id_species_main = b.id_nominal
 			inner join species_picture_id e ON e.photo_id = a.photo_id
 			
@@ -73,7 +73,7 @@ class author extends controller {
 
 		
 		
-		$sql = "SELECT distinct a.photo_id,e.width,e.miniature,e.height,a.id as id_photo FROM species_picture_in_wait a
+		$sql = "SELECT distinct a.photo_id,e.miniature,a.id as id_photo FROM species_picture_in_wait a
 			inner join species_tree_nominal b on a.id_species_main = b.id_nominal
 			inner join species_picture_id e ON e.photo_id = a.photo_id
 			inner join species_picture_info f ON f.id = a.id_species_picture_info

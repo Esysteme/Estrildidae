@@ -1,5 +1,7 @@
 <?php
 
+use \glial\species\Species;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -18,8 +20,6 @@ echo "<div class = \"title_box\"><a href=\"\">" . __('Visitors') . "</a></div>";
 echo "</div>";
 
 
-
-include_once(LIBRARY."Glial/species/species.php");
 
 
 
@@ -40,7 +40,7 @@ foreach ($data['photo'] as $var)
 	$url = LINK."species/nominal/".$species_name."/photo/photo_detail/".$var['id_photo'];
 	
 	
-	species_tree::html_pic($url, $img, $var['nominal'], $var['nominal']."\n(".$var['info_photo'].")");
+	Species::html_pic($url, $img, $var['nominal'], $var['nominal']."\n(".$var['info_photo'].")");
 	
 }
 
@@ -58,8 +58,8 @@ echo '<div id="photo">';
 foreach ($data['to_valid'] as $var)
 {
 	
-	echo '<img src="'.$var['miniature'].'" width="'.$var['width'].'" height="'.$var['height'].'" />';
 	
+	echo ' <img src="' . str_replace("_s","_q",$var['miniature']) . '" /> ';
 	/*
 	$species_name = str_replace(" ", "_", $var['nominal']);
 	$path = "Eukaryota/{$var['kingdom']}/{$var['phylum']}/{$var['class']}/{$var['order']}/{$var['family']}/{$var['genus']}/" . $species_name;
@@ -98,8 +98,8 @@ echo '<h3>'.__("Photo denied").'</h3>';
 echo '<div id="photo">';
 foreach ($data['removed'] as $var)
 {
-	
-	echo '<img src="'.$var['miniature'].'" width="'.$var['width'].'" height="'.$var['height'].'" />';
+	echo ' <img src="' . str_replace("_s","_q",$var['miniature']) . '" /> ';
+
 	
 	/*
 	$species_name = str_replace(" ", "_", $var['nominal']);

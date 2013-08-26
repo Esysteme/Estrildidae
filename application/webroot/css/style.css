@@ -452,7 +452,7 @@ input.bouton {border:#999 3px double; padding: 0px 4px; background:#ddd;color:#0
 #onglet li{list-style: none;display: inline;margin: 0;}
 #onglet li a{text-decoration: none;padding: 2px 5px;margin-left: 4px;border: 1px solid #333;border-bottom: none;background:#ddd;}
 #onglet li a:link, #onglet li a:visited{color: white;background: #eee; color:#444;}
-
+#onglet li a img{float: left}
 
 #onglet li a:hover,#onglet li.selected a{color: white;background: #086eb8;border-color: #333;}
 
@@ -1478,6 +1478,10 @@ a.external
 	padding-right: 13px;
 }
 
+
+
+
+
 .classification {margin:3px}
 .classification  td{padding:1px}
 
@@ -1556,4 +1560,48 @@ height: 16px;
 vertical-align: top;
 overflow: hidden;
 }
+
+
+
+
+
+
+.pending span.img_ span{
+
+	display:none;
+	position:absolute;  
+	margin-top:23px;
+	margin-left:-75px;
+	color:#09c;
+	background:rgba(0,0,0,.9);
+	padding:5px;
+	border-radius:3px;
+	box-shadow:0 0 2px rgba(0,0,0,.5);
+}
+
+
+.pending span.img_:hover span,.pending span.img_:focus span{
+    
+     display:block;
+}
+
+
+.pending img.img_valid
+{
+	border:green 5px solid;
+}
+
+.pending img.img_dunno
+{
+	border:orange 5px solid;
+}
+
+.pending img.img_invalid
+{
+	border:red 5px solid;
+}
+
+
+
+
 
