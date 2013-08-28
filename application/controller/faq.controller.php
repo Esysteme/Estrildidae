@@ -1,9 +1,9 @@
 <?php
 
+use \glial\synapse\Controller;
 
 
-
-class faq extends controller
+class faq extends Controller
 {
 	
 	

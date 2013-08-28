@@ -1,6 +1,9 @@
 <?php
 
-class oiseaux_net extends controller {
+
+use \glial\synapse\Controller;
+
+class oiseaux_net extends Controller {
 
 	function import_species() {
 

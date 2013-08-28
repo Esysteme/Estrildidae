@@ -13,13 +13,9 @@ echo '<img src="' . IMG . 'user/acspike_male_user_icon.png" alt="" />';
 echo "</div>";
 
 
-
-
 echo "<div class = \"title_box\"><a href=\"\">" . __('My friends') . "</a></div>";
 echo "<div class = \"title_box\"><a href=\"\">" . __('Visitors') . "</a></div>";
 echo "</div>";
-
-
 
 
 
@@ -29,19 +25,14 @@ echo '<h3>'.__("Photo valided").'</h3>';
 echo '<div id="photo">';
 foreach ($data['photo'] as $var)
 {
-	
-
 	$species_name = str_replace(" ", "_", $var['nominal']);
 	$path = "Eukaryota/{$var['kingdom']}/{$var['phylum']}/{$var['class']}/{$var['order']}/{$var['family']}/{$var['genus']}/" . $species_name;
 	$picture_name = $var['id_photo'] . "-" . $species_name . ".jpg";
 	$img = FARM1 . "crop/" . SIZE_MINIATURE_SMALL . "x" . SIZE_MINIATURE_SMALL . "/" . $path . DS . $picture_name;
 	
-	
 	$url = LINK."species/nominal/".$species_name."/photo/photo_detail/".$var['id_photo'];
 	
-	
 	Species::html_pic($url, $img, $var['nominal'], $var['nominal']."\n(".$var['info_photo'].")");
-	
 }
 
 echo "</div>";

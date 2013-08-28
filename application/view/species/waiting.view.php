@@ -2,7 +2,7 @@
 
 use \glial\species\Species;
 
-echo "<ul id=\"onglet\" class=\"menu_tab\" style=\"padding-left: 3px;\">";
+echo "<ul id=\"\" class=\"menu_tab\" style=\"padding-left: 3px;\">";
 
 foreach ( $data['pending'] as $tab )
 {
@@ -54,8 +54,18 @@ foreach ( $gg as $tab )
 	}
 
 
+	
+	if ($tab['gg'] > 1)
+	{
+		$class=  "img_valid";
+	}
+	else
+	{
+		$class =  "img_dunno";
+	}
+	
 	echo '<span class="img_">';
-	echo ' <img src="' . str_replace("_s","_q",$tab['miniature']) . '" class="'.(($tab['gg'] > 1)? "img_valid": "img_dunno").'" /> ';
+	echo '<img class="'.$class.'" src="' . str_replace("_s","_q",$tab['miniature']) . '" /> ';
 	echo '<input type="hidden" name="link__species_picture_id__species_picture_search[id]" value="'.$tab['id_link'].'" />';
 	echo '<span><img src="' . str_replace("_s","_z",$tab['miniature']) . '" /></span>';
 	echo '</span>';

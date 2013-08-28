@@ -1,8 +1,9 @@
 <?php
 
-use glial\synapse\singleton;
+use \glial\synapse\singleton;
+use \glial\synapse\Controller;
 
-class user extends controller {
+class user extends Controller {
 
 	public $module_group = "Users & access management";
 	public $method_administration = array("user", "roles");

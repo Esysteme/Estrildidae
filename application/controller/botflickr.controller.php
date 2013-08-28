@@ -5,7 +5,9 @@ use \glial\synapse\Singleton;
 use \glial\shell\Color;
 
 
-class botflickr extends controller
+use \glial\synapse\Controller;
+
+class botflickr extends Controller
 {
 
 	public $module_group = "BOT";

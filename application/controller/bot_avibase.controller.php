@@ -1,6 +1,7 @@
 <?php
+use \glial\synapse\Controller;
 
-class bot_avibase extends controller
+class bot_avibase extends Controller
 {
 
 	public $module_group = "BOT";

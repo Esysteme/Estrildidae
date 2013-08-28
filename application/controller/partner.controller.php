@@ -3,7 +3,7 @@
 
 
 
-class partner extends controller
+class partner extends Controller
 {
 	
 	function index()

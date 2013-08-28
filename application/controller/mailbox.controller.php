@@ -1,6 +1,7 @@
 <?php
+use \glial\synapse\Controller;
 
-class mailbox extends controller {
+class mailbox extends Controller {
 
 	public $module_group = "Users & access management";
 	

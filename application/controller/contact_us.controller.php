@@ -1,8 +1,10 @@
 <?php
 
 use \glial\synapse\singleton;
+use \glial\synapse\Controller;
 
-class contact_us extends controller
+
+class contact_us extends Controller
 {
 
 	function index()

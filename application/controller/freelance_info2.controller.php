@@ -2,8 +2,10 @@
 
 use glial\synapse\singleton;
 use glial\parser\freelance_info\freelance_info;
+use \glial\synapse\Controller;
 
-class freelance_info2 extends controller
+
+class freelance_info2 extends Controller
 {
 
 	function index()
