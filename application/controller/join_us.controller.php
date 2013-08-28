@@ -1,7 +1,8 @@
 <?php
+use \glial\synapse\Controller;
 
 
-class join_us extends Controller
+class Join_us extends Controller
 {
 	
 	function index()

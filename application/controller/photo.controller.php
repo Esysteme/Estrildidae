@@ -2,8 +2,10 @@
 
 // id_species_picture_main:118538
 use glial\synapse\singleton;
+use \glial\synapse\Controller;
 
-class photo extends controller
+
+class photo extends Controller
 {
 
 	public $module_group = "Media";

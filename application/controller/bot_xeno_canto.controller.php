@@ -1,6 +1,8 @@
 <?php
+use \glial\synapse\Controller;
 
-class bot_xeno_canto extends controller {
+
+class bot_xeno_canto extends Controller {
 
 	public $module_group = "BOT";
 

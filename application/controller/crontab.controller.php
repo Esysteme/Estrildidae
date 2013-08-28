@@ -3,7 +3,7 @@
 
 define("_FILE_CRONTAB", "/tmp/crontab_php");
 
-class crontab extends controller
+class crontab extends Controller
 {
 	
 	public $module_group = "Administration";

@@ -1,6 +1,8 @@
 <?php
 
 use glial\synapse\singleton;
+use \glial\synapse\Controller;
+
 
 class comment extends Controller {
 

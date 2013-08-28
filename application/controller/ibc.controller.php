@@ -1,6 +1,7 @@
 <?php
+use \glial\synapse\Controller;
 
-class ibc extends controller {
+class ibc extends Controller {
 
 	function import_species() {
 

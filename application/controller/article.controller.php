@@ -1,6 +1,9 @@
 <?php
 
-class article extends controller
+use \glial\synapse\Controller;
+
+
+class article extends Controller
 {
 
 	public $module_group = "Articles";

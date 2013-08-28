@@ -1,6 +1,8 @@
 <?php
+use \glial\synapse\Controller;
 
-class avibase extends controller {
+
+class avibase extends Controller {
 	function get_pic()
 	{
 		$this->view = false;

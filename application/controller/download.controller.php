@@ -1,1 +1,1 @@
-<?phpclass download extends controller{    function index()    {        $this->title = __("Download");        $this->ariane = "> " . $this->title;    }}?>
+<?phpuse \glial\synapse\Controller;class download extends Controller{    function index()    {        $this->title = __("Download");        $this->ariane = "> " . $this->title;    }}?>

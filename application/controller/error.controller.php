@@ -1,5 +1,5 @@
 <?php
-
+use \glial\synapse\Controller;
 
 class error extends Controller
 {

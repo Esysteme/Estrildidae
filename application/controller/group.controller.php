@@ -1,4 +1,6 @@
 <?php
+use \glial\synapse\Controller;
+
 
 class group extends Controller
 {

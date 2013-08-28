@@ -4,8 +4,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+use \glial\synapse\Controller;
 
-class bot_geo_news extends controller
+
+class bot_geo_news extends Controller
 {
 
 	public $module_group = "species";
