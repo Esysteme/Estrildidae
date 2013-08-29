@@ -47,11 +47,12 @@ foreach ( $gg as $tab )
 		$new = 1;
 	}
 
+	/*
 	if ( $tag_search != $tab['tag_search'] || $new == 1 )
 	{
 		echo '<h3 style="color:red">' . $tab['tag_search'] . '</h3>';
 		$tag_search = $tab['tag_search'];
-	}
+	}*/
 
 
 	

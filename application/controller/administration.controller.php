@@ -42,7 +42,7 @@ class administration extends Controller
 							continue;
 						}
 						
-						require_once($dir . $file);
+						require($dir . $file);
 
 						//spl_autoload($dir . $file);
 						$class_name = explode(".", $file);
@@ -209,7 +209,7 @@ class administration extends Controller
 
 							if ( !class_exists($name) )
 							{
-								include($dir . $file);
+								require($dir . $file);
 							}
 
 							$tab = get_class_methods($name);

@@ -1,6 +1,7 @@
 <?php
 
-use glial\synapse\singleton;
+
+use \glial\synapse\Singleton;
 use \glial\synapse\Controller;
 
 
@@ -14,7 +15,7 @@ class comment extends Controller {
 
 	function image($param) {
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 		if ($_SERVER['REQUEST_METHOD'] == "POST")
 		{
@@ -71,7 +72,7 @@ class comment extends Controller {
 
 
 
-		$_LG = singleton::getInstance("Language");
+		$_LG = Singleton::getInstance("Language");
 		$lg = explode(",", LANGUAGE_AVAILABLE);
 		$nbchoice = count($lg);
 

@@ -1,8 +1,9 @@
 <?php
 
 use glial\synapse\singleton;
+use \glial\synapse\Controller;
 
-class author extends controller {
+class author extends Controller {
 
 	public $module_group = "Species";
 
