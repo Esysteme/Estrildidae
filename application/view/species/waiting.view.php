@@ -66,8 +66,8 @@ foreach ( $gg as $tab )
 	}
 	
 	echo '<span class="img_">';
-	echo '<img class="'.$class.'" src="' . str_replace("_s","_q",$tab['miniature']) . '" /> ';
-	echo '<input type="hidden" name="link__species_picture_id__species_picture_search[id]" value="'.$tab['id_link'].'" />';
+	echo '<img class="selector '.$class.'" src="' . str_replace("_s","_q",$tab['miniature']) . '" /> ';
+	echo '<input type="hidden" name="link__species_picture_id__species_picture_search['.$tab['id_link'].']" value="1" />';
 	echo '<span><img src="' . str_replace("_s","_z",$tab['miniature']) . '" /></span>';
 	echo '</span>';
 
