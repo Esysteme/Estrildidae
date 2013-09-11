@@ -20,11 +20,7 @@ echo '<div class="title_box">'.__('Country').' </div>';
 
 $family = explode("/",$_GET['url']);
 
-$login = new controller("species", "block_country", json_encode(array($family[2],$family[3])));
-$login->get_controller();
-$login->display();
-
-
+\glial\synapse\FactoryController::addNode("species", "block_country", array($family[2],$family[3]));
 
 
 /*

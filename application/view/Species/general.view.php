@@ -312,7 +312,7 @@ if ( count($data['source']) > 0 )
 
 	foreach ( $data['source'] as $ref )
 	{
-		echo '<div><img src="' . IMG . '16/' . $ref['pic16'] . '"> <a href="' . $ref['reference_url'] . '" class="external" target="_BLANK">' . $ref['name'] . ' : ' . $ref['reference_id'] . '</a> 
+		echo '<div><img src="' . IMG . '16/' . $ref['pic16'] . '"> <a href="' . $ref['reference_url'] . '" class="external" target="_BLANK">' . $ref['name'] . ' : ' . urldecode($ref['reference_id']) . '</a> 
 			(' . __('Added') . ' : ' . $ref['date_created'] . ' - ' . __('Last update') . ' : ' . $ref['date_updated'] . ')</div>' . "\n";
 	}
 }
@@ -325,5 +325,5 @@ $species_link = str_replace(" ", "_", $data['info'][0]['scientific_name']);
 if ( IS_AJAX )
 {
 	echo '<img src="' . IMG . 'main/1x1.png" alt="" onload="initialize(\'' . $species_link . '\');" />';
-	echo $species_link;
+	
 }

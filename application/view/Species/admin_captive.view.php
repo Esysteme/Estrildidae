@@ -19,7 +19,6 @@ function generate_option($number)
 }
 
 
-debug($data);
 
 echo '<form action="" method="POST">';
 

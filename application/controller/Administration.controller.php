@@ -6,8 +6,7 @@ use \glial\synapse\singleton;
 use \glial\acl\Acl;
 use \glial\synapse\Controller;
 
-
-class administration extends Controller
+class Administration extends Controller
 {
 
 	public $module_group = "Administration";
@@ -29,7 +28,7 @@ class administration extends Controller
 			if ( $dh )
 			{
 
-				
+
 				$acl = new Acl($GLOBALS['_SITE']['id_group']);
 
 				while ( ($file = readdir($dh)) !== false )
@@ -41,12 +40,20 @@ class administration extends Controller
 						{
 							continue;
 						}
-						
-						require($dir . $file);
 
-						//spl_autoload($dir . $file);
+
 						$class_name = explode(".", $file);
 						$nom = $class_name[0];
+
+						if ( $nom != __CLASS__ &&  $nom != "history" &&  $nom != "comment")
+						{
+							require($dir . $file);
+						}
+
+	
+
+						//spl_autoload($dir . $file);
+
 						$class = new $nom("", "", "");
 						$tab = get_class_methods($nom);
 						$tab2 = get_class_methods("Controller");
@@ -84,7 +91,7 @@ class administration extends Controller
 	function admin_table()
 	{
 
-		if (IS_CLI)
+		if ( IS_CLI )
 		{
 
 			$this->view = false;
@@ -126,9 +133,9 @@ class administration extends Controller
 				$res = $GLOBALS['_SQL']->sql_query($sql);
 				while ( $table = $GLOBALS['_SQL']->sql_fetch_array($res) )
 				{
-					echo $table[0]."\n";
-					
-					
+					echo $table[0] . "\n";
+
+
 					$fp = fopen(TMP . "/database/" . $table[0] . ".table.txt", "w");
 					$sql = "DESCRIBE `" . $table[0] . "`";
 					$res2 = $GLOBALS['_SQL']->sql_query($sql);
@@ -156,11 +163,11 @@ class administration extends Controller
 		$module['description'] = __("Update the right of users and groups");
 
 
-		if (IS_CLI)
+		if ( IS_CLI )
 		{
 
-				$this->view = false;
-				$this->layout_name = false;
+			$this->view = false;
+			$this->layout_name = false;
 		}
 
 
@@ -175,12 +182,12 @@ class administration extends Controller
 	{
 
 		$_SQL = singleton::getInstance(SQL_DRIVER);
-		
-		
+
+
 		if ( true ) //ENVIRONEMENT
 		{
-			
-			
+
+
 			$dir = APP_DIR . DS . "controller" . DS;
 			$sql = "TRUNCATE TABLE acl_controller";
 			$GLOBALS['_SQL']->sql_query($sql);
@@ -209,20 +216,24 @@ class administration extends Controller
 
 							if ( !class_exists($name) )
 							{
+								echo $name . "<br />";
 								require($dir . $file);
 							}
 
-							$tab = get_class_methods($name);
+							$tab3 = get_class_methods($name);
 							$tab2 = get_class_methods("Controller");
-							$tab3 = array_diff($tab, $tab2);
+							
+							//debug($tab2);
+							
+							//$tab3 = array_diff($tab, $tab2);
 
 							$acl_controller = array();
 							$acl_controller['acl_controller']['name'] = $name;
 
-							
+
 							$acl_action['acl_action']['id_acl_controller'] = $_SQL->sql_save($acl_controller);
-							
-							if ( ! $acl_action['acl_action']['id_acl_controller'])
+
+							if ( !$acl_action['acl_action']['id_acl_controller'] )
 							{
 								echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . "<br />";
 							}
@@ -232,7 +243,7 @@ class administration extends Controller
 							{
 								$acl_action['acl_action']['name'] = $name;
 
-								if ( ! $_SQL->sql_save($acl_action) )
+								if ( !$_SQL->sql_save($acl_action) )
 								{
 									echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist<br />";
 								}
@@ -352,6 +363,8 @@ class administration extends Controller
 		elseif ( count($tree_id) == 2 )
 		{
 
+            $tree_id['0'] = \glial\utility\Inflector::camelize($tree_id['0']);
+                
 			if ( $tree_id['1'] === "" )
 			{
 				$sql = "select count(1) as cpt from `acl_controller` where name = '" . $tree_id['0'] . "'";
@@ -522,7 +535,7 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 			}
 		}
 	}
-	
+
 	function save_database()
 	{
 		$this->layout_name = false;
@@ -546,7 +559,7 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 			{
 				echo 'create table : ' . $ob->TABLE_NAME . "\n";
 
-				file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/table.sql", $ob2[1].";");
+				file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/table.sql", $ob2[1] . ";");
 			}
 
 			// create index table
@@ -568,16 +581,16 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 				{
 					if ( $ob3->Non_unique == "1" )
 					{
-						$index[] = "CREATE UNIQUE INDEX `".$ob3->Key_name."`  ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
+						$index[] = "CREATE UNIQUE INDEX `" . $ob3->Key_name . "`  ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
 					}
 					else
 					{
-						$index[] = "CREATE INDEX `".$ob3->Key_name."` ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
+						$index[] = "CREATE INDEX `" . $ob3->Key_name . "` ON `" . $ob->TABLE_NAME . "` (  `" . $ob3->Column_name . "` );";
 					}
 				}
 			}
 
-			file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/index.sql", implode("\n",$index));
+			file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/index.sql", implode("\n", $index));
 		}
 
 		$sql33 = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='arkadin' and TABLE_TYPE = 'VIEW'";
@@ -602,7 +615,5 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 
 		//debug($data);
 	}
-
-
 
 }

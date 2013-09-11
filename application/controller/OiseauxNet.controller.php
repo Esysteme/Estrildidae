@@ -3,7 +3,7 @@
 
 use \glial\synapse\Controller;
 
-class oiseaux_net extends Controller {
+class OiseauxNet extends Controller {
 
 	function import_species() {
 

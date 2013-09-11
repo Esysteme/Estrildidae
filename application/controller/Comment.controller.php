@@ -5,7 +5,7 @@ use \glial\synapse\Singleton;
 use \glial\synapse\Controller;
 
 
-class comment extends Controller {
+class Comment extends Controller {
 
 	public $module_group = "Articles";
 

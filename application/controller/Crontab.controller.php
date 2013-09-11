@@ -1,9 +1,9 @@
 <?php
-
+use \glial\synapse\Controller;
 
 define("_FILE_CRONTAB", "/tmp/crontab_php");
 
-class crontab extends Controller
+class Crontab extends Controller
 {
 	
 	public $module_group = "Administration";

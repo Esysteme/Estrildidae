@@ -21,19 +21,20 @@ $(document).ready(function(){
 				var id_a = $(this).attr('id');
 				
 				
-				//var destination = $(this).parents("ul:first").next();
-				
+				// var destination = $(this).parents("ul:first").next();
 				
 				var controller = $(this).children('a').attr('data-link');
 				var target = $(this).children('a').attr('data-target');
 				
+				//target = "content_1";
+				
 				url_ajax = page2+controller+'>'+target+'/';
 				
 	
-				alert(url_ajax);
+				//alert(url_ajax);
+
 	
-	
-       			target.hide(0, function(){
+       			$("#"+target).hide(0, function(){
 				$(this).load(url_ajax, 'data', function(){
 					$(this).fadeIn(200);
 					

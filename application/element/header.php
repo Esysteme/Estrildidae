@@ -1,8 +1,8 @@
 <?php
 
-use glial\synapse\singleton;
+use glial\synapse\Singleton;
 
-$_SQL = singleton::getInstance(SQL_DRIVER);
+$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 
 $sql = "select count(1) as cpt from user_main";
@@ -41,9 +41,6 @@ $res = $_SQL->sql_query($sql);
 $_SITE['NumberEstrildidaeSsp'] = $_SQL->sql_fetch_array($res);
 
 
-
-
-
 $sql = "select count(1) as cpt from species_sub";
 $res = $_SQL->sql_query($sql);
 $_SITE['NumberSsp'] = $_SQL->sql_fetch_array($res);
@@ -69,6 +66,7 @@ echo "<meta name=\"runtime\" content=\"[PAGE_GENERATION]\" />\n";
 echo "<title>" . $GLIALE_TITLE . " - Estrildidae</title>\n";
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . CSS . "style.css\" />\n";
 echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . CSS . "extjs.css\" />\n";
+//echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . CSS . "metro.css\" />\n";
 echo '<link type="text/css" href="http://fonts.googleapis.com/css?family=Coda" rel="stylesheet" />';
 
 
@@ -100,7 +98,7 @@ if ($_SERVER['SERVER_ADDR'] != "192.168.1.48")
 <body>
 
 
-	<div id="all">
+	<div class="metrouicss" id="all">
 
 
 		<div id="headline">
@@ -199,11 +197,9 @@ echo "</li>";
 echo "</ul></div>";
 
 
+\glial\synapse\FactoryController::addNode("user",  "login", "");
 
 
-$login = new controller("user", "login", "gg");
-$login->get_controller();
-$login->display();
 
 
 /*

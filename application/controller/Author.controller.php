@@ -3,7 +3,7 @@
 use glial\synapse\singleton;
 use \glial\synapse\Controller;
 
-class author extends Controller {
+class Author extends Controller {
 
 	public $module_group = "Species";
 

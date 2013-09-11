@@ -2,7 +2,7 @@
 use \glial\synapse\Controller;
 
 
-class Join_us extends Controller
+class JoinUs extends Controller
 {
 	
 	function index()

@@ -1,0 +1,500 @@
+   62  curl -sS http://www.glial-framework-php.org/installer | php -- --install-dir="/home/www/species" --application="Esysteme/Estrildidae"
+   63  vi /home/www/species/configuration/webroot.config.php
+   64  vi /home/www/species/configuration/database.config.php 
+   65  php /home/www/species/application/webroot/index.php administration admin_table
+   66  cd species/repository/synapse/
+   67  git pull
+   68  cd ../Estrildidae/
+   69  ls
+   70  git pull
+   71  cd ..
+   72  cd ..
+   73  cd application/webroot/
+   74  php index.php administration admin_table
+   75  git pull
+   76  git merge
+   77  git commit -a -m "WTF ?"
+   78  git pull
+   79  git pull
+   80  php index.php administration admin_table
+   81  php index.php administration admin_init
+   82  git pull
+   83  php index.php administration admin_init
+   84  cd /var/www/
+   85  ls
+   86  rm index.html 
+   87  cd ..
+   88  rmdir www/
+   89  ln -s /home/www/ www
+   90  vi /etc/apache2/sites-enabled/000-default 
+   91  /etc/init.d/apache2 restart
+   92  cd www
+   93  ls
+   94  cd species/
+   95  ls
+   96  ls -l
+   97  cd application
+   98  ls
+   99  cd webroot/
+  100  ls
+  101  ls -la
+  102  cd ../..
+  103  ls -la
+  104  vi .htaccess
+  105  ls -l
+  106  ls -la
+  107  /etc/init.d/apache2 stop
+  108  /etc/init.d/apache2 start
+  109  vi /etc/apache2/sites-enabled/000-default 
+  110  echo ${APACHE_LOG_DIR}
+  111  vi /etc/apache2/sites-enabled/000-default 
+  112  /etc/init.d/apache2 start
+  113  /etc/init.d/apache2 stop
+  114  /etc/init.d/apache2 start
+  115  a2enmod modrewrite
+  116  a2enmod rewrite
+  117  /etc/init.d/apache2 stop
+  118  /etc/init.d/apache2 start
+  119  cd application
+  120  git pull
+  121  cd ..
+  122  cd library/
+  123  cd Glial
+  124  git pull
+  125  git commit -m "wtf"
+  126  git pull
+  127  git merge
+  128  git push
+  129  git pull -u
+  130  git merge
+  131  git reset --hard HEAD
+  132  git pull
+  133  git push
+  134  ls
+  135  cd ..
+  136  cd ..
+  137  cd system
+  138  ls
+  139  git pull
+  140  passwd aurelien
+  141  passwd aurelien
+  142  cd .;
+  143  cd ..
+  144  cd application/webroot/
+  145  php index.php botflickr update_search
+  146  php index.php administration admin_init
+  147  php index.php administration admin_init
+  148  php index.php administration admin_table
+  149  php index.php administration admin_table
+  150  php index.php botflickr update_search
+  151  php index.php botflickr update_search
+  152  php index.php administration admin_table
+  153  php index.php botflickr update_search
+  154  php index.php botflickr update_search
+  155  vi ../../tmp/database/species_picture_id.table.txt 
+  156  vi ../../tmp/database/species_picture_id.table.txt 
+  157  vi ../../tmp/database/species_status.table.txt 
+  158  cd  ../../tmp/database/
+  159  ls
+  160  ls -l
+  161  vi species_picture_id.table.txt
+  162  cd ..
+  163  cd ../
+  164  cd application/webroot/
+  165  php index.php botflickr update_search
+  166  php index.php botflickr update_search
+  167  php index.php botflickr update_search
+  168  php index.php botflickr update_search
+  169  php index.php botflickr update_search
+  170  php index.php botflickr update_search
+  171  php index.php administration admin_table
+  172  php index.php botflickr update_search
+  173  php index.php botflickr update_search
+  174  php index.php botflickr update_search
+  175  php index.php botflickr update_search
+  176  php index.php administration generate_model
+  177  php index.php botflickr update_search
+  178  php index.php botflickr update_search
+  179  cd ../model/
+  180  ls
+  181  vi link__species_picture_id__species_picture_search.php
+  182  cd ../webroot/
+  183  ls
+  184  php index.php botflickr update_search
+  185  php index.php botflickr update_search
+  186  php index.php botflickr update_search
+  187  php index.php botflickr update_search
+  188  php index.php botflickr update_search
+  189  ls
+  190  cd /var/www
+  191  ls
+  192  cd ..
+  193  ls -l
+  194  cd /home/www/
+  195  ls
+  196  cd species/
+  197  cd application/webroot/
+  198  php index.php botflickr update_search
+  199  vi /home/www/species/library/Glial/cd ..
+  200  cd ..
+  201  cd ..
+  202  ls
+  203  cd library/
+  204  ls -l
+  205  rm Glial
+  206  ln -s /home/www/species/repository/glial/Glial glial
+  207  ls
+  208  ls
+  209  cd ..
+  210  cd application/webroot/
+  211  ls
+  212  php index.php botflickr update_search
+  213  php index.php botflickr update_search
+  214  php index.php botflickr update_search
+  215  php index.php botflickr update_search
+  216  cd ..
+  217  cd webroot/
+  218  cd webroot/
+  219  php index.php botflickr update_search
+  220  php index.php botflickr update_search
+  221  vi /home/www/species/library/glial/parser/flickr/Flickr.php
+  222  vi 
+  223  php index.php botflickr update_search
+  224  php index.php botflickr update_search
+  225  php index.php botflickr update_search
+  226  php index.php botflickr update_search
+  227  php index.php botflickr update_search
+  228  vi /home/www/species/library/glial/extract/HtmlDom.php
+  229  vi /home/www/species/library/glial/extract/htmlDom.php 
+  230  php index.php botflickr update_search
+  231  php index.php botflickr update_search
+  232  php index.php botflickr update_search
+  233  php index.php botflickr update_search
+  234  php index.php botflickr update_search
+  235  php index.php botflickr update_search
+  236  php index.php botflickr update_search
+  237  php index.php botflickr update_search
+  238  php index.php botflickr update_search
+  239  php index.php botflickr update_search
+  240  php index.php botflickr update_search
+  241  php index.php botflickr update_search
+  242  php index.php botflickr update_search
+  243  php index.php botflickr update_search
+  244  php index.php botflickr update_search
+  245  php index.php botflickr update_search
+  246  php index.php botflickr update_search
+  247  php index.php botflickr update_search
+  248  php index.php botflickr update_search
+  249  php index.php botflickr update_search
+  250  php index.php botflickr update_search
+  251  php index.php botflickr update_search
+  252  php index.php botflickr update_search
+  253  php index.php botflickr update_search
+  254  php index.php botflickr update_search
+  255  ls
+  256  cd /home/ls
+  257  cd /home/
+  258  ls
+  259  cd backup/
+  260  ls
+  261  cd ..
+  262  cd data1
+  263  ls
+  264  cd ..
+  265  ls
+  266  cd disk2/
+  267  lks
+  268  ls
+  269  ls
+  270  ls
+  271  ls
+  272  ls
+  273  mount -s
+  274  df -h
+  275  fdisk -l
+  276  ls _l
+  277  lsscsi
+  278  mount /dev/sda home/data1
+  279  ls
+  280  mount /dev/sda /home/data1
+  281  cd /home/data1
+  282  ls
+  283  du -sh *
+  284  apt-get install php5-sqlite php-xml-parser
+  285  apt-get install php5-intl
+  286  echo 'deb http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_7.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
+  287  apt-get update
+  288  wget http://download.opensuse.org/repositories/isv:ownCloud:devel/Debian_7.0/Release.key
+  289  apt-key add - < Release.key
+  290  apt-get update
+  291  apt-get install owncloud-client
+  292  cd /var/www
+  293  ls
+  294  cd debian/
+  295  ls
+  296  cd ..
+  297  cd species/
+  298  ls
+  299  updatedb
+  300  locate owncloud
+  301  poweroff
+  302  ls
+  303  cd /home/www/
+  304  lss
+  305  ls
+  306  cd species/
+  307  ls
+  308  cd application
+  309  git add .
+  310  git commit -m "add spr-1"
+  311  git push
+  312  cd ..
+  313  cd system
+  314  git add .
+  315  git commit -m "add spr-1"
+  316  git push
+  317  ls
+  318  cd ..
+  319  cd library/
+  320  cd glial
+  321  ls
+  322  git add .
+  323  git commit -m "add spr-1"
+  324  git push
+  325  git pull
+  326  git push
+  327  git commit -m "spr-1"
+  328  git commit -a -m "spr-1"
+  329  git push
+  330  git config core.filemode false
+  331  cd ../..
+  332  cd application
+  333  git config core.filemode false
+  334  cd ..
+  335  cd system
+  336  git config core.filemode false
+  337  git commit -a
+  338  lks
+  339  nslookup www.estrildidae.net
+  340  nslookup estrildidae.net
+  341  nslookup 188.165.203.77
+  342  cd /home/www/species/application
+  343  cd ..
+  344  cd library/glial
+  345  ls
+  346  git comit -m "converted code to spr-1"
+  347  git commit -m "converted code to spr-1"
+  348  git add .
+  349  git commit -m "converted code to spr-1"
+  350  git push
+  351  cd /home/www/
+  352  sl
+  353  ls
+  354  chmod 777 -R yana
+  355  cd species/configuration/
+  356  ls
+  357  vi database.config.php 
+  358  vi /var/log/syslog
+  359  vi /var/log/syslog
+  360  tail -f  /var/log/syslog
+  361  ifconfig
+  362  ifconfig
+  363  cd /home/www/
+  364  ls
+  365  cd species/
+  366  ls
+  367  cd system
+  368  git add .
+  369  git commit -m "fixed debug with boot"
+  370  git push
+  371  cd ..
+  372  ls
+  373  cd application
+  374  git add .
+  375  git commit -m "fixed debug with boot"
+  376  git push
+  377  cd ..
+  378  cd library/glial
+  379  git add .
+  380  git commit -m "fixed debug with boot"
+  381  git push
+  382  apt-get update
+  383  apt-get upgrade
+  384  ls
+  385  cd /home/www/species/tmp/log/
+  386  ls
+  387  vi error_php.log 
+  388  ls
+  389  vi /home/www/species/library/glial/acl/Acl.php
+  390  cd /home/www/species/library/glial/acl/
+  391  ls
+  392  mv acl.php Acl.php
+  393  cd ..
+  394  cd synaspe/
+  395  ls
+  396  vi /home/www/species/library/glial/synapse/Controller.php
+  397  vi /home/www/species/library/glial/synaspe/Controller.php 
+  398  php-cs-fixer 
+  399  php-cs-fixer help
+  400  php-cs-fixer --dir=/home/www/species/library/glial/ --fix=all
+  401  vi /home/www/species/library/glial/synapse/Controller.php
+  402  cd /home/www/species/library/glial/
+  403  ls
+  404  mv synaspe/ synapse
+  405  cd
+  406  mysqldump -h 188.165.203.77 -u root -p species > species.sql
+  407  mysqldump -h 188.165.203.77 -u species_home -p species > species.sql
+  408  mysqldump -h 188.165.203.77 -u species_home -p species > species.sql
+  409  git commit -m "add tool pending"
+  410  cd ap
+  411  ls
+  412  cd /home/www/species/application
+  413  git commit -m "add tool pending"
+  414  git add .
+  415  git add .
+  416  git commit -m "add tool pending"
+  417  git push 
+  418  git push 
+  419  cd ../
+  420  ls
+  421  cd library/
+  422  ls
+  423  cd glial
+  424  git add .
+  425  git commit -m "add tool pending"
+  426  git push 
+  427  ls
+  428  cd ../..
+  429  cd system
+  430  ls
+  431  git add .
+  432  git commit -m "add tool pending"
+  433  git push 
+  434  cd ..
+  435  cd application
+  436  ls
+  437  git add .
+  438  git commit -m "converted to controller on glial"
+  439  git push
+  440  cd webroot/
+  441  php index.php administration admin_init
+  442  git commit -m "converted to controller on glial"
+  443  git add .
+  444  git commit -m "converted to controller on glial"
+  445  cd ..
+  446  git commit -m "converted to controller on glial"
+  447  git commit -m "converted to controller on glial"
+  448  cd webroot/
+  449  php index.php administration admin_init
+  450  php index.php administration admin_init
+  451  php index.php administration admin_init
+  452  php index.php administration admin_init
+  453  php index.php administration admin_init
+  454  php index.php administration admin_init
+  455  php index.php administration admin_init
+  456  php index.php administration admin_init
+  457  php index.php administration admin_init
+  458  php index.php administration admin_init
+  459  php index.php administration admin_init
+  460  php index.php administration admin_init
+  461  php index.php administration admin_init
+  462  php index.php administration admin_init
+  463  php index.php administration admin_init
+  464  php index.php administration admin_init
+  465  php index.php administration admin_init
+  466  php index.php administration admin_init
+  467  cd /home/www/species/library/
+  468  ls
+  469  cd ..
+  470  php index.php administration admin_init
+  471  cd system
+  472  git commit -m "fixed problem load admin init"
+  473  git add .
+  474  git commit -m "fixed problem load admin init"
+  475  git push
+  476  cd ..
+  477  cd application
+  478  git pull
+  479  git commit -m "pending add by author"
+  480  git commit -a -m "pending add by author"
+  481  git pull
+  482  cd webroot/
+  483  vi .htaccess
+  484  cd ../..
+  485  ls
+  486  vi .htaccess
+  487  cd library/
+  488  chmod 777 -R glial
+  489  cd ..
+  490  cd application
+  491  chmod 777 -R *
+  492  cd webroot/
+  493  cd js/
+  494  vi api.js 
+  495  vi api.js 
+  496  vi api.js 
+  497  cd /home/www/
+  498  ls
+  499  xzcat debian-wheezy-base-7.1.0.img.xz
+  500  ls
+  501  xzcat debian-wheezy-base-7.1.0.img.xz > debian-wheezy-base-7.1.0.img
+  502  ls
+  503  du -sh *
+  504  du -sh *
+  505  ls
+  506  dd conv=notrunc seek=1256960 bs=1 if=kernel of=gg
+  507  dd conv=notrunc seek=1256960 bs=1 if=kernel of=android.img
+  508  dd conv=notrunc seek=9645568 bs=1 if=/tmp/ramdisk-uboot.img of=android.img
+  509  dd conv=notrunc seek=9645568 bs=1 if=ramdisk-uboot.img of=android.img
+  510  ls
+  511  ls -l
+  512  vi reg.php
+  513  php reg.php 
+  514  vi reg.php
+  515  php reg.php 
+  516  vi reg.php
+  517  php reg.php 
+  518  vi reg.php
+  519  php reg.php 
+  520  vi reg.php
+  521  php reg.php 
+  522  php reg.php 
+  523  php reg.php 
+  524  vi reg.php
+  525  php reg.php 
+  526  vi reg.php
+  527  php reg.php 
+  528  vi reg.php
+  529  php reg.php 
+  530  vi reg.php
+  531  php reg.php 
+  532  php reg.php 
+  533  vi reg.php
+  534  php reg.php 
+  535  vi reg.php
+  536  php reg.php 
+  537  vi reg.php
+  538  php reg.php 
+  539  vi reg.php
+  540  php reg.php 
+  541  vi reg.php
+  542  php reg.php 
+  543  vi reg.php
+  544  php reg.php 
+  545  vi reg.php
+  546  php reg.php 
+  547  vi reg.php
+  548  php reg.php 
+  549  vi reg.php
+  550  cd species/applicationw
+  551  cd species/application/webroot/
+  552  php index.php administration generate_model
+  553  php index.php botflickr looking_for_family 
+  554  php index.php botflickr looking_for_family 
+  555  php index.php botflickr looking_for_family 
+  556  php index.php botflickr looking_for_family 
+  557  hitsory | grep phpunit
+  558  history | grep phpunit
+  559  hisstory
+  560  history
+  561  history > gg

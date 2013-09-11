@@ -1,6 +1,9 @@
 /**** color blue to try : #1DA2FF */
 /**** reset css ********/
 
+@font-face{font-family:"iconFont";
+		   src:url('http://metroui.org.ua/fonts/iconFont.ttf') format('truetype');
+}
 
 body,div,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,th,td { 
 	margin:0;
@@ -448,16 +451,15 @@ input.bouton {border:#999 3px double; padding: 0px 4px; background:#ddd;color:#0
 
 
 
-#onglet {padding: 2px 0;margin-left: 0;margin-bottom: 8px;margin-top: 1px;font: bold 11px arial;border-bottom: 1px solid #333	;}
-#onglet li{list-style: none;display: inline;margin: 0;}
-#onglet li a{text-decoration: none;padding: 2px 5px;margin-left: 4px;border: 1px solid #333;border-bottom: none;background:#ddd;}
-#onglet li a:link, #onglet li a:visited{color: white;background: #eee; color:#444;}
-#onglet li a img{float: left}
+.onglet {padding: 2px 0;margin-left: 0;margin-bottom: 8px;margin-top: 1px;font: bold 11px arial;border-bottom: 1px solid #333	;}
+.onglet li{list-style: none;display: inline;margin: 0; position:relative;}
+.onglet li a{text-decoration: none;padding: 2px 5px;margin-left: 4px;border: 1px solid #333;border-bottom: none;background:#ddd; color:#000}
+.onglet li a:link, .onglet li a:visited{color: white;background: #eee; color:#444;}
 
-#onglet li a:hover,#onglet li.selected a{color: white;background: #086eb8;border-color: #333;}
-
-#onglet li.underline a{background: #8D4423; color:#fff}
-#onglet li.underline a:hover{background: #000; color:#fff}
+.onglet li a img {position:absolute;top:-1px;left:8px}
+.onglet li a:hover,.onglet li.selected a{color: white;background: #086eb8;border-color: #333;}
+.onglet li.underline a{background: #8D4423; color:#fff; }
+.onglet li.underline a:hover{background: #000; color:#fff}
 
 #species_detail  .photo{ float:left;}
 #species_detail  .photo img{}
@@ -1475,7 +1477,7 @@ h3:hover  {  background:#eee}
 
 a.external
 {	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAVklEQVR4Xn3PgQkAMQhDUXfqTu7kTtkpd5RA8AInfArtQ2iRXFWT2QedAfttj2FsPIOE1eCOlEuoWWjgzYaB/IkeGOrxXhqB+uA9Bfcm0lAZuh+YIeAD+cAqSz4kCMUAAAAASUVORK5CYII=') center right no-repeat;
-	padding-right: 13px;
+  padding-right: 13px;
 }
 
 
@@ -1487,8 +1489,8 @@ a.external
 
 #map_canvas { height: 400px; width:625px;}
 #map_legend { border: #666 1px solid; width:625px; margin-top:10px; box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
-    padding: 0;
-    margin-right: 0.3em; background:#eee}
+			  padding: 0;
+			  margin-right: 0.3em; background:#eee}
 
 
 div.range-legend
@@ -1527,7 +1529,7 @@ div.range-legend img
 }
 
 input.input-number, input.price{
-width:45px;
+	width:45px;
 }
 
 input.ac_input{width:150px}
@@ -1549,59 +1551,155 @@ select.int{width:50px}
 
 
 .tree-expanded {
-background: url('pictures/tree_icons.png') no-repeat -18px 0px;
+	background: url('pictures/tree_icons.png') no-repeat -18px 0px;
 }
 
 
 .tree-expanded, .tree-collapsed, .tree-folder, .tree-file, .tree-checkbox, .tree-indent {
-display: inline-block;
-width: 16px;
-height: 16px;
-vertical-align: top;
-overflow: hidden;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.pending *:before,.pending *:after{
+	box-sizing: border-box;
+}
+
+
+.pending h3 span{display:block;}
+
+.pending ul{
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	margin-bottom: 10px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+}
+.pending ol{
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+}
+
+.pending ol li{display:inline-block; padding:0 4px; cursor: pointer;border:#666 1px solid;margin-left:4px; background:#ddd;}
+
+.pending ul li:after{
+	width: 0px;
+	height: 0px;
+	border-left: 40px solid transparent;
+	position: absolute;
+	display: block;
+	right: 0;
+	content: " ";
+	top: 0;
+	z-index: 1001;
 }
 
 
 
-
-
-
-.pending span.img_ span{
+.pending ul li span{
 
 	display:none;
 	position:absolute;  
 	margin-top:23px;
 	margin-left:-75px;
 	color:#09c;
-	background:rgba(0,0,0,.9);
-	padding:5px;
-	border-radius:3px;
-	box-shadow:0 0 2px rgba(0,0,0,.5);
+	padding:0px;
+	background: #00f;
+	box-shadow: 2px 2px 10px 5px rgba(0,0,0, 0.74);
 }
 
 
-.pending span.img_:hover span,.pending span.img_:focus span{
-    
-     display:block;
+.pending ul li{
+
+    width: 150px;
+    height: 150px;
+	position:relative;
+    float:left;
+	margin: 0px 5px 5px 0;
+	
+	box-shadow: 2px 2px 10px 0px rgba(0,0,0, 0.44);
+}
+
+.pending ul li:hover span{
+	display:block;
+	z-index: 1005;
 }
 
 
-.pending img.img_valid
+.pending ul li.img_valid
 {
 	border:green 5px solid;
 }
+.pending ul li.img_valid:after{
+	border-top: 40px solid green;
+}
+.pending ul li.img_valid:before {
+	content: "\e08a";
+	font-size: 16px;
+}
 
-.pending img.img_dunno
+
+.pending ul li.img_dunno
 {
 	border:orange 5px solid;
 }
+.pending ul li.img_dunno:after{
+	border-top: 40px solid orange;
+}
+.pending ul li.img_dunno:before {
+	content: "\e085";
+	font-size: 16px;
+}
 
-.pending img.img_invalid
+.pending ul li.img_invalid
 {
 	border:red 5px solid;
 }
+.pending ul li.img_invalid:after{
+	border-top: 40px solid red;
+}
+.pending ul li.img_invalid:before {
+	content: "\e089";
+	font-size: 16px;
+}
 
 
+.pending ul li.img_duble
+{
+	border:#086eb8  5px solid;
+}
+.pending ul li.img_duble:after{
+	border-top:#086eb8 40px solid;
+}
+.pending ul li.img_duble:before {
+	content: "\e08f";
+	font-size: 16px;
+}
 
-
+.pending ul li:before {
+	position: absolute;
+	color: #fff;
+	right: 4px;
+	top: 0;
+	font-family: iconFont;
+	z-index: 1002;
+	display: block;
+}
 

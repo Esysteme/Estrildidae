@@ -1,0 +1,45 @@
+graph test {
+sep="+150"
+overlap=scalexy
+splines=truelink__species_sub__user_main -- user_main
+species_picture_search -- user_main
+bird_ring -- species_sub
+link__species_sub__user_main -- species_sub
+range_map_polygon -- species_sub
+species_picture_search -- species_source_main
+species_source_detail -- species_source_main
+species_source_data -- species_source_detail
+link__species_picture__species_picture_tag -- species_picture_tag
+link__species_picture_id__species_picture_search -- species_picture_search
+link__species_picture__species_picture_tag -- species_picture_main
+link__species_picture_id__species_picture_search -- species_picture_id
+species_class -- species_phylum
+species_family -- species_order
+bird_ring -- species_main
+link__species_authorities__species_main -- species_main
+link__species_sub__user_main -- species_main
+range_map_polygon -- species_main
+scientific_name_translation -- species_main
+species_picture_search -- species_main
+species_source_detail -- species_main
+species_sub -- species_main
+species_phylum -- species_kingdom
+species_main -- species_genus
+species_genus -- species_family
+species_order -- species_class
+link__species_authorities__species_main -- species_authorities
+species_picture_id -- species_author
+species_picture_main -- species_author
+link__species_authorities__species_main -- scientific_name_translation
+link__species_authorities__species_main -- scientific_name_translation
+range_map_coordinates -- range_map_polygon
+range_map_polygon -- range_map_main
+history_main -- history_etat
+history_main -- history_action
+user_main -- group
+contact_us -- geolocalisation_country
+contact_us -- geolocalisation_city
+bird_ring -- bird_gender
+bird_ring -- bird_breeder
+articles_header -- articles_main
+}

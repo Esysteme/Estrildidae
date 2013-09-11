@@ -1,7 +1,7 @@
 <?php
 use \glial\synapse\Controller;
 
-class home extends Controller
+class Home extends Controller
 {
 	function index()
 	{

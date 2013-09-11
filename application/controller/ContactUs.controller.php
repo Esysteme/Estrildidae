@@ -4,7 +4,7 @@ use \glial\synapse\singleton;
 use \glial\synapse\Controller;
 
 
-class contact_us extends Controller
+class ContactUs extends Controller
 {
 
 	function index()

@@ -3,7 +3,7 @@
 use \glial\synapse\Controller;
 
 
-class article extends Controller
+class Article extends Controller
 {
 
 	public $module_group = "Articles";

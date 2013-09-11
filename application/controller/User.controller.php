@@ -3,7 +3,7 @@
 use \glial\synapse\singleton;
 use \glial\synapse\Controller;
 
-class user extends Controller {
+class User extends Controller {
 
 	public $module_group = "Users & access management";
 	public $method_administration = array("user", "roles");

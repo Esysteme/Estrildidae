@@ -2,7 +2,7 @@
 use \glial\synapse\Controller;
 
 
-class avibase extends Controller {
+class Avibase extends Controller {
 	function get_pic()
 	{
 		$this->view = false;

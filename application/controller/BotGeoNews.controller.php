@@ -7,7 +7,7 @@
 use \glial\synapse\Controller;
 
 
-class bot_geo_news extends Controller
+class BotGeoNews extends Controller
 {
 
 	public $module_group = "species";

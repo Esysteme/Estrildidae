@@ -1,6 +1,9 @@
 <?php
 
-class bot_iucn extends controller {
+use \glial\synapse\Controller;
+
+
+class BotIucn extends Controller {
 
 	public $module_group = "BOT";
 

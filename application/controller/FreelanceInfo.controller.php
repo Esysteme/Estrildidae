@@ -5,7 +5,7 @@ use glial\parser\freelance_info\freelance_info;
 use \glial\synapse\Controller;
 
 
-class freelance_info2 extends Controller
+class FreelanceInfo extends Controller
 {
 
 	function index()

@@ -4,7 +4,7 @@ include CONFIG . 'history.config.php';
 use \glial\synapse\Controller;
 
 
-class history extends Controller {
+class History extends Controller {
 
 	public $module_group = "Administration";
 

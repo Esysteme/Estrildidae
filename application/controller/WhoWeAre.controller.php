@@ -1,1 +1,1 @@
-<?phpuse \glial\synapse\Controller;class who_we_are extends Controller{    function index()    {        $this->title = __("Who we are?");        $this->ariane = "> " . $this->title;    }}
+<?phpuse \glial\synapse\Controller;class WhoWeAre extends Controller{    function index()    {        $this->title = __("Who we are?");        $this->ariane = "> " . $this->title;    }}

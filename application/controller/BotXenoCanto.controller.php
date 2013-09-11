@@ -2,7 +2,7 @@
 use \glial\synapse\Controller;
 
 
-class bot_xeno_canto extends Controller {
+class BotXenoCanto extends Controller {
 
 	public $module_group = "BOT";
 

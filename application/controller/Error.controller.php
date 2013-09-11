@@ -1,7 +1,7 @@
 <?php
 use \glial\synapse\Controller;
 
-class error extends Controller
+class Error extends Controller
 {
 	
 	public $module_group = "Media";

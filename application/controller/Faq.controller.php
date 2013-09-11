@@ -3,7 +3,7 @@
 use \glial\synapse\Controller;
 
 
-class faq extends Controller
+class Faq extends Controller
 {
 	
 	

@@ -1,7 +1,6 @@
 <?php
 
-include_once(LIBRARY . "Glial/species/species.php");
-
+use \glial\species\Species;
 
 $libelle = "";
 
@@ -38,6 +37,6 @@ foreach ($data['species'] as $var)
 	}
 	
 
-	species_tree::html_pic($url, $img, $var['scientific_name'], $var['scientific_name']);
+	Species::html_pic($url, $img, $var['scientific_name'], $var['scientific_name']);
 }
 

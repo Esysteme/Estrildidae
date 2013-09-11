@@ -5,7 +5,7 @@ use glial\synapse\singleton;
 use \glial\synapse\Controller;
 
 
-class photo extends Controller
+class Photo extends Controller
 {
 
 	public $module_group = "Media";

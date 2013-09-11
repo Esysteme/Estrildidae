@@ -154,10 +154,10 @@ echo "<h3>".__("Articles")."</h3>";
 echo "<div class=\"box-contener\">";
 
 
-$login = new controller("article", "block_article", "");
-$login->recursive = true;
-$login->get_controller();
-$login->display();
+
+
+\glial\synapse\FactoryController::addNode("article", "block_article", "");
+
 
 
 
