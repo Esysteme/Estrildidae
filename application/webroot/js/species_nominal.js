@@ -19,13 +19,21 @@ $(document).ready(function(){
 				
 				var page2 = $(this).children('a').attr('href');
 				var id_a = $(this).attr('id');
-				var target = 'content_1';
 				
 				
-				url_ajax = page2+'>'+target+'/';
+				//var destination = $(this).parents("ul:first").next();
+				
+				
+				var controller = $(this).children('a').attr('data-link');
+				var target = $(this).children('a').attr('data-target');
+				
+				url_ajax = page2+controller+'>'+target+'/';
 				
 	
-       			$('#content_1').hide(0, function(){
+				alert(url_ajax);
+	
+	
+       			target.hide(0, function(){
 				$(this).load(url_ajax, 'data', function(){
 					$(this).fadeIn(200);
 					
