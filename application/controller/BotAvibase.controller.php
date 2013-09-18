@@ -27,8 +27,6 @@ class BotAvibase extends Controller
 
 	function get_infos_from_source()
 	{
-
-
 		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");

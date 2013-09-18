@@ -1,6 +1,9 @@
 <?php
 
 
+
+
+
 $id_node = "node-".uniqid();
 
 
@@ -11,6 +14,7 @@ if ( empty($url[4]) || strstr($url[4], ">") )
 	$url[5] = 'empty';
 }
 
+debug($url);
 
 
 if ( count($data['pending']) > 0 )
@@ -24,6 +28,7 @@ if ( count($data['pending']) > 0 )
 		if ( ($url[5] === 'empty' && $i === 0) || ($url[5] === $tab['name']) )
 		{
 			echo '<li id="' . $tab['name'] . '" class="selected">';
+            $url[5] = -1;
 		}
 		else
 		{

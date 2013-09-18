@@ -1,9 +1,9 @@
 <?php
 
+use \glial\synapse\Controller;
 
 
-
-class partner extends Controller
+class Partner extends Controller
 {
 	
 	function index()
@@ -11,10 +11,6 @@ class partner extends Controller
 		$this->title = __("Partner");
 		$this->ariane = "> ".$this->title;
 		
-
-
-
-
 	}
 }
 

@@ -2,7 +2,7 @@
 use \glial\synapse\Controller;
 
 
-class group extends Controller
+class Group extends Controller
 {
 
 	public $module_group = "Users & access management";
