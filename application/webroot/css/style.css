@@ -1703,3 +1703,7 @@ select.int{width:50px}
 	display: block;
 }
 
+.total
+{
+    font-weight: 700;
+}

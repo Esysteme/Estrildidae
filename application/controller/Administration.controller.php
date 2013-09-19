@@ -23,29 +23,34 @@ class Administration extends Controller
 
         if (is_dir($dir)) {
 
+
+
             $acl = new Acl($GLOBALS['_SITE']['id_group']);
 
-            $list_class = glob($dir . "*.controller.php");
 
+            $path = $dir . "/*.controller.php";
+            $list_class = glob($path);
+
+
+            $method_class_controller = get_class_methods("\glial\synapse\Controller");
+
+            debug($list_class);
             foreach ($list_class as $file) {
                 if (strstr($file, '.controller.php')) {
 
-
-                    $class_name = explode(".", $file);
+                    $full_name = pathinfo($file);
+                    $class_name = explode(".", $full_name['filename']);
                     $nom = $class_name[0];
-                    
-                    list (,$nom) = explode("/",$nom);
 
                     if ($nom != __CLASS__ && $nom != "History" && $nom != "comment") {
-                        require($dir . $file);
+                        require($file);
                     }
-
 
                     $class = new $nom("", "", "");
                     $tab = get_class_methods($nom);
-                    $tab2 = get_class_methods("\glial\synapse\Controller");
+                    
 
-                    $tab3 = array_diff($tab, $tab2);
+                    $tab3 = array_diff($tab, $method_class_controller);
                     foreach ($tab3 as $name) {
 
                         if ($acl->isAllowed($nom, $name)) {
@@ -61,11 +66,9 @@ class Administration extends Controller
                         }
                     }
 
-                    echo "memory : " . (memory_get_usage() / 1024 / 1024) . " M  fichier : $file : type : " . filetype($dir . $file) . "\n<br />";
+                    echo "memory : " . (memory_get_usage() / 1024 / 1024) . " M  fichier : $file : type : " . filetype($file) . "\n<br />";
                 }
             }
-
-           
         }
 
 

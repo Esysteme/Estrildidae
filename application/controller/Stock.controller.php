@@ -9,7 +9,7 @@ class Stock extends Controller
 
     function index()
     {
-        $sql = "SELECT sum(male), sum(female), sum(unknow),a.id_species_main, a.id_species_sub,b.scientific_name from link__species_sub__user_main a
+        $sql = "SELECT sum(male) as male, sum(female) as female, sum(unknow) as unknow,sum(male)+sum(female)+sum(unknow) as total , a.id_species_main, a.id_species_sub,b.scientific_name from link__species_sub__user_main a
             inner join species_sub b on a.id_species_sub = b.id
         group by a.id_species_main, a.id_species_sub
         order by b.scientific_name";
