@@ -1,6 +1,6 @@
 <?php
 
-use \glial\synapse\singleton;
+
 use \glial\synapse\Controller;
 
 
@@ -10,7 +10,7 @@ class ContactUs extends Controller
 	function index()
 	{
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+
 
 
 
@@ -21,7 +21,7 @@ class ContactUs extends Controller
 			$contact_us['contact_us']['date'] = date('c');
 			$contact_us['contact_us']['ip'] = $_SERVER['REMOTE_ADDR'];
 
-			if ( $_SQL->sql_save($contact_us) )
+			if ( $this->db['mysql_write']->sql_save($contact_us) )
 			{
 				$msg = $GLOBALS['_LG']->getTranslation(__('Your message has been sent'));
 				$title = $GLOBALS['_LG']->getTranslation(__("Success"));
@@ -34,7 +34,7 @@ class ContactUs extends Controller
 			else
 			{
 				
-				$error = $_SQL->sql_error();
+				$error = $this->db['mysql_write']->sql_error();
 				$_SESSION['ERROR'] = $error;
 				
 				$msg = $GLOBALS['_LG']->getTranslation(__('Please verify your informations'));
@@ -87,8 +87,8 @@ class ContactUs extends Controller
 
 
 		$sql = "SELECT id, libelle from geolocalisation_country where libelle != '' order by libelle asc";
-		$res = $_SQL->sql_query($sql);
-		$this->data['geolocalisation_country'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['geolocalisation_country'] = $this->db['mysql_write']->sql_to_array($res);
 
 		$this->set('data', $this->data);
 	}

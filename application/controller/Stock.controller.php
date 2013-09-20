@@ -15,8 +15,8 @@ class Stock extends Controller
         order by b.scientific_name";
         
         
-        $res = $GLOBALS['_SQL']->sql_query($sql);
-        $data['list_stock'] = $GLOBALS['_SQL']->sql_to_array($res);
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $data['list_stock'] = $this->db['mysql_write']->sql_to_array($res);
         
         $this->set('data',$data);
         

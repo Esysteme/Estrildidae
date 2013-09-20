@@ -14,7 +14,7 @@ class User extends Controller {
 
 		$this->layout_name ="admin";
 		
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT a.id, a.firstname, a.name, b.id_country, b.libelle, COUNT( d.point ) AS points, e.name as rank, date_last_connected
 			FROM user_main a
@@ -27,15 +27,15 @@ class User extends Controller {
 			ORDER BY points DESC,  date_last_connected desc
 			LIMIT 100";
 
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 
 		$this->set("data", $data);
 	}
 
 	function login($bypass = false) {
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		if ($_SERVER['REQUEST_METHOD'] == "POST" || $bypass)
 		{
@@ -44,19 +44,19 @@ class User extends Controller {
 
 				if (!$bypass)
 				{
-					$password = $_SQL->sql_real_escape_string(sha1(sha1($_POST['password'] . sha1($_POST['login']))));
+					$password = $this->db['mysql_write']->sql_real_escape_string(sha1(sha1($_POST['password'] . sha1($_POST['login']))));
 				}
 				else
 				{
 					$password = $_POST['password'];
 				}
 
-				$sql = "select * from user_main where login = '" . $_SQL->sql_real_escape_string($_POST['login']) . "'"; // and password ='" . $password . "'
-				$res = $_SQL->sql_query($sql);
+				$sql = "select * from user_main where login = '" . $this->db['mysql_write']->sql_real_escape_string($_POST['login']) . "'"; // and password ='" . $password . "'
+				$res = $this->db['mysql_write']->sql_query($sql);
 
-				if ($_SQL->sql_num_rows($res) == 1)
+				if ($this->db['mysql_write']->sql_num_rows($res) == 1)
 				{
-					$ob = $_SQL->sql_fetch_object($res);
+					$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 
 					if ($ob->password === $password)
@@ -65,8 +65,8 @@ class User extends Controller {
 						SetCookie("IdUser", $ob->id, time() + 60 * 60 * 24 * 365, '/', $_SERVER['SERVER_NAME'], false, true);
 						SetCookie("Passwd", sha1($password . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR']), time() + 60 * 60 * 24 * 365, '/', $_SERVER['SERVER_NAME'], false, true);
 
-						$sql = "UPDATE user_main SET date_last_login = now() where id='" . $_SQL->sql_real_escape_string($ob->id) . "'";
-						$_SQL->sql_query($sql);
+						$sql = "UPDATE user_main SET date_last_login = now() where id='" . $this->db['mysql_write']->sql_real_escape_string($ob->id) . "'";
+						$this->db['mysql_write']->sql_query($sql);
 
 						$this->log($ob->id, true);
 
@@ -127,22 +127,22 @@ class User extends Controller {
 		die(); // voir dans le boot.php
 
 		global $_SITE;
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 		$_SITE['IdUser'] = -1;
 		$_SITE['id_group'] = 1;
 
 		if (!empty($_COOKIE['IdUser']) && !empty($_COOKIE['Passwd']))
 		{
-			$sql = "select * from user_main where id = '" . $_SQL->sql_real_escape_string($_COOKIE['IdUser']) . "'";
-			$res = $_SQL->sql_query($sql);
+			$sql = "select * from user_main where id = '" . $this->db['mysql_write']->sql_real_escape_string($_COOKIE['IdUser']) . "'";
+			$res = $this->db['mysql_write']->sql_query($sql);
 
 			debug("wdxfrgwdfgwdfg");
 			die();
 
 
-			if ($_SQL->sql_num_rows($res) == 1)
+			if ($this->db['mysql_write']->sql_num_rows($res) == 1)
 			{
-				$ob = $_SQL->sql_fetch_object($res);
+				$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 				debug($ob);
 
@@ -155,8 +155,8 @@ class User extends Controller {
 
 					$GLOBALS['_SITE']['id_group'] = $_SITE['id_group'];
 
-					$sql = "UPDATE user_main SET date_last_connected = now() where id='" . $_SQL->sql_real_escape_string($_SITE['IdUser']) . "'";
-					$_SQL->sql_query($sql);
+					$sql = "UPDATE user_main SET date_last_connected = now() where id='" . $this->db['mysql_write']->sql_real_escape_string($_SITE['IdUser']) . "'";
+					$this->db['mysql_write']->sql_query($sql);
 				}
 			}
 		}
@@ -175,20 +175,20 @@ class User extends Controller {
 		{
 			if (mail::IsSyntaxEmail($_POST['newsletter']))
 			{
-				$sql = "select * from UserNewsLetter where Email = '" . $_SQL->sql_real_escape_string($_POST['newsletter']) . "'";
+				$sql = "select * from UserNewsLetter where Email = '" . $this->db['mysql_write']->sql_real_escape_string($_POST['newsletter']) . "'";
 				$res = sql::sql_query($sql);
 
 
-				if ($_SQL->sql_num_rows($res) != 0)
+				if ($this->db['mysql_write']->sql_num_rows($res) != 0)
 				{
 					$_MSG = __("You are removed from our newslettter");
-					$sql = "DELETE FROM UserNewsLetter where Email = '" . $_SQL->sql_real_escape_string($_POST['newsletter']) . "'";
+					$sql = "DELETE FROM UserNewsLetter where Email = '" . $this->db['mysql_write']->sql_real_escape_string($_POST['newsletter']) . "'";
 					sql::sql_query($sql);
 				}
 				else
 				{
 					$sql = "INSERT INTO UserNewsLetter SET 
-					Email = '" . $_SQL->sql_real_escape_string($_POST['newsletter']) . "', 
+					Email = '" . $this->db['mysql_write']->sql_real_escape_string($_POST['newsletter']) . "', 
 					IP='" . $_SERVER['REMOTE_ADDR'] . "', 
 					UserAgent='" . $_SERVER['HTTP_USER_AGENT'] . "', 
 					DateInserted=now()";
@@ -219,12 +219,12 @@ class User extends Controller {
 
 
 		$this->layout_name = false;
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
-		$sql = "SELECT libelle, id FROM geolocalisation_city WHERE libelle LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' 
-		AND id_geolocalisation_country='" . $_SQL->sql_real_escape_string($_GET['country']) . "' ORDER BY libelle LIMIT 0,100";
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$sql = "SELECT libelle, id FROM geolocalisation_city WHERE libelle LIKE '" . $this->db['mysql_write']->sql_real_escape_string($_GET['q']) . "%' 
+		AND id_geolocalisation_country='" . $this->db['mysql_write']->sql_real_escape_string($_GET['country']) . "' ORDER BY libelle LIMIT 0,100";
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);
 	}
 
@@ -240,12 +240,12 @@ class User extends Controller {
 
 
 		$this->layout_name = false;
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
-		$sql = "SELECT firstname, name, id FROM species_author WHERE name LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' OR firstname LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%'
+		$sql = "SELECT firstname, name, id FROM species_author WHERE name LIKE '" . $this->db['mysql_write']->sql_real_escape_string($_GET['q']) . "%' OR firstname LIKE '" . $this->db['mysql_write']->sql_real_escape_string($_GET['q']) . "%'
 		ORDER BY name, firstname LIMIT 0,100";
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);
 	}
 
@@ -277,11 +277,11 @@ class User extends Controller {
 
 		';
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT id, libelle from geolocalisation_country where libelle != '' order by libelle asc";
-		$res = $_SQL->sql_query($sql);
-		$this->data['geolocalisation_country'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['geolocalisation_country'] = $this->db['mysql_write']->sql_to_array($res);
 
 		$this->set('data', $this->data);
 
@@ -321,10 +321,10 @@ class User extends Controller {
 
 			$data['user_main']['firstname'] = str_replace(" - ", "-", $firstname);
 
-			if (!$_SQL->sql_save($data))
+			if (!$this->db['mysql_write']->sql_save($data))
 			{
 
-				$error = $_SQL->sql_error();
+				$error = $this->db['mysql_write']->sql_error();
 				$_SESSION['ERROR'] = $error;
 
 				$title = $GLOBALS['_LG']->getTranslation(__("Registration error"));
@@ -404,13 +404,13 @@ class User extends Controller {
 		if (!empty($_POST['user_main']['email']))
 		{
 
-			$_SQL = singleton::getInstance(SQL_DRIVER);
+			
 
-			$sql = "SELECT * FROM user_main WHERE email='" . $_SQL->sql_real_escape_string($_POST['user_main']['email']) . "'";
+			$sql = "SELECT * FROM user_main WHERE email='" . $this->db['mysql_write']->sql_real_escape_string($_POST['user_main']['email']) . "'";
 
-			$res = $_SQL->sql_query($sql);
+			$res = $this->db['mysql_write']->sql_query($sql);
 
-			if ($_SQL->sql_num_rows($res) === 0)
+			if ($this->db['mysql_write']->sql_num_rows($res) === 0)
 			{
 
 				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
@@ -431,12 +431,12 @@ class User extends Controller {
 			else
 			{
 
-				$ob = $_SQL->sql_fetch_object($res);
+				$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 				$recover = array();
 				$recover['user_main']['id'] = $ob->id;
 				$recover['user_main']['key_auth'] = sha1(uniqid());
-				if (!$_SQL->sql_save($recover))
+				if (!$this->db['mysql_write']->sql_save($recover))
 				{
 					die('problem with set key_auth');
 				}
@@ -477,18 +477,18 @@ class User extends Controller {
 
 	function password_recover($param) {
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 
 		$this->title = __("Recover your password");
 		$this->ariane = "> <a href=\"" . LINK . "user/\">" . __("Members") . "</a> > " . $this->title;
 
-		$sql = "SELECT * FROM user_main WHERE email='" . $_SQL->sql_real_escape_string($param[0]) . "'
-			AND key_auth='" . $_SQL->sql_real_escape_string($param[1]) . "'";
+		$sql = "SELECT * FROM user_main WHERE email='" . $this->db['mysql_write']->sql_real_escape_string($param[0]) . "'
+			AND key_auth='" . $this->db['mysql_write']->sql_real_escape_string($param[1]) . "'";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		if ($_SQL->sql_num_rows($res) === 0)
+		if ($this->db['mysql_write']->sql_num_rows($res) === 0)
 		{
 			$title = $GLOBALS['_LG']->getTranslation(__("Error"));
 			$msg = $GLOBALS['_LG']->getTranslation(__("This link to recover your password is not valid anymore. Make a new request."));
@@ -502,14 +502,14 @@ class User extends Controller {
 			if ($_SERVER['REQUEST_METHOD'] == "POST")
 			{
 
-				$ob = $_SQL->sql_fetch_object($res);
+				$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 				$recover = array();
 				$recover['user_main']['id'] = $ob->id;
 				$recover['user_main']['password'] = $_POST['user_main']['password'];
 		
 
-				if ($_SQL->sql_save($recover))
+				if ($this->db['mysql_write']->sql_save($recover))
 				{
 					$tmp = array();
 					$tmp['user_main']['id'] = $ob->id;
@@ -517,9 +517,9 @@ class User extends Controller {
 					$tmp['user_main']['password'] = sha1(sha1($_POST['user_main']['password'] . sha1($ob->email)));
 					$_POST['user_main']['password2'] = sha1(sha1($_POST['user_main']['password'] . sha1($ob->email)));
 					
-					if (!$_SQL->sql_save($tmp))
+					if (!$this->db['mysql_write']->sql_save($tmp))
 					{
-						$error = $_SQL->sql_error();
+						$error = $this->db['mysql_write']->sql_error();
 						print_r($error);
 						print_r($tmp);
 						
@@ -539,7 +539,7 @@ class User extends Controller {
 				}
 				else
 				{
-					$error = $_SQL->sql_error();
+					$error = $this->db['mysql_write']->sql_error();
 					$_SESSION['ERROR'] = $error;
 
 					$title = $GLOBALS['_LG']->getTranslation(__("Error"));
@@ -554,25 +554,25 @@ class User extends Controller {
 	}
 
 	function block_last_registered() {
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "select a.name, a.firstname, lower(b.iso) as iso, a.date_created, a.id from user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
 		where is_valid ='1' order by date_created DESC LIMIT 10";
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);
 	}
 	
 	
 	function block_last_online() {
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "select a.name, a.firstname, lower(b.iso) as iso, a.date_last_connected, a.id from user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
 		where is_valid ='1' order by date_last_connected DESC LIMIT 10";
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);
 	}
 	
@@ -589,14 +589,14 @@ class User extends Controller {
 
 	function confirmation($data) {
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
-		$sql = "SELECT * FROM user_main WHERE email = '" . $_SQL->sql_real_escape_string($data[0]) . "'";
-		$res = $_SQL->sql_query($sql);
+		$sql = "SELECT * FROM user_main WHERE email = '" . $this->db['mysql_write']->sql_real_escape_string($data[0]) . "'";
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		if ($_SQL->sql_num_rows($res) == 1)
+		if ($this->db['mysql_write']->sql_num_rows($res) == 1)
 		{
-			$ob = $_SQL->sql_fetch_object($res);
+			$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 			if (($ob->key_auth == $data[1]) && !empty($ob->key_auth))
 			{
@@ -604,8 +604,8 @@ class User extends Controller {
 				$title = "New user account confirmed !";
 				$msg = "Your registration is now complete !";
 
-				$sql = "UPDATE user_main SET is_valid = 1, key_auth ='',id_group=2  WHERE email = '" . $_SQL->sql_real_escape_string($data[0]) . "'";
-				$_SQL->sql_query($sql);
+				$sql = "UPDATE user_main SET is_valid = 1, key_auth ='',id_group=2  WHERE email = '" . $this->db['mysql_write']->sql_real_escape_string($data[0]) . "'";
+				$this->db['mysql_write']->sql_query($sql);
 
 
 				$_POST['login'] = $ob->login;
@@ -639,7 +639,7 @@ class User extends Controller {
 	}
 
 	private function log($id_user, $success) {
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$data = array();
 		$data['user_main_login']['id_user_main'] = $id_user;
@@ -648,10 +648,10 @@ class User extends Controller {
 		$data['user_main_login']['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 		$data['user_main_login']['is_logged'] = $success;
 
-		if (!$gg = $_SQL->sql_save($data))
+		if (!$gg = $this->db['mysql_write']->sql_save($data))
 		{
 			var_dump($success);
-			debug($_SQL->error);
+			debug($this->db['mysql_write']->error);
 			debug($gg);
 			die();
 		}
@@ -668,13 +668,13 @@ class User extends Controller {
 				$data = array();
 				$data['shoutbox'] = $_POST['shoutbox'];
 				$data['shoutbox']['id_user_main'] = $GLOBALS['_SITE']['IdUser'];
-				$data['shoutbox']['id_user_main__box'] = $GLOBALS['_SQL']->sql_real_escape_string($param[0]);
+				$data['shoutbox']['id_user_main__box'] = $this->db['mysql_write']->sql_real_escape_string($param[0]);
 				$data['shoutbox']['date'] = date("c");
 				$data['shoutbox']['id_history_etat'] = 1;
 
-				if (!$GLOBALS['_SQL']->sql_save($data))
+				if (!$this->db['mysql_write']->sql_save($data))
 				{
-					debug($GLOBALS['_SQL']->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 					die("problem to save msg en shoutbox");
 				}
 
@@ -682,18 +682,18 @@ class User extends Controller {
 				exit;
 			}
 		}
-		$this->data['id'] = $GLOBALS['_SQL']->sql_real_escape_string($param[0]);
+		$this->data['id'] = $this->db['mysql_write']->sql_real_escape_string($param[0]);
 
 		$sql = "SELECT  a.id_user_main, a.date, a.text, name,firstname, c.iso, b.id
 			FROM shoutbox a
 			INNER JOIN user_main b ON a.id_user_main = b.id
 			INNER JOIN geolocalisation_country c ON c.id = b.id_geolocalisation_country
 			WHERE a.id_history_etat=1
-			AND id_user_main__box = " . $GLOBALS['_SQL']->sql_real_escape_string($param[0]) . "
+			AND id_user_main__box = " . $this->db['mysql_write']->sql_real_escape_string($param[0]) . "
 			ORDER BY a.date asc";
 
-		$res = $GLOBALS['_SQL']->sql_query($sql);
-		$this->data['shoutbox'] = $GLOBALS['_SQL']->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['shoutbox'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -701,10 +701,10 @@ class User extends Controller {
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
 		INNER JOIN geolocalisation_city c ON a.id_geolocalisation_city = c.id
 		
-where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($param[0]) . "'";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($param[0]) . "'";
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$user = $GLOBALS['_SQL']->sql_to_array($res);
+		$user = $this->db['mysql_write']->sql_to_array($res);
 		$this->data['user'] = $user[0];
 
 		$this->title = $this->data['user']['firstname'] . ' ' . $this->data['user']['name'];
@@ -713,17 +713,17 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($param[0]) . "'";
 		$this->data['name'] = $this->title;
 
 		$sql = "SELECT title, id, point FROM history_action WHERE point !=0 ORDER BY title";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$this->data['actions'] = $GLOBALS['_SQL']->sql_to_array($res);
+		$this->data['actions'] = $this->db['mysql_write']->sql_to_array($res);
 
 		$sql = "SELECT d.id, COUNT( d.point ) AS points, point
 FROM history_main c
 LEFT JOIN history_action d ON d.id = c.id_history_action
-WHERE c.id_user_main =  '" . $GLOBALS['_SQL']->sql_real_escape_string($param[0]) . "' and d.point != 0
+WHERE c.id_user_main =  '" . $this->db['mysql_write']->sql_real_escape_string($param[0]) . "' and d.point != 0
 GROUP BY d.id";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
-		$tab_point = $GLOBALS['_SQL']->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$tab_point = $this->db['mysql_write']->sql_to_array($res);
 
 
 		foreach ($tab_point as $line)
@@ -751,17 +751,17 @@ GROUP BY d.id";
 			exit;
 		}
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 
 		$sql = "SELECT * FROM user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
 		INNER JOIN geolocalisation_city c ON a.id_geolocalisation_city = c.id
 		
-where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdUser']) . "'";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SITE']['IdUser']) . "'";
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$user = $GLOBALS['_SQL']->sql_to_array($res);
+		$user = $this->db['mysql_write']->sql_to_array($res);
 		$this->data['user'] = $user[0];
 
 
@@ -803,10 +803,10 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						$data['mailbox_main']['id_mailbox_etat'] = 2;
 						$data['mailbox_main']['id_history_etat'] = 1;
 
-						if ($GLOBALS['_SQL']->sql_save($data))
+						if ($this->db['mysql_write']->sql_save($data))
 						{
 							$data['mailbox_main']['id_user_main__box'] = $_POST['mailbox_main']['id_user_main__to'];
-							if ($GLOBALS['_SQL']->sql_save($data))
+							if ($this->db['mysql_write']->sql_save($data))
 							{
 								$msg = $GLOBALS['_LG']->getTranslation(__("Your message has been sent."));
 								$title = $GLOBALS['_LG']->getTranslation(__("Success"));
@@ -861,8 +861,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						AND id_user_main__to = '" . $GLOBALS['_SITE']['IdUser'] . "'
 							AND id_history_etat = 1
 							ORDER BY date DESC";
-				$res = $GLOBALS['_SQL']->sql_query($sql);
-				$this->data['mail'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$this->data['mail'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -882,8 +882,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						AND id_user_main__from = '" . $GLOBALS['_SITE']['IdUser'] . "'
 							AND id_history_etat = 1
 							ORDER BY date DESC";
-				$res = $GLOBALS['_SQL']->sql_query($sql);
-				$this->data['mail'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$this->data['mail'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -904,8 +904,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						WHERE id_user_main__box = '" . $GLOBALS['_SITE']['IdUser'] . "'
 							AND id_history_etat = 1
 							ORDER BY date DESC";
-				$res = $GLOBALS['_SQL']->sql_query($sql);
-				$this->data['mail'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$this->data['mail'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -925,8 +925,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						WHERE id_user_main__box = '" . $GLOBALS['_SITE']['IdUser'] . "'
 							AND id_history_etat = 3
 							ORDER BY date DESC";
-				$res = $GLOBALS['_SQL']->sql_query($sql);
-				$this->data['mail'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$this->data['mail'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -943,13 +943,13 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 					INNER JOIN user_main c ON a.id_user_main__from = c.id
 					INNER JOIN geolocalisation_country y on c.id_geolocalisation_country = y.id
 					
-						WHERE a.id = '" . $GLOBALS['_SQL']->sql_real_escape_string($param[1]) . "' 
+						WHERE a.id = '" . $this->db['mysql_write']->sql_real_escape_string($param[1]) . "' 
 						AND id_user_main__box = '" . $GLOBALS['_SITE']['IdUser'] . "'
 							
 							AND id_history_etat = 1
 							ORDER BY date DESC";
-				$res = $GLOBALS['_SQL']->sql_query($sql);
-				$this->data['mail'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$this->data['mail'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 				if ($this->data['mail'][0]['id_mailbox_etat'] == 2 && $GLOBALS['_SITE']['IdUser'] != $this->data['mail'][0]['id_user_main__from'])
@@ -959,7 +959,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 						AND id_user_main__to = '" . $this->data['mail'][0]['id_user_main__to'] . "'
 						AND date = '" . $this->data['mail'][0]['date'] . "'";
 
-					$GLOBALS['_SQL']->sql_query($sql);
+					$this->db['mysql_write']->sql_query($sql);
 				}
 
 
@@ -1000,16 +1000,16 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 
 
 		$this->layout_name = false;
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT name, firstname, id FROM user_main WHERE 
 			firstname != 'BOT'
 			AND id_group > 1
-			AND firstname LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' 
-			OR name LIKE '" . $_SQL->sql_real_escape_string($_GET['q']) . "%' 
+			AND firstname LIKE '" . $this->db['mysql_write']->sql_real_escape_string($_GET['q']) . "%' 
+			OR name LIKE '" . $this->db['mysql_write']->sql_real_escape_string($_GET['q']) . "%' 
 		ORDER BY firstname,name LIMIT 0,100";
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);
 	}
 
@@ -1026,7 +1026,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 			$this->data['item'] = '';
 		}
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$this->layout_name = "admin";
 
@@ -1035,8 +1035,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 			LEFT JOIN user_settings b ON a.id = b.id_user_main
 			WHERE a.id='" . $GLOBALS['_SITE']['IdUser'] . "'";
 
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->data['user'] = $data[0];
 
 		$this->title = __("Settings");
@@ -1068,7 +1068,7 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 	}
 
 	private function get_new_mail() {
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT count(1) as cpt FROM mailbox_main
 			WHERE id_user_main__box = '" . $GLOBALS['_SITE']['IdUser'] . "'
@@ -1078,8 +1078,8 @@ where a.id ='" . $GLOBALS['_SQL']->sql_real_escape_string($GLOBALS['_SITE']['IdU
 
 
 
-		$res = $_SQL->sql_query($sql);
-		$data = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 		return $data[0]["cpt"];
 	}
 	

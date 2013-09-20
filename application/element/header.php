@@ -1,29 +1,28 @@
 <?php
 
-use glial\synapse\Singleton;
+//use glial\synapse\Singleton;
 
-$_SQL = Singleton::getInstance(SQL_DRIVER);
 
 
 $sql = "select count(1) as cpt from user_main";
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberRegisters'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberRegisters'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 $sql = "select count(1) as cpt from species_picture_main";
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberPictures'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberPictures'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 $sql = "select count(1) as cpt from species_picture_in_wait a
 	INNER JOIN species_tree_id b ON b.id_species_main = a.id_species_main
 	WHERE b.id_species_family='438' and id_history_etat = 1";
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberPicturesInWait'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberPicturesInWait'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 $sql = "select count(1) as cpt from species_genus a
 	INNER JOIN species_main b ON b.id_species_genus = a.Id
 	WHERE a.id_species_family='438' and a.is_valid!=0";
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberEstrildidae'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberEstrildidae'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 $sql = "SELECT count(1) as cpt from species_sub c
 	INNER JOIN species_main b ON b.Id = c.id_species_main
@@ -37,13 +36,13 @@ $sql = "select count(1) as cpt from species_sub c
 	INNER JOIN species_genus a ON b.id_species_genus = a.Id
 	WHERE a.id_species_family='438'";
 
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberEstrildidaeSsp'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberEstrildidaeSsp'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 
 $sql = "select count(1) as cpt from species_sub";
-$res = $_SQL->sql_query($sql);
-$_SITE['NumberSsp'] = $_SQL->sql_fetch_array($res);
+$res = $this->db['mysql_write']->sql_query($sql);
+$_SITE['NumberSsp'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 
 
@@ -177,7 +176,7 @@ echo "<div style=\"float:right;\">
 		<div style=\"float:left; line-height:18px\">" . __("Language") . " :&nbsp;</div>
 		<ul id=\"langage\">";
 echo "<li class=\"top\"><span class=\"item_lg\"><img src=\"" . IMG . "language/" . $_LG->Get() . ".gif\" width=\"18\" height=\"12\" border=\"0\" />
-		<span id=\"lg_main\"> " . $_LG->languagesUTF8[$_LG->Get()] . "</span></span><ul class=\"sub\">\n";
+		<span id=\"lg_main\"> " . \Glial\I18n\I18n::$languagesUTF8[\Glial\I18n\I18n::Get()] . "</span></span><ul class=\"sub\">\n";
 
 
 

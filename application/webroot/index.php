@@ -20,6 +20,8 @@
  * @since         Gliale(tm) v 0.1
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+namespace glial;
 date_default_timezone_set("Europe/Paris");
 
 define("TIME_START", microtime(true));
@@ -29,6 +31,9 @@ ini_set('display_errors', 1);
 
 //to know if we are in cli
 define('IS_CLI', PHP_SAPI === 'cli');
+
+define('EOL',(IS_CLI)? PHP_EOL: "<br />");
+
 
 
 //Use the DS to separate the directories in other defines

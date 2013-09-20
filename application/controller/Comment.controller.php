@@ -1,8 +1,8 @@
 <?php
 
 
-use \glial\synapse\Singleton;
-use \glial\synapse\Controller;
+use \Glial\I18n\I18n;
+use \Glial\Synapse\Controller;
 
 
 class Comment extends Controller {
@@ -15,7 +15,7 @@ class Comment extends Controller {
 
 	function image($param) {
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		if ($_SERVER['REQUEST_METHOD'] == "POST")
 		{
@@ -36,7 +36,7 @@ class Comment extends Controller {
 				(empty($_POST['comment']['subscribe'])) ? $subscribe = 0 : $subscribe = 1;
 				$comment['comment__species_picture_main']['subscribe'] = $subscribe;
 
-				if ($_SQL->sql_save($comment))
+				if ($this->db['mysql_write']->sql_save($comment))
 				{
 					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
 					$msg = $GLOBALS['_LG']->getTranslation(__("Your comment has been added."));
@@ -56,7 +56,7 @@ class Comment extends Controller {
 				}
 
 				debug($comment);
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				die();
 			}
 		}
@@ -66,22 +66,23 @@ class Comment extends Controller {
 		$sql = "SELECT * FROM comment__species_picture_main a
 			INNER JOIN user_main b ON a.id_user_main = b.id
 			INNER JOIN 	geolocalisation_country c ON b.id_geolocalisation_country = c.id
-			WHERE a.id_species_picture_main = '" . $_SQL->sql_real_escape_string($param[0]) . "'";
-		$res = $_SQL->sql_query($sql);
-		$data['comment'] = $_SQL->sql_to_array($res);
+			WHERE a.id_species_picture_main = '" . $this->db['mysql_write']->sql_real_escape_string($param[0]) . "'";
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data['comment'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
-		$_LG = Singleton::getInstance("Language");
+		
 		$lg = explode(",", LANGUAGE_AVAILABLE);
 		$nbchoice = count($lg);
 
+        
 		for ($i = 0; $i < $nbchoice; $i++)
 		{
-			$data['geolocalisation_country'][$i]['libelle'] = $_LG->languagesUTF8[$lg[$i]];
+			$data['geolocalisation_country'][$i]['libelle'] = I18n::$languagesUTF8[$lg[$i]];
 			$data['geolocalisation_country'][$i]['id'] = $lg[$i];
 		}
-		$data['default_lg'] = $_LG->Get();
+		$data['default_lg'] = I18n::Get();
 
 		$data['id_photo'] = $param[0];
 

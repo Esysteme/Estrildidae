@@ -30,7 +30,7 @@ class Article extends Controller
 
 	function admin_create_articles()
 	{
-		if ( from() === "administration.controller.php" )
+		if ( from() === "Administration.controller.php" )
 		{
 			$module = array();
 			$module['picture'] = "administration/icon-document.png";

@@ -2,7 +2,7 @@
 
 //namespace Application;
 
-use \glial\synapse\singleton;
+use \glial\synapse\Singleton;
 use \glial\acl\Acl;
 use \glial\synapse\Controller;
 
@@ -23,10 +23,7 @@ class Administration extends Controller
 
         if (is_dir($dir)) {
 
-
-
             $acl = new Acl($GLOBALS['_SITE']['id_group']);
-
 
             $path = $dir . "/*.controller.php";
             $list_class = glob($path);

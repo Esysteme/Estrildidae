@@ -1,7 +1,7 @@
 <?php
 
 
-
+$id_node = "node-".uniqid();
 
 $var = $data['photo'][0];
 
@@ -36,10 +36,11 @@ echo __("Found on") . " : <a href=\"" . $var['url_context'] . "\" target=\"_BLAN
 
 
 
-$login = new controller("comment", "image", json_encode(array($var['id_photo'])));
-$login->recursive = true;
-$login->get_controller();
-$login->display();
+echo '<div id="'.$id_node.'">';
+\glial\synapse\FactoryController::addNode("comment",  "image", array($var['id_photo']));
+echo '</div>';
+
+
 
 
 

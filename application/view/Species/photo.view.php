@@ -1,7 +1,7 @@
 <?php
 
 
-use \glial\species\Species;
+use \Glial\Species\Species;
 
 //include_once(LIBRARY . "glial/species/species.php");
 

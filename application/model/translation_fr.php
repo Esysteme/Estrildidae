@@ -2,9 +2,9 @@
 
 namespace application\model;
 
-use glial\synapse\model;
+use Glial\Synapse\Model;
 
-class translation_fr extends model
+class translation_fr extends Model
 {
 
 	// Nous donnons donc à Gliale la structure d'un enregistrement
