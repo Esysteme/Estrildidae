@@ -2,9 +2,9 @@
 
 //namespace Application;
 
-use \glial\synapse\Singleton;
-use \glial\acl\Acl;
-use \glial\synapse\Controller;
+use \Glial\Synapse\Singleton;
+use \Glial\Acl\Acl;
+use \Glial\Synapse\Controller;
 
 class Administration extends Controller
 {
@@ -28,42 +28,53 @@ class Administration extends Controller
             $path = $dir . "/*.controller.php";
             $list_class = glob($path);
 
+            //$method_class_controller = get_class_methods("\Glial\Synapse\Controller");
 
-            $method_class_controller = get_class_methods("\glial\synapse\Controller");
-
-            debug($list_class);
             foreach ($list_class as $file) {
                 if (strstr($file, '.controller.php')) {
 
                     $full_name = pathinfo($file);
-                    $class_name = explode(".", $full_name['filename']);
-                    $nom = $class_name[0];
+                    list($className, ) = explode(".", $full_name['filename']);
 
-                    if ($nom != __CLASS__ && $nom != "History" && $nom != "comment") {
+
+                    if ($className != __CLASS__) {
                         require($file);
                     }
 
-                    $class = new $nom("", "", "");
-                    $tab = get_class_methods($nom);
-                    
+                    $class = new ReflectionClass($className);
+                    $tab_methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
 
-                    $tab3 = array_diff($tab, $method_class_controller);
-                    foreach ($tab3 as $name) {
 
-                        if ($acl->isAllowed($nom, $name)) {
+                    $methods = array();
+                    foreach ($tab_methods as $method) {
+                        if ($method->class === $className) {
 
-                            if (strstr($name, 'admin')) {
-
-                                if (property_exists($nom, "module_group")) {
-                                    $tmp = $class->$name();
-                                    $this->data['link'][$class->module_group][$tmp['name']] = $class->$name();
-                                    $this->data['link'][$class->module_group][$tmp['name']]['url'] = $nom . "/" . $name . "/";
-                                }
+                            if (strstr($method->name, 'admin')) {
+                                $methods[] = $method->name;
                             }
                         }
                     }
 
-                    echo "memory : " . (memory_get_usage() / 1024 / 1024) . " M  fichier : $file : type : " . filetype($file) . "\n<br />";
+                    //$tab3 = array_diff($methods, $method_class_controller);
+
+                    foreach ($methods as $name) {
+
+                        if ($acl->isAllowed($className, $name)) {
+
+
+
+                            if (property_exists($className, "module_group")) {
+
+                                $admin = new $className("", "", "");
+
+                                $tmp = $admin->$name();
+                                $this->data['link'][$admin->module_group][$tmp['name']] = $admin->$name();
+                                $this->data['link'][$admin->module_group][$tmp['name']]['url'] = $className . "/" . $name . "/";
+                            }
+                        }
+                    }
+
+                    // echo "memory : " . (memory_get_usage() / 1024 / 1024) . " M  fichier : $file : type : " . filetype($file) . "\n<br />";
                 }
             }
         }
@@ -107,15 +118,15 @@ class Administration extends Controller
                 }
 
                 $sql = "SHOW TABLES";
-                $res = $GLOBALS['_SQL']->sql_query($sql);
-                while ($table = $GLOBALS['_SQL']->sql_fetch_array($res)) {
+                $res = $this->db['mysql_write']->sql_query($sql);
+                while ($table = $this->db['mysql_write']->sql_fetch_array($res)) {
                     echo $table[0] . "\n";
 
 
                     $fp = fopen(TMP . "/database/" . $table[0] . ".table.txt", "w");
                     $sql = "DESCRIBE `" . $table[0] . "`";
-                    $res2 = $GLOBALS['_SQL']->sql_query($sql);
-                    while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res2)) {
+                    $res2 = $this->db['mysql_write']->sql_query($sql);
+                    while ($ob = $this->db['mysql_write']->sql_fetch_object($res2)) {
                         $data['field'][] = $ob->Field;
                     }
 
@@ -152,7 +163,7 @@ class Administration extends Controller
         return $module;
     }
 
-    function init()
+    private function init()
     {
 
         $_SQL = singleton::getInstance(SQL_DRIVER);
@@ -161,11 +172,11 @@ class Administration extends Controller
         if (true) { //ENVIRONEMENT
             $dir = APP_DIR . DS . "controller" . DS;
             $sql = "TRUNCATE TABLE acl_controller";
-            $GLOBALS['_SQL']->sql_query($sql);
+            $this->db['mysql_write']->sql_query($sql);
             $sql = "TRUNCATE TABLE acl_action";
-            $GLOBALS['_SQL']->sql_query($sql);
+            $this->db['mysql_write']->sql_query($sql);
             $sql = "TRUNCATE TABLE acl_action_group";
-            $GLOBALS['_SQL']->sql_query($sql);
+            $this->db['mysql_write']->sql_query($sql);
 
             if (is_dir($dir)) {
                 $dh = opendir($dir);
@@ -195,7 +206,7 @@ class Administration extends Controller
                             $acl_controller['acl_controller']['name'] = $name;
 
 
-                            $acl_action['acl_action']['id_acl_controller'] = $_SQL->sql_save($acl_controller);
+                            $acl_action['acl_action']['id_acl_controller'] = $this->db['mysql_write']->sql_save($acl_controller);
 
                             if (!$acl_action['acl_action']['id_acl_controller']) {
                                 echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . "<br />";
@@ -205,7 +216,7 @@ class Administration extends Controller
                             foreach ($tab3 as $name) {
                                 $acl_action['acl_action']['name'] = $name;
 
-                                if (!$_SQL->sql_save($acl_action)) {
+                                if (!$this->db['mysql_write']->sql_save($acl_action)) {
                                     echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist<br />";
                                 }
                             }
@@ -225,7 +236,7 @@ class Administration extends Controller
               Super administrator
              */
             $sql = "TRUNCATE TABLE acl_action_group";
-            $GLOBALS['_SQL']->sql_query($sql);
+            $this->db['mysql_write']->sql_query($sql);
             // &#2157;etre dans un fichier de config ?
             $this->add_acl("Super administrator", "*");
             $this->add_acl("Member", "user/block_last_registered");
@@ -278,11 +289,11 @@ class Administration extends Controller
             $sql = "SELECT id_group, b.name as id_action, c.name as id_controller FROM acl_action_group a
 		INNER JOIN acl_action b ON a.id_acl_action = b.id
 		INNER JOIN acl_controller c ON c.id = b.id_acl_controller";
-            $res = $GLOBALS['_SQL']->sql_query($sql);
+            $res = $this->db['mysql_write']->sql_query($sql);
 
             $data = array();
 
-            while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+            while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
                 $data[$ob->id_group][$ob->id_controller][$ob->id_action] = 1;
             }
 
@@ -309,8 +320,8 @@ class Administration extends Controller
 
         if (count($tree_id) == 1) {
             $sql = "select count(1) as cpt from `group` where name = '" . $group . "'";
-            $res = $GLOBALS['_SQL']->sql_query($sql);
-            $ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+            $res = $this->db['mysql_write']->sql_query($sql);
+            $ob = $this->db['mysql_write']->sql_fetch_object($res);
 
             if ($ob->cpt != 1) {
                 die("Group unknow !");
@@ -321,16 +332,16 @@ class Administration extends Controller
 
             if ($tree_id['1'] === "") {
                 $sql = "select count(1) as cpt from `acl_controller` where name = '" . $tree_id['0'] . "'";
-                $res = $GLOBALS['_SQL']->sql_query($sql);
-                $ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+                $res = $this->db['mysql_write']->sql_query($sql);
+                $ob = $this->db['mysql_write']->sql_fetch_object($res);
 
                 if ($ob->cpt < 1) {
                     die("Controller unknow !");
                 }
             } else {
                 $sql = "select count(1) as cpt from `acl_action` where name = '" . $tree_id['1'] . "'";
-                $res = $GLOBALS['_SQL']->sql_query($sql);
-                $ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+                $res = $this->db['mysql_write']->sql_query($sql);
+                $ob = $this->db['mysql_write']->sql_fetch_object($res);
 
                 if ($ob->cpt < 1) {
                     echo "group : " . $group . "<br />";
@@ -363,7 +374,7 @@ class Administration extends Controller
             die("Must be XX/YY with last '/'  XX/YY/");
         }
 
-        $GLOBALS['_SQL']->sql_query($sql);
+        $this->db['mysql_write']->sql_query($sql);
     }
 
     function generate_model()
@@ -374,9 +385,9 @@ class Administration extends Controller
         $this->layout_name = false;
 
         $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='species' and TABLE_TYPE = 'BASE TABLE'";
-        $res = $GLOBALS['_SQL']->sql_query($sql);
+        $res = $this->db['mysql_write']->sql_query($sql);
 
-        while ($ob2 = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+        while ($ob2 = $this->db['mysql_write']->sql_fetch_object($res)) {
 
             $table = $ob2->TABLE_NAME;
 
@@ -387,25 +398,25 @@ class Administration extends Controller
 
                 echo "FILE : " . $file . "\n";
 
-                $text = "<?php\n\nnamespace application\model;
-use glial\synapse\model;
+                $text = "<?php\n\nnamespace Application\Model;
+use \Glial\Synapse\Model;
 
-class " . $table . " extends model\n{\nvar \$schema = \"";
+class " . $table . " extends Model\n{\nvar \$schema = \"";
 
                 $sql = "SHOW CREATE TABLE `" . $table . "`";
-                $res2 = $GLOBALS['_SQL']->sql_query($sql);
+                $res2 = $this->db['mysql_write']->sql_query($sql);
 
-                $array = $GLOBALS['_SQL']->sql_fetch_array($res2);
+                $array = $this->db['mysql_write']->sql_fetch_array($res2);
 
                 $sql = "DESCRIBE `" . $table . "`";
-                $res3 = $GLOBALS['_SQL']->sql_query($sql);
+                $res3 = $this->db['mysql_write']->sql_query($sql);
 
                 $i = 0;
 
                 unset($data);
                 unset($field);
 
-                while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res3)) {
+                while ($ob = $this->db['mysql_write']->sql_fetch_object($res3)) {
                     $field[] = "\"" . $ob->Field . "\"";
 
                     $data[$table][$i]['field'] = $ob->Field;
@@ -463,16 +474,16 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
 
 
         $sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='arkadin' and TABLE_TYPE = 'BASE TABLE'";
-        $res = $GLOBALS['_SQL']->sql_query($sql);
-        while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+        $res = $this->db['mysql_write']->sql_query($sql);
+        while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
             shell_exec("mkdir -p " . $path . "structure/table/" . $ob->TABLE_NAME);
 
 
             // create structure table
             $sql2 = "SHOW CREATE TABLE `" . $ob->TABLE_NAME . "`;";
-            $res2 = $GLOBALS['_SQL']->sql_query($sql2);
+            $res2 = $this->db['mysql_write']->sql_query($sql2);
 
-            while ($ob2 = $GLOBALS['_SQL']->sql_fetch_array($res2, MYSQL_NUM)) {
+            while ($ob2 = $this->db['mysql_write']->sql_fetch_array($res2, MYSQL_NUM)) {
                 echo 'create table : ' . $ob->TABLE_NAME . "\n";
 
                 file_put_contents($path . "structure/table/" . $ob->TABLE_NAME . "/table.sql", $ob2[1] . ";");
@@ -481,10 +492,10 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
             // create index table
 
             $sql3 = "SHOW INDEXES FROM `" . $ob->TABLE_NAME . "`";
-            $res3 = $GLOBALS['_SQL']->sql_query($sql3);
+            $res3 = $this->db['mysql_write']->sql_query($sql3);
 
 
-            while ($ob3 = $GLOBALS['_SQL']->sql_fetch_object($res3)) {
+            while ($ob3 = $this->db['mysql_write']->sql_fetch_object($res3)) {
                 echo 'create indexes : ' . $ob->TABLE_NAME . "\n";
 
 
@@ -503,8 +514,8 @@ class " . $table . " extends model\n{\nvar \$schema = \"";
         }
 
         $sql33 = "SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA ='arkadin' and TABLE_TYPE = 'VIEW'";
-        $res33 = $GLOBALS['_SQL']->sql_query($sql33);
-        while ($ob33 = $GLOBALS['_SQL']->sql_fetch_object($res33)) {
+        $res33 = $this->db['mysql_write']->sql_query($sql33);
+        while ($ob33 = $this->db['mysql_write']->sql_fetch_object($res33)) {
             shell_exec("mkdir -p " . $path . "structure/view/" . $ob33->TABLE_NAME);
         }
     }

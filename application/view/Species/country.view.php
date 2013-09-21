@@ -1,6 +1,6 @@
 <?php
 
-use \glial\species\Species;
+use \Glial\Species\Species;
 
 $libelle = "";
 

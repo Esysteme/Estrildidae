@@ -558,7 +558,7 @@ class User extends Controller {
 
 		$sql = "select a.name, a.firstname, lower(b.iso) as iso, a.date_created, a.id from user_main a
 		INNER JOIN geolocalisation_country b ON a.id_geolocalisation_country = b.id
-		where is_valid ='1' order by date_created DESC LIMIT 10";
+		where 1=1 order by date_created DESC LIMIT 10";
 		$res = $this->db['mysql_write']->sql_query($sql);
 		$data = $this->db['mysql_write']->sql_to_array($res);
 		$this->set("data", $data);

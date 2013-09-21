@@ -1,9 +1,9 @@
 <?php
 
-namespace application\model;
-use glial\synapse\model;
+namespace Application\Model;
+use \Glial\Synapse\Model;
 
-class freelance_info extends model
+class freelance_info extends Model
 {
 var $schema = "CREATE TABLE `freelance_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

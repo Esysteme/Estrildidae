@@ -24,7 +24,7 @@ if (!empty($data['tab_img']))
 
 		echo "<span class=\"shadowImage\">";
 		echo '<div class="photo_link ' . $selection . '">';
-		echo "<a href=\"" . $var['url'] . "\">";
+		echo '<a href="' . $var['url'] . '" data-target="'.$id_node.'" data-link="species-distribution_description">';
 
 		echo '<div class="bigleaderpix">
 <div class="caption">
@@ -33,8 +33,6 @@ if (!empty($data['tab_img']))
 <div class="bigleaderlien"></div>
 <img width="158" height="158" alt="' . $var['name'] . '" title="' . $var['name'] . '" src="' . $var['photo'][0] . '">
 </div>';
-
-
 
 		echo '</a></div></span>';
 	}

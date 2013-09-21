@@ -11,13 +11,13 @@ class Graphiz extends Controller
         $this->view = false;
         $this->layout_name = false;
 
-        $_SQL = Singleton::getInstance(SQL_DRIVER);
+        
 
         $sql = "SELECT TABLE_NAME, REFERENCED_TABLE_NAME
 FROM information_schema.referential_constraints
 WHERE constraint_schema =  'species' order by REFERENCED_TABLE_NAME desc, TABLE_NAME";
 
-        $res = $_SQL->sql_query($sql);
+        $res = $this->db['mysql_write']->sql_query($sql);
 
 
         $fp = fopen("test.dot", "w");
@@ -30,7 +30,7 @@ WHERE constraint_schema =  'species' order by REFERENCED_TABLE_NAME desc, TABLE_
             //fwrite($fp, "nodesep=1.6");
 
             $entity = array();
-            while ( $ob = $_SQL->sql_fetch_object($res) ) {
+            while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) ) {
                 fwrite($fp, $ob->TABLE_NAME . " -- " . $ob->REFERENCED_TABLE_NAME . "\n");
             }
 

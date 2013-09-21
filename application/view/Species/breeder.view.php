@@ -40,7 +40,7 @@ if ( !empty($data['breeder']) )
 
 		echo '<tr>';
 		echo '<th>' . $i . '</th>
-		<td><span class="tree-indent"></span><span class="tree-file"></span><a href="/backup/species/en/user/profil/143"><img class="country" src="'.IMG.'country/type2/'.strtolower($line['iso']).'.png" width="16" height="11"> ' . $line['firstname'] . ' ' . $line['name'] . '</a></td>
+		<td><span class="tree-indent"></span><span class="tree-file"></span><a href="'.LINK.'user/profil/'.$line['id_user_main'].'"><img class="country" src="'.IMG.'country/type2/'.strtolower($line['iso']).'.png" width="16" height="11"> ' . $line['firstname'] . ' ' . $line['name'] . '</a></td>
 		<td><img class="country" src="'.IMG.'country/type2/'.strtolower($line['iso']).'.png" width="16" height="11"> ' . $line['country'] . '</td>
 		<td>' . $line['city'] . '</td>
 		<td>' . $line['male'] . '</td>

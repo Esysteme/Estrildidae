@@ -10,7 +10,7 @@ class OiseauxNet extends Controller {
 		include_once(LIBRARY . "Glial/parser/oiseaux_net/oiseaux_net.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$data = glial\parser\oiseaux_net\oiseaux_net::get_species_from_family();
 
@@ -25,13 +25,13 @@ class OiseauxNet extends Controller {
 			$i++;
 			$sql = "SELECT * FROM species_main WHERE scientific_name = '" . $line['scientific_name'] . "'";
 
-			$res = $_SQL->sql_query($sql);
+			$res = $this->db['mysql_write']->sql_query($sql);
 
-			if ($_SQL->sql_num_rows($res) == 1)
+			if ($this->db['mysql_write']->sql_num_rows($res) == 1)
 			{
 				echo $i . " [" . date("Y-m-d H:i:s") . "] species : ".$line['scientific_name']."\n";
 			
-				$ob = $_SQL->sql_fetch_object($res);
+				$ob = $this->db['mysql_write']->sql_fetch_object($res);
 				
 				$source = array();
 				$source['species_source_detail']['id_species_main'] = $ob->id;
@@ -43,12 +43,12 @@ class OiseauxNet extends Controller {
 				$source['species_source_detail']['date_updated'] = date("c");
 
 				
-				$out = $_SQL->sql_save($source);
+				$out = $this->db['mysql_write']->sql_save($source);
 				
 				if (! $out)
 				{
 					debug($source);
-					debug($_SQL->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 					die();
 				}
 			}

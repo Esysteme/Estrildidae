@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class species_iucn extends model
+class species_iucn extends Model
 {
 
 	var $schema = "CREATE TABLE `species_iucn` (

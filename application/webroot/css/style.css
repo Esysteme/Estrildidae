@@ -461,6 +461,13 @@ input.bouton {border:#999 3px double; padding: 0px 4px; background:#ddd;color:#0
 .onglet li.underline a{background: #8D4423; color:#fff; }
 .onglet li.underline a:hover{background: #000; color:#fff}
 
+
+.onglet_pic {margin: 0; padding:0}
+.onglet_pic li{display:inline; float:left; padding:4px; border:#000 1px solid; margin-right:10px; margin-bottom:10px; box-shadow: 4px 4px 5px #666; background:#fff}
+.onglet_pic li.selected{background:#000}
+.onglet_pic img{display:block;}
+
+
 #species_detail  .photo{ float:left;}
 #species_detail  .photo img{}
 
@@ -1415,7 +1422,7 @@ input.shoutbox {width:120px}
 {
 	position: absolute;
 	bottom: 0;
-	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.7);
+	background: none repeat scroll 0 0 rgba(30, 30, 30, 0.5);
 	margin:0;
 	width: 158px;
 }
@@ -1425,6 +1432,7 @@ input.shoutbox {width:120px}
 	font-size: 12px;
 	font-family: arial;
 	color: #FFFFFF;
+    text-shadow: 1px 1px 0 black;
 	margin:4px;
 	font-weight: 700;
 }

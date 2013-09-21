@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class geo2 extends model
+class geo2 extends Model
 {
 
 	var $schema = "CREATE TABLE `geo2` (

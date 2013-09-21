@@ -1,6 +1,6 @@
 <?php
 
-use \glial\species\Species;
+use \Glial\Species\Species;
 
 /*
  * To change this template, choose Tools | Templates

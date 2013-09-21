@@ -1,11 +1,11 @@
 <?php
 
-namespace application\model;
-use glial\synapse\model;
+namespace Application\Model;
+use \Glial\Synapse\Model;
 
 
 
-class acl_action extends model
+class acl_action extends Model
 {
 
 	// Nous donnons donc à Gliale la structure d'un enregistrement

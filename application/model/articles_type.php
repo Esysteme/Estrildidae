@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class articles_type extends model
+class articles_type extends Model
 {
 
 	var $schema = "CREATE TABLE `articles_type` (

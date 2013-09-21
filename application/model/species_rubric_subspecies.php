@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class species_rubric_subspecies extends model
+class species_rubric_subspecies extends Model
 {
 
 	var $schema = "CREATE TABLE `species_rubric_subspecies` (

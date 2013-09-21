@@ -1,10 +1,10 @@
 F<?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class comment__species_picture_main extends model
+class comment__species_picture_main extends Model
 {
 
 	var $schema = "CREATE TABLE `comment__species_picture_main` (

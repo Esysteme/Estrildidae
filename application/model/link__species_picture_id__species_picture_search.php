@@ -1,9 +1,9 @@
 <?php
 
-namespace application\model;
-use glial\synapse\model;
+namespace Application\Model;
+use \Glial\Synapse\Model;
 
-class link__species_picture_id__species_picture_search extends model
+class link__species_picture_id__species_picture_search extends Model
 {
 var $schema = "CREATE TABLE `link__species_picture_id__species_picture_search` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

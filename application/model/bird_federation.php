@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class bird_federation extends model
+class bird_federation extends Model
 {
 
 	var $schema = "CREATE TABLE `bird_federation` (

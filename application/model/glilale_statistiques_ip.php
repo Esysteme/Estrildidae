@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class glilale_statistiques_ip extends model
+class glilale_statistiques_ip extends Model
 {
 
 	var $schema = "CREATE TABLE `glilale_statistiques_ip` (

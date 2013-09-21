@@ -14,7 +14,7 @@ class BotAvibase extends Controller
 	function test()
 	{
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		include_once(LIBRARY . "Glial/parser/avibase/avibase.php");
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
@@ -31,14 +31,14 @@ class BotAvibase extends Controller
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT id,reference_id FROM species_source_detail WHERE  id_species_source_main = 2";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 0;
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 			$i++;
 			$ret = avibase::get_species_by_reference($ob->reference_id);
@@ -50,9 +50,9 @@ class BotAvibase extends Controller
 			$data['species_source_data']['data'] = base64_encode(gzencode(json_encode($ret), 9));
 
 
-			if ( !$_SQL->sql_save($data) )
+			if ( !$this->db['mysql_write']->sql_save($data) )
 			{
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				debug($data);
 				die();
 			}
@@ -69,18 +69,18 @@ class BotAvibase extends Controller
 
 	function parse_get_infos()
 	{
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT id_species_main,	id_species_sub,reference_id, data, b.id FROM species_source_detail a
 		INNER JOIN 	species_source_data b ON a.id = b.id_species_source_detail 
 		WHERE  a.id_species_source_main = 2 AND b.is_parsed=0";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 0;
 
 
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 
 			$i++;
@@ -94,11 +94,11 @@ class BotAvibase extends Controller
 				$lang = trim(str_replace("(Brazil)", "", $lang));
 
 				$sql = "SELECT * FROM language WHERE print_name = '" . $lang . "'";
-				$res2 = $_SQL->sql_query($sql);
+				$res2 = $this->db['mysql_write']->sql_query($sql);
 
-				if ( $_SQL->sql_num_rows($res2) == 1 )
+				if ( $this->db['mysql_write']->sql_num_rows($res2) == 1 )
 				{
-					$ob2 = $_SQL->sql_fetch_object($res2);
+					$ob2 = $this->db['mysql_write']->sql_fetch_object($res2);
 
 
 					$this->insert_scientific_name_translation($ob->id_species_main, $ob->id_species_sub, $ob2->iso3, $text);
@@ -107,9 +107,9 @@ class BotAvibase extends Controller
 				}
 				else
 				{
-					echo "Number found : " . $_SQL->sql_num_rows($res2) . "\n";
+					echo "Number found : " . $this->db['mysql_write']->sql_num_rows($res2) . "\n";
 					debug("$lang => $text");
-					debug($_SQL->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 					die;
 				}
 			}
@@ -121,12 +121,12 @@ class BotAvibase extends Controller
 				$lang = trim(str_replace($to_replace, "", $lang));
 
 				$sql = "SELECT * FROM language WHERE print_name = '" . $lang . "'";
-				$res2 = $_SQL->sql_query($sql);
+				$res2 = $this->db['mysql_write']->sql_query($sql);
 
-				if ( $_SQL->sql_num_rows($res2) == 1 )
+				if ( $this->db['mysql_write']->sql_num_rows($res2) == 1 )
 				{
 
-					$ob2 = $_SQL->sql_fetch_object($res2);
+					$ob2 = $this->db['mysql_write']->sql_fetch_object($res2);
 					foreach ( $tab as $text )
 					{
 						$this->insert_scientific_name_translation($ob->id_species_main, $ob->id_species_sub, $ob2->iso3, $text);
@@ -137,7 +137,7 @@ class BotAvibase extends Controller
 				else
 				{
 					debug("undefined : " . $lang);
-					debug($_SQL->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 					die;
 				}
 			}
@@ -146,7 +146,7 @@ class BotAvibase extends Controller
 			$data = array();
 			$data['species_source_data']['id'] = $ob->id;
 			$data['species_source_data']['is_parsed'] = 1;
-			$_SQL->sql_save($data);
+			$this->db['mysql_write']->sql_save($data);
 		}
 
 		exit;
@@ -158,25 +158,25 @@ class BotAvibase extends Controller
 
 
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT id FROM scientific_name_translation 
-			WHERE id_species_main = '" . $_SQL->sql_real_escape_string($id_species) . "'
-			AND id_species_sub = '" . $_SQL->sql_real_escape_string($id_species_sub) . "'
-			AND language = '" . $_SQL->sql_real_escape_string($lang) . "'
-			AND text = '" . $_SQL->sql_real_escape_string($text) . "'";
+			WHERE id_species_main = '" . $this->db['mysql_write']->sql_real_escape_string($id_species) . "'
+			AND id_species_sub = '" . $this->db['mysql_write']->sql_real_escape_string($id_species_sub) . "'
+			AND language = '" . $this->db['mysql_write']->sql_real_escape_string($lang) . "'
+			AND text = '" . $this->db['mysql_write']->sql_real_escape_string($text) . "'";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		if ( $_SQL->sql_num_rows($res) == 0 )
+		if ( $this->db['mysql_write']->sql_num_rows($res) == 0 )
 		{
 			$sql = "SELECT count(1) as cpt FROM scientific_name_translation 
-			WHERE id_species_main = '" . $_SQL->sql_real_escape_string($id_species) . "'
-			AND id_species_sub = '" . $_SQL->sql_real_escape_string($id_species_sub) . "'
+			WHERE id_species_main = '" . $this->db['mysql_write']->sql_real_escape_string($id_species) . "'
+			AND id_species_sub = '" . $this->db['mysql_write']->sql_real_escape_string($id_species_sub) . "'
 			AND is_valid = 1";
 
-			$res = $_SQL->sql_query($sql);
-			$ob = $_SQL->sql_fetch_object($res);
+			$res = $this->db['mysql_write']->sql_query($sql);
+			$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 			$data = array();
 			$data['scientific_name_translation']['id_species_main'] = $id_species;
@@ -192,25 +192,25 @@ class BotAvibase extends Controller
 				$data['scientific_name_translation']['is_valid'] = 0;
 			}
 
-			$id_ret = $_SQL->sql_save($data);
+			$id_ret = $this->db['mysql_write']->sql_save($data);
 
 			if ( !$id_ret )
 			{
 				debug($id_ret);
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				die();
 			}
 		}
 		else
 		{
-			$ob = $_SQL->sql_fetch_object($res);
+			$ob = $this->db['mysql_write']->sql_fetch_object($res);
 			return $ob->id;
 		}
 	}
 
 	function update_language()
 	{
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$charset = array(
 			"zh-cn" => "GB2312",
@@ -234,10 +234,10 @@ class BotAvibase extends Controller
 
 		foreach ( $charset as $key => $value )
 		{
-			$sql = "UPDATE language SET charset = '" . $_SQL->sql_real_escape_string($value) . "' WHERE iso = '" . $key . "'";
+			$sql = "UPDATE language SET charset = '" . $this->db['mysql_write']->sql_real_escape_string($value) . "' WHERE iso = '" . $key . "'";
 			//$sql = "INSERT IGNORE language (iso) values ('".$key."')";
 
-			$_SQL->sql_query($sql);
+			$this->db['mysql_write']->sql_query($sql);
 		}
 
 		exit;
@@ -246,7 +246,7 @@ class BotAvibase extends Controller
 	function update_language2()
 	{
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$tab = file("lang.csv");
 
 		foreach ( $tab as $value )
@@ -254,23 +254,23 @@ class BotAvibase extends Controller
 			$ob = explode(";", $value);
 			echo $ob['6'] . "\n";
 
-			$sql = "UPDATE language SET print_name = '" . $_SQL->sql_real_escape_string($ob['6']) . "' WHERE iso3 = '" . $ob[0] . "'";
-			$_SQL->sql_query($sql);
+			$sql = "UPDATE language SET print_name = '" . $this->db['mysql_write']->sql_real_escape_string($ob['6']) . "' WHERE iso3 = '" . $ob[0] . "'";
+			$this->db['mysql_write']->sql_query($sql);
 		}
 	}
 
 	function import_source_to_itis()
 	{
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT id_species_main,	id_species_sub,reference_id, data, b.id FROM species_source_detail a
 		INNER JOIN 	species_source_data b ON a.id = b.id_species_source_detail 
 		WHERE  a.id_species_source_main = 2";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 		$i = 0;
 
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 			$i++;
 			$data = json_decode(gzinflate(substr(base64_decode($ob->data), 10, -8)), true);
@@ -296,13 +296,13 @@ class BotAvibase extends Controller
 				$source['species_source_detail']['date_updated'] = date("c");
 
 
-				$out = $_SQL->sql_save($source);
+				$out = $this->db['mysql_write']->sql_save($source);
 
 				/*
 				  if (! $out)
 				  {
 				  debug($source);
-				  debug($_SQL->sql_error());
+				  debug($this->db['mysql_write']->sql_error());
 				  die();
 				  } */
 			}

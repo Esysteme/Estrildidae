@@ -1,3 +1,4 @@
+/*
 $(function(){
 	$('.photo_link').live('click', function(){
 		$('.photo_link').removeClass('active');
@@ -7,7 +8,7 @@ $(function(){
 	});
 });
 
-
+*/
 		
 
 $(document).ready(function(){

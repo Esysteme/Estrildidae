@@ -1,5 +1,7 @@
 <?php
 
+use \Glial\I18n\I18n;
+
 if (! defined('SIZE_MINIATURE_BIG'))
 {
 	define("SIZE_MINIATURE_BIG", 250);
@@ -28,8 +30,8 @@ foreach($data as $pic)
 	///				thecus/www/species/image/crop/158x158/Eukaryota/Animalia/Chordata/Aves/Passeriformes/Estrildidae/Lonchura/Lonchura_striata/281-Lonchura_striata.jpg
 	//<img src="/thecus/www/species/image/crop/250x250/Eukaryota/Animalia/Chordata/Aves/Passeriformes/Estrildidae/Lonchura/Lonchura striata/281-Lonchura striata.jpg" width="250" height="250">
 	echo '<a href="'.LINK.'species/nominal/'.$pic['species'].'/photo/photo_detail/'.$pic['id_photo'].'/"> 
-	<img src="'.FARM1.''.$url.'" width="250" height="250" alt="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" title="'.$pic[$GLOBALS['_LG']->Get()].' ('.$pic['species_'].')" /> 
-	<span>'.$pic[$GLOBALS['_LG']->Get()].'</span> 
+	<img src="'.FARM1.''.$url.'" width="250" height="250" alt="'.$pic[I18n::Get()].' ('.$pic['species_'].')" title="'.$pic[I18n::Get()].' ('.$pic['species_'].')" /> 
+	<span>'.$pic[I18n::Get()].'</span> 
 	</a>';
 }
 

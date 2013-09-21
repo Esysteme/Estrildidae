@@ -1,6 +1,6 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
 use Glial\Synapse\Model;
 

@@ -49,11 +49,11 @@ echo '<div class="title_box">' . __("Scientific classification") . '</div>';
 
 
 echo '<table class="classification">';
-echo '<tr><td>' . __('Kingdom') . ' :</td><td><a href="' . LINK . 'species/kingdom/' . $data['species'][0]['kingdom'] . '">' . __($data['species'][0]['kingdom']) . '</a></td></tr>';
-echo '<tr><td>' . __('Phylum') . ' :</td><td><a href="' . LINK . 'species/phylum/' . $data['species'][0]['phylum'] . '">' . __($data['species'][0]['phylum']) . '</a></td></tr>';
-echo '<tr><td>' . __('Class') . ' :</td><td><a href="' . LINK . 'species/classe/' . $data['species'][0]['class'] . '">' . __($data['species'][0]['class']) . '</a></td></tr>';
-echo '<tr><td>' . __('Order') . ' :</td><td><a href="' . LINK . 'species/order/' . $data['species'][0]['order'] . '">' . __($data['species'][0]['order']) . '</a></td></tr>';
-echo '<tr><td>' . __('Family') . ' :</td><td><a href="' . LINK . 'species/family/' . $data['species'][0]['family'] . '">' . __($data['species'][0]['family']) . '</a></td></tr>';
+echo '<tr><td>' . __('Kingdom') . ' :</td><td><a href="' . LINK . 'species/kingdom/' . $data['species'][0]['kingdom'] . '">' . __($data['species'][0]['kingdom'],"la") . '</a></td></tr>';
+echo '<tr><td>' . __('Phylum') . ' :</td><td><a href="' . LINK . 'species/phylum/' . $data['species'][0]['phylum'] . '">' . __($data['species'][0]['phylum'],"la") . '</a></td></tr>';
+echo '<tr><td>' . __('Class') . ' :</td><td><a href="' . LINK . 'species/classe/' . $data['species'][0]['class'] . '">' . __($data['species'][0]['class'],"la") . '</a></td></tr>';
+echo '<tr><td>' . __('Order') . ' :</td><td><a href="' . LINK . 'species/order/' . $data['species'][0]['order'] . '">' . __($data['species'][0]['order'],"la") . '</a></td></tr>';
+echo '<tr><td>' . __('Family') . ' :</td><td><a href="' . LINK . 'species/family/' . $data['species'][0]['family'] . '">' . __($data['species'][0]['family'],"la") . '</a></td></tr>';
 echo '<tr><td>' . __('Genus') . ' :</td><td><a href="' . LINK . 'species/genus/' . $data['species'][0]['genus'] . '">' . $data['species'][0]['genus'] . '</a></td></tr>';
 echo '<tr><td>' . __('Species') . ' :</td><td><a href="' . LINK . 'species/nominal/' . str_replace(" ", "_", $data['species'][0]['nominal']) . '">' . $data['species'][0]['nominal'] . '</a></td></tr>';
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class gliale_audit_query extends model
+class gliale_audit_query extends Model
 {
 
 	var $schema = "CREATE TABLE `gliale_audit_query` (

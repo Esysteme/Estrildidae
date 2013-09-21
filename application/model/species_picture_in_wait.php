@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class species_picture_in_wait extends model
+class species_picture_in_wait extends Model
 {
 
 	// Nous donnons donc � Gliale la structure d'un enregistrement

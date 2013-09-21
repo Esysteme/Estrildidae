@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class species_picture_in_wait2 extends model
+class species_picture_in_wait2 extends Model
 {
 
 	var $schema = "CREATE TABLE `species_picture_in_wait2` (

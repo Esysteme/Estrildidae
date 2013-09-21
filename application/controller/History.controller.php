@@ -88,8 +88,8 @@ class History extends Controller {
 			$sql .= " ORDER BY a.id DESC";
 
 
-			$res = $GLOBALS['_SQL']->sql_query($sql2 . $sql);
-			$data['count'] = $GLOBALS['_SQL']->sql_to_array($res);
+			$res = $this->db['mysql_write']->sql_query($sql2 . $sql);
+			$data['count'] = $this->db['mysql_write']->sql_to_array($res);
 //*****************************pagination
 
 			if ($data['count'][0]['cpt'] != 0)
@@ -114,20 +114,20 @@ class History extends Controller {
 				$data['i'] = $tab[0] + 1;
 //*****************************pagination end
 
-				$res = $GLOBALS['_SQL']->sql_query($sql1 . $sql . $limit);
-				$data['text'] = $GLOBALS['_SQL']->sql_to_array($res);
+				$res = $this->db['mysql_write']->sql_query($sql1 . $sql . $limit);
+				$data['text'] = $this->db['mysql_write']->sql_to_array($res);
 			}
 
 			$sql = "SELECT distinct a.id_user_main,b.name, b.firstname, d.iso FROM history_main a
 		INNER JOIN user_main b ON a.id_user_main = b.id
 		INNER JOIN geolocalisation_country d ON b.id_geolocalisation_country = d.id
 		ORDER BY b.name, b.firstname";
-			$res = $GLOBALS['_SQL']->sql_query($sql);
+			$res = $this->db['mysql_write']->sql_query($sql);
 			$i = 0;
 			$data['user'][$i]['libelle'] = __("Select all");
 			$data['user'][$i]['id'] = -1;
 			$i++;
-			while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+			while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 
 				$data['user'][$i]['libelle'] = $ob->firstname . " " . $ob->name;
 				$data['user'][$i]['id'] = $ob->id_user_main;
@@ -139,20 +139,20 @@ class History extends Controller {
 		FROM history_main a
 		INNER JOIN history_action b ON a.id_history_action = b.id
 		ORDER BY b.title asc";
-			$res = $GLOBALS['_SQL']->sql_query($sql);
+			$res = $this->db['mysql_write']->sql_query($sql);
 			$i = 0;
 			$data['history_action'][$i]['libelle'] = __("Select all");
 			$data['history_action'][$i]['id'] = -1;
 			$i++;
-			while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+			while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 				$data['history_action'][$i]['libelle'] = __($ob->title);
 				$data['history_action'][$i]['id'] = $ob->id_history_action;
 				$i++;
 			}
 
 			$sql = "SELECT count(1) as cpt FROM history_main";
-			$res = $GLOBALS['_SQL']->sql_query($sql);
-			$data['cpt'] = $GLOBALS['_SQL']->sql_to_array($res);
+			$res = $this->db['mysql_write']->sql_query($sql);
+			$data['cpt'] = $this->db['mysql_write']->sql_to_array($res);
 
 			$this->set("data", $data);
 		}
@@ -161,24 +161,24 @@ class History extends Controller {
 
 	function patch() {
 		$sql = "SELECT * FROM species_pictures_photo";
-		$res = $GLOBALS['_SQL']->sql_query($res);
-		While ($ob = $GLOBALS['_SQL']->sql_fetch_array($res)) {
+		$res = $this->db['mysql_write']->sql_query($res);
+		While ($ob = $this->db['mysql_write']->sql_fetch_array($res)) {
 			$tab = History::compare("", $ob);
 			$data['history_main']['date'] = $ob->date;
 			$data['history_main']['data'] = json_encode($tab);
-			$GLOBALS['_SQL']->sql_save($data['history_main']);
+			$this->db['mysql_write']->sql_save($data['history_main']);
 		}
 	}
 
-	static function get_table_with_history() {
+	function get_table_with_history() {
 
 		$sql = "select * from `history_table`";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$data = array();
 
-		while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 			$data[] = $ob->name;
 		}
 
@@ -191,10 +191,10 @@ class History extends Controller {
 		
 		$sql = "SELECT id,param FROM history_main WHERE id > 223439";
 
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i = 0;
-		while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 
 
 			$sql = "UPDATE history_main SET param = '". $ob->param."' WHERE id ='".$ob->id."'"; 
@@ -213,16 +213,16 @@ class History extends Controller {
 		die;
 	}
 
-	static function insert($tables, $line, $param, $id_history_action, $id_user_main, $type_query) {
+	function insert($tables, $line, $param, $id_history_action, $id_user_main, $type_query) {
 
 		$sql = "SELECT * FROM history_table WHERE name ='" . $tables . "'";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
-		$number = $GLOBALS['_SQL']->sql_num_rows($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$number = $this->db['mysql_write']->sql_num_rows($res);
 		if ($number == 0)
 		{
 			die("ERROR : history : " . $number);
 		}
-		$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+		$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 		$table = array();
 		$table['history_main']['id_history_table'] = $ob->id;
@@ -245,15 +245,15 @@ class History extends Controller {
 
 
 
-		if (!$GLOBALS['_SQL']->sql_save($table))
+		if (!$this->db['mysql_write']->sql_save($table))
 		{
-			debug($GLOBALS['_SQL']->sql_error());
+			debug($this->db['mysql_write']->sql_error());
 
 			die("probleme enregistrement history");
 		}
 	}
 
-	static function compare($tab_from = array(), $tab_to) {
+	function compare($tab_from = array(), $tab_to) {
 		$tab_update = array_intersect_key($tab_from, $tab_to);
 		foreach ($tab_update as $key => $value)
 		{
@@ -291,7 +291,7 @@ class History extends Controller {
 		return serialize($param);
 	}
 
-	static function display_action($elem) {
+	function display_action($elem) {
 
 
 //debug($elem);
@@ -326,8 +326,8 @@ class History extends Controller {
 					if (!empty($data['up']['add']['source']))
 					{
 						$sql = "SELECT text FROM `translation_" . $data['up']['add']['source'] . "` WHERE `key` = '" . $data['up']['add']['key'] . "'";
-						$res = $GLOBALS['_SQL']->sql_query($sql);
-						$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+						$res = $this->db['mysql_write']->sql_query($sql);
+						$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 						$table_lang = explode("_", $elem['table_name']);
 
@@ -356,13 +356,13 @@ class History extends Controller {
 		return $text;
 	}
 
-	static function revert_history($id_history_main) {
+	function revert_history($id_history_main) {
 		$sql = "SELECT a.*,b.name FROM history_main a
 			INNER JOIN history_table b ON a.id_history_table = b.id
 			WHERE a.id=" . $id_history_main . "";
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$ob = $GLOBALS['_SQL']->sql_fetch_object($res);
+		$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 
 		$ob->id_history_etat = intval($ob->id_history_etat);
@@ -405,7 +405,7 @@ class History extends Controller {
 				}
 
 				$sql = "UPDATE " . $ob->name . " SET " . $fields . " WHERE id =" . $ob->line . "";
-				$GLOBALS['_SQL']->sql_query($sql);
+				$this->db['mysql_write']->sql_query($sql);
 
 				break;
 
@@ -413,14 +413,14 @@ class History extends Controller {
 			case 'INSERT':
 				($ob->id_history_etat == 1) ? $id_history_etat = 3 : $id_history_etat = 1;
 				$sql = "UPDATE " . $ob->name . " SET id_history_etat = '" . $id_history_etat . "' WHERE id ='" . $ob->line . "'";
-				$GLOBALS['_SQL']->sql_query($sql);
+				$this->db['mysql_write']->sql_query($sql);
 
 				break;
 
 			case 'DELETE':
 				($ob->id_history_etat == 1) ? $id_history_etat = 1 : $id_history_etat = 3;
 				$sql = "UPDATE " . $ob->name . " SET id_history_etat = " . $id_history_etat . " WHERE id =" . $ob->line . "";
-				$GLOBALS['_SQL']->sql_query($sql);
+				$this->db['mysql_write']->sql_query($sql);
 
 				break;
 		}
@@ -429,12 +429,12 @@ class History extends Controller {
 		$sql = "INSERT INTO history_main (`id_history_table`, `line` , `id_user_main`, `id_history_action`, `param`, `date`, `id_history_etat`, `type`)
 			VALUES (" . $ob->id_history_table . ", " . $ob->line . ", " . $GLOBALS['_SITE']['IdUser'] . ", 7, '" . $ob->param . "', now(), 2, '" . $type_query . "'	)";
 
-		$GLOBALS['_SQL']->sql_query($sql);
+		$this->db['mysql_write']->sql_query($sql);
 
 		($ob->id_history_etat === 1) ? $id_history_etat = 3 : $id_history_etat = 1;
 
 		$sql = "UPDATE history_main SET id_history_etat =" . $id_history_etat . " WHERE id=" . $id_history_main . "";
-		$GLOBALS['_SQL']->sql_query($sql);
+		$this->db['mysql_write']->sql_query($sql);
 	}
 
 	static function get_img_type_query($type_query) {
@@ -461,10 +461,10 @@ class History extends Controller {
 
 		$sql = "SELECT id,date_created FROM species_picture_in_wait";
 
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i = 0;
-		while ($ob = $GLOBALS['_SQL']->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 
 
 			$table['history_main']['id_history_table'] = 9;
@@ -476,7 +476,7 @@ class History extends Controller {
 			$table['history_main']['id_user_main'] = 9;
 			$table['history_main']['type'] = "INSERT";
 
-			if (!$GLOBALS['_SQL']->sql_save($table))
+			if (!$this->db['mysql_write']->sql_save($table))
 			{
 				debug($table);
 				die("problem !");

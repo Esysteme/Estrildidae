@@ -25,7 +25,7 @@ class JoinUs extends Controller
 			if (!empty($_POST['login']) && !empty($_POST['password']))
 			{		
 				$sql = "select * from UserMain where Login = '".mysql_real_escape_string($_POST['login'])."' and Password ='".mysql_real_escape_string($_POST['password'])."'";
-				$res = $_SQL->sql_query($sql);
+				$res = $this->db['mysql_write']->sql_query($sql);
 				
 					
 				if (mysql_num_rows($res) == 1)
@@ -35,7 +35,7 @@ class JoinUs extends Controller
 					SetCookie ("Passwd",md5(md5($ob->Password)),time()+60*60*24*365,'/',$_SERVER['SERVER_NAME'],false, true);
 					
 					$sql = "UPDATE UserMain SET LastLogin = now() where Id='".mysql_real_escape_string($_SITE['IdUser'])."'";
-					$_SQL->sql_query($sql);
+					$this->db['mysql_write']->sql_query($sql);
 					
 					
 					header("location: ".$_SERVER['REQUEST_URI']);
@@ -60,7 +60,7 @@ class JoinUs extends Controller
 		if (!empty($_COOKIE['IdUser']) && !empty($_COOKIE['Passwd']))
 		{
 			$sql = "select * from UserMain where Id = '".mysql_real_escape_string($_COOKIE['IdUser'])."'";
-			$res = $_SQL->sql_query($sql);
+			$res = $this->db['mysql_write']->sql_query($sql);
 			
 			if (mysql_num_rows($res) == 1)
 			{
@@ -77,7 +77,7 @@ class JoinUs extends Controller
 					
 					
 					$sql = "UPDATE UserMain SET LastConnected = now() where Id='".mysql_real_escape_string($_SITE['IdUser'])."'";
-					$_SQL->sql_query($sql);
+					$this->db['mysql_write']->sql_query($sql);
 					
 				}
 			}

@@ -24,15 +24,15 @@ class Photo extends Controller
 		$this->title = __("Members");
 		$this->ariane = "> " . $this->title;
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 
 		$sql = "select * from user_main 
 INNER JOIN geolocalisation_city ON geolocalisation_city.id = user_main.id_geolocalisation_city
 where is_valid ='1' order by points DESC LIMIT 50";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$data = $_SQL->sql_to_array($res);
+		$data = $this->db['mysql_write']->sql_to_array($res);
 
 		$this->javascript = array("jquery-1.4.2.min.js");
 		$this->set("data", $data);
@@ -52,7 +52,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		}
 
 		$this->layout_name = "admin";
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$this->title = __("Import a picture");
 		$this->ariane = '> <a href="' . LINK . 'administration/">' . __("Administration") . '</a> > ' . $this->title;
@@ -100,15 +100,15 @@ where is_valid ='1' order by points DESC LIMIT 50";
 	{
 
 		$this->layout_name = "admin";
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		if ( from() == "administration.controller.php" )
 		{
 
 			$sql = "select count(1) as cpt from species_picture_in_wait where id_history_etat=1";
 
-			$res = $_SQL->sql_query($sql);
-			$data = $_SQL->sql_to_array($res);
+			$res = $this->db['mysql_write']->sql_query($sql);
+			$data = $this->db['mysql_write']->sql_to_array($res);
 
 			$module['count'] = $data[0]['cpt'];
 			$module['picture'] = "administration/crop2.png";
@@ -161,7 +161,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$comment['comment__species_picture_main']['subscribe'] = $subscribe;
 
 
-				if ( $_SQL->sql_save($comment) )
+				if ( $this->db['mysql_write']->sql_save($comment) )
 				{
 					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
 					$msg = $GLOBALS['_LG']->getTranslation(__("Your comment has been added."));
@@ -181,7 +181,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 
 				debug($comment);
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				die();
 			}
 
@@ -228,11 +228,11 @@ where is_valid ='1' order by points DESC LIMIT 50";
 			if ( !empty($_POST['irefuse']) )
 			{
 
-				$_SQL->set_history_type(9);
-				if ( !$_SQL->sql_save($species_picture_in_wait) )
+				$this->db['mysql_write']->set_history_type(9);
+				if ( !$this->db['mysql_write']->sql_save($species_picture_in_wait) )
 				{
 
-					$error = $_SQL->sql_error();
+					$error = $this->db['mysql_write']->sql_error();
 
 					if ( is_array($_SESSION['ERROR']) )
 					{
@@ -287,8 +287,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 				else
 				{
-					$GLOBALS['_SQL']->set_history_type(8);
-					$_SQL->sql_delete($species_picture_in_wait);
+					$this->db['mysql_write']->set_history_type(8);
+					$this->db['mysql_write']->sql_delete($species_picture_in_wait);
 
 					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
 					$msg = $GLOBALS['_LG']->getTranslation(__("The photo has been successfully deleted"));
@@ -329,8 +329,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				$sql = "SELECT * FROM species_picture_in_wait where id='" . $_POST['species_picture_main']['id'] . "'";
 			}
 
-			$res = $_SQL->sql_query($sql);
-			$this->data['species_picture_main'] = $_SQL->sql_to_array($res);
+			$res = $this->db['mysql_write']->sql_query($sql);
+			$this->data['species_picture_main'] = $this->db['mysql_write']->sql_to_array($res);
 
 			$species_picture_main['species_picture_main'] = $this->data['species_picture_main'][0];
 			$species_picture_main['species_picture_main']['id_species_picture_info'] = $_POST['species_picture_main']['id_species_picture_info'];
@@ -397,25 +397,25 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				{
 					$author["species_author"]["surname"] = $glob['author'];
 
-					$sql = "SELECT id from species_author where surname ='" . $_SQL->sql_real_escape_string($glob['author']) . "'";
-					$res = $_SQL->sql_query($sql);
+					$sql = "SELECT id from species_author where surname ='" . $this->db['mysql_write']->sql_real_escape_string($glob['author']) . "'";
+					$res = $this->db['mysql_write']->sql_query($sql);
 
-					if ( $_SQL->sql_num_rows($res) == 1 )
+					if ( $this->db['mysql_write']->sql_num_rows($res) == 1 )
 					{
-						$ob = $_SQL->sql_fetch_object($res);
+						$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 						$species_picture_main['species_picture_main']['id_species_author'] = $ob->id;
 					}
 					else
 					{
 
-						if ( !$_SQL->sql_save($author) )
+						if ( !$this->db['mysql_write']->sql_save($author) )
 						{
 							die("problem insertion author");
 						}
 						else
 						{
-							$species_picture_main['species_picture_main']['id_species_author'] = $_SQL->sql_insert_id();
+							$species_picture_main['species_picture_main']['id_species_author'] = $this->db['mysql_write']->sql_insert_id();
 						}
 					}
 				}
@@ -427,16 +427,16 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 			if ( empty($_GET['id_species_picture_main']) )
 			{
-				$GLOBALS['_SQL']->set_history_type(1);
+				$this->db['mysql_write']->set_history_type(1);
 			}
 			else
 			{
-				$GLOBALS['_SQL']->set_history_type(12);
+				$this->db['mysql_write']->set_history_type(12);
 			}
 
 
 
-			if ( $_SQL->sql_save($species_picture_main) )
+			if ( $this->db['mysql_write']->sql_save($species_picture_main) )
 			{
 
 
@@ -445,8 +445,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				if ( empty($_GET['id_species_picture_main']) )
 				{
 
-					$GLOBALS['_SQL']->set_history_type(11);
-					$_SQL->sql_delete($species_picture_in_wait);
+					$this->db['mysql_write']->set_history_type(11);
+					$this->db['mysql_write']->sql_delete($species_picture_in_wait);
 
 
 // traitement des tag
@@ -460,7 +460,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 						{
 							unset($tag);
 							$tag['species_picture_tag']['tag'] = trim(mb_strtolower($value, 'UTF-8'));
-							$id_species_picture_tag = $_SQL->sql_save($tag);
+							$id_species_picture_tag = $this->db['mysql_write']->sql_save($tag);
 
 							if ( $id_species_picture_tag )
 							{
@@ -468,18 +468,18 @@ where is_valid ='1' order by points DESC LIMIT 50";
 								$link['link__species_picture__species_picture_tag']['id_species_picture_main'] = $species_picture_main['species_picture_main']['id'];
 								$link['link__species_picture__species_picture_tag']['id_species_picture_tag'] = $id_species_picture_tag;
 
-								if ( !$_SQL->sql_save($link) )
+								if ( !$this->db['mysql_write']->sql_save($link) )
 								{
 									debug($link);
-									debug($_SQL->sql_error());
+									debug($this->db['mysql_write']->sql_error());
 									die("problem insertion link tag picture");
 								}
 							}
 							else
 							{
-								debug($_SQL->sql_error());
+								debug($this->db['mysql_write']->sql_error());
 
-								debug($_SQL->query);
+								debug($this->db['mysql_write']->query);
 								die("problem insertion tag");
 							}
 						}
@@ -489,8 +489,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 
 				$sql = "SELECT * FROM species_tree_name where id = '" . $species_picture_main['species_picture_main']['id_species_main'] . "'";
-				$res = $_SQL->sql_query($sql);
-				$ob = $_SQL->sql_fetch_object($res);
+				$res = $this->db['mysql_write']->sql_query($sql);
+				$ob = $this->db['mysql_write']->sql_fetch_object($res);
 
 				$species_name = str_replace(" ", "_", $ob->species_);
 				$path = "Eukaryota/{$ob->kingdom}/{$ob->phylum}/{$ob->class}/{$ob->order2}/{$ob->family}/{$ob->genus}/" . $species_name;
@@ -587,7 +587,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 			{
 //error
 
-				$error = $_SQL->sql_error();
+				$error = $this->db['mysql_write']->sql_error();
 				$_SESSION['ERROR'] = $error;
 
 				if ( is_array($_SESSION['ERROR']) )
@@ -706,7 +706,7 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 			  //echo $sql;
 
-			  $r = $_SQL->sql_query($sql);
+			  $r = $this->db['mysql_write']->sql_query($sql);
 			  $d = mysql_fetch_row($r);
 
 			  $rand = rand(0, $d[0]);
@@ -730,13 +730,13 @@ where is_valid ='1' order by points DESC LIMIT 50";
 		}
 
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 
 		if ( mysql_num_rows($res) > 0 )
 		{
-			$this->data['species'] = $_SQL->sql_to_array($res);
+			$this->data['species'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
@@ -747,8 +747,8 @@ INNER JOIN history_action c ON c.id = a.id_history_action
 INNER JOIN geolocalisation_country d ON b.id_geolocalisation_country = d.id
 WHERE line = " . $this->data['species'][0]['id_photo'] . " AND id_history_table in(9,10)
 ORDER BY a.id asc";
-			$res22 = $_SQL->sql_query($sql);
-			$this->data['history'] = $_SQL->sql_to_array($res22);
+			$res22 = $this->db['mysql_write']->sql_query($sql);
+			$this->data['history'] = $this->db['mysql_write']->sql_to_array($res22);
 
 			$_LG = singleton::getInstance("Language");
 			$lg = explode(",", LANGUAGE_AVAILABLE);
@@ -767,8 +767,8 @@ ORDER BY a.id asc";
 INNER JOIN user_main b ON a.id_user_main = b.id
 INNER JOIN 	geolocalisation_country c ON b.id_geolocalisation_country = c.id
 WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "'";
-			$res22 = $_SQL->sql_query($sql);
-			$this->data['comment'] = $_SQL->sql_to_array($res22);
+			$res22 = $this->db['mysql_write']->sql_query($sql);
+			$this->data['comment'] = $this->db['mysql_write']->sql_to_array($res22);
 		}
 		else
 		{
@@ -788,10 +788,10 @@ WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "
 
 			if ( !empty($_GET['id_species_main']) )
 			{
-				$sql = "SELECT scientific_name from species_main where id ='" . $_SQL->sql_real_escape_string($_GET['id_species_main']) . "'";
-				$res = $_SQL->sql_query($sql);
+				$sql = "SELECT scientific_name from species_main where id ='" . $this->db['mysql_write']->sql_real_escape_string($_GET['id_species_main']) . "'";
+				$res = $this->db['mysql_write']->sql_query($sql);
 
-				while ( $ob = $_SQL->sql_fetch_object($res) )
+				while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 				{
 					$name = str_replace(' ', '_', $ob->scientific_name);
 
@@ -844,56 +844,56 @@ delay:0}
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_kingdom order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_kingdom'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_kingdom'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_phylum WHERE id_species_kingdom = " . $this->data['species']['0']['id_species_kingdom'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_phylum'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_phylum'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_class WHERE id_species_phylum = " . $this->data['species']['0']['id_species_phylum'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_class'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_class'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_order WHERE id_species_class = " . $this->data['species']['0']['id_species_class'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_order'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_order'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_family WHERE id_species_order = " . $this->data['species']['0']['id_species_order'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_family'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_family'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_genus WHERE id_species_family = " . $this->data['species']['0']['id_species_family'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_genus'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_genus'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_main WHERE id_species_genus = " . $this->data['species']['0']['id_species_genus'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_main'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_main'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$sql = "SELECT id, scientific_name as libelle FROM species_sub WHERE id_species_main = " . $this->data['species']['0']['id_species_main'] . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
-		$this->data['species_sub'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['species_sub'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
 		$sql = "SELECT id, libelle as libelle FROM licence order By id";
-		$res = $_SQL->sql_query($sql);
-		$this->data['licence'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$this->data['licence'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 
 
 //accept
 		$sql = "SELECT id, libelle as libelle, type FROM species_picture_info where `type` = 1 order BY type, cf_order";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i = 0;
 		while ( $ob = mysql_fetch_object($res) )
@@ -912,7 +912,7 @@ delay:0}
 
 //refuse
 		$sql = "SELECT id, libelle as libelle, type FROM species_picture_info where `type` = 3 order BY type, cf_order";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i = 0;
 		while ( $ob = mysql_fetch_object($res) )
@@ -948,9 +948,9 @@ delay:0}
 				$tmp['species_picture_in_wait']['id'] = $this->data['species']['0']['id_photo'];
 				$tmp['species_picture_in_wait']['data'] = base64_encode(serialize($this->data['img']));
 
-				$GLOBALS['_SQL']->set_history_user(9);
-				$GLOBALS['_SQL']->set_history_type(10);
-				if ( !$_SQL->sql_save($tmp) )
+				$this->db['mysql_write']->set_history_user(9);
+				$this->db['mysql_write']->set_history_type(10);
+				if ( !$this->db['mysql_write']->sql_save($tmp) )
 				{
 					die("Problem insertion data dans species_picture_in_wait");
 					set_flash("error", "Error", "Hum really strange !");
@@ -1243,16 +1243,16 @@ $('#searchLoc').trigger('click');
 
 
 		$this->layout_name = false;
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT id, scientific_name as libelle FROM `" . mysql_real_escape_string($table) . "` WHERE `" . $id_table[$table] . "` = " . mysql_real_escape_string($id) . " order By scientific_name";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		if ( $table == "species_sub" )
 		{
 			$select = array();
 			$i = 0;
-			while ( $ob = $_SQL->sql_fetch_object($res) )
+			while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 			{
 				$select[$i]['id'] = $ob->id;
 
@@ -1266,7 +1266,7 @@ $('#searchLoc').trigger('click');
 		}
 		else
 		{
-			$this->data['elem'] = $_SQL->sql_to_array($res);
+			$this->data['elem'] = $this->db['mysql_write']->sql_to_array($res);
 		}
 
 
@@ -1294,14 +1294,14 @@ $('#searchLoc').trigger('click');
 	{
 		$this->layout_name = false;
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT * from species_picture_in_wait";
 
 
 		$sql = "SELECT * from species_picture_in_wait a
 inner join species_tree_id b on a.id_species_main = b.id_species_main where b.id_species_family = 438";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 0;
@@ -1336,10 +1336,10 @@ INNER JOIN species_tree_nominal b ON a.id_species_main = b.id_nominal
 WHERE b.id_family =  '438' and id_species_main=10098
 AND a.id_history_etat =1";
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
-		$res = $_SQL->sql_query($sql);
+		
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		$data['photo'] = $_SQL->sql_to_array($res);
+		$data['photo'] = $this->db['mysql_write']->sql_to_array($res);
 
 
 		$this->set('data', $data);
@@ -1353,20 +1353,20 @@ AND a.id_history_etat =1";
 		$this->layout_name = false;
 		$sql = "select id,name from species_picture_in_wait order by id";
 
-		$_SQL = singleton::getInstance(SQL_DRIVER);
-		$res = $_SQL->sql_query($sql);
+		
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 0;
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 
 			$tab_id = explode("_", $ob->name);
 
 			$photo_id = "flickr_" . $tab_id[0];
 
-			$sql = "UPDATE species_picture_in_wait SET photo_id ='" . $_SQL->sql_real_escape_string($photo_id) . "' WHERE id ='" . $ob->id . "'";
-			$_SQL->sql_query($sql);
+			$sql = "UPDATE species_picture_in_wait SET photo_id ='" . $this->db['mysql_write']->sql_real_escape_string($photo_id) . "' WHERE id ='" . $ob->id . "'";
+			$this->db['mysql_write']->sql_query($sql);
 
 			if ( $i % 1000 == 0 )
 			{

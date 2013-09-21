@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class geolocalisation_city extends model
+class geolocalisation_city extends Model
 {
 
 	var $schema = "CREATE TABLE `geolocalisation_city` (

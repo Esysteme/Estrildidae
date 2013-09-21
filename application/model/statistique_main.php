@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class statistique_main extends model
+class statistique_main extends Model
 {
 
 	// Nous donnons donc � Gliale la structure d'un enregistrement

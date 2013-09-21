@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class licence extends model
+class licence extends Model
 {
 
 	var $schema = "CREATE TABLE `licence` (

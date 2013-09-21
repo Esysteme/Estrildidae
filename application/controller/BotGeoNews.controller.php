@@ -42,9 +42,9 @@ class BotGeoNews extends Controller
 		include_once LIBRARY . 'Glial/parser/geo_news/geo_news.php';
 
 		$sql = "SELECT * FROM species_tree_nominal where class='Aves'";
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$dir = "/home/www/species/data/range_map/kmz/";
 
@@ -91,7 +91,7 @@ class BotGeoNews extends Controller
 		$this->layout_name = false;
 
 		include_once LIBRARY . 'Glial/kml/kml.php';
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$species = "Lonchura_hunsteini";
 
@@ -124,20 +124,20 @@ class BotGeoNews extends Controller
 		$sql = "SELECT a.id as id_species, b.id as id_species_sub FROM species_main a
 			INNER JOIN species_sub b ON a.id = b.id_species_main
 			where b.scientific_name = '" . $species_name . " " . $sub_species[1] . "'";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 
 			$sql2 = "INSERT INTO range_map_main (id_species_main, km_squared) VALUES (" . $ob->id_species . "," . $total . ")";
-			$_SQL->sql_query($sql2);
+			$this->db['mysql_write']->sql_query($sql2);
 
 
 			$sql10 = "SELECT id from range_map_main where id_species_main =" . $ob->id_species . "";
-			$res10 = $_SQL->sql_query($sql10);
+			$res10 = $this->db['mysql_write']->sql_query($sql10);
 
 
-			while ( $ob10 = $_SQL->sql_fetch_object($res10) )
+			while ( $ob10 = $this->db['mysql_write']->sql_fetch_object($res10) )
 			{
 				$id_range_map_main = $ob10->id;
 
@@ -155,7 +155,7 @@ class BotGeoNews extends Controller
 
 						$sql3 = "INSERT INTO range_map_polygon (id_species_main,id_species_sub,id_range_map_main,id_range_map_legend, km_squared, placemark) 
 					VALUES (" . $ob->id_species . "," . $ob->id_species_sub . "," . $id_range_map_main . ",1," . $squared_meter[$j] . "," . $i . ")";
-						$_SQL->sql_query($sql3);
+						$this->db['mysql_write']->sql_query($sql3);
 						
 
 						$coordinates = explode(' ',trim( $Polygon['outerBoundaryIs']['LinearRing']['coordinates']));
@@ -168,10 +168,10 @@ class BotGeoNews extends Controller
 						debug($coordinates);
 
 						$sql11 = "SELECT max(id) as id from range_map_polygon";
-						$res11 = $_SQL->sql_query($sql11);
+						$res11 = $this->db['mysql_write']->sql_query($sql11);
 
 
-						while ( $ob11 = $_SQL->sql_fetch_object($res11) )
+						while ( $ob11 = $this->db['mysql_write']->sql_fetch_object($res11) )
 						{
 							$id_range_map_polygon = $ob11->id;
 							
@@ -181,7 +181,7 @@ class BotGeoNews extends Controller
 
 								$sql4 = "INSERT INTO range_map_coordinates (id_range_map_polygon, latitude, longitude) 
 								VALUES (" . $id_range_map_polygon . "," . $coord[0] . "," . $coord[1] . ")";
-								$_SQL->sql_query($sql4);
+								$this->db['mysql_write']->sql_query($sql4);
 							}
 						}
 					}

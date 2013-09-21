@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class translation_main extends model
+class translation_main extends Model
 {
 
     var $schema = "CREATE TABLE `translation_main` (
@@ -25,7 +25,7 @@ class translation_main extends model
     var $field = array("id", "id_history_etat", "key", "source", "destination", "text", "date_inserted", "date_updated", "translate_auto", "file_found", "line_found");
     var $validate = array(
         'id_history_etat' => array(
-            'reference_to' => array('The constraint to history_etat.id isn''t respected.', 'history_etat', 'id')
+            'reference_to' => array('The constraint to history_etat.id isn\'t respected.', 'history_etat', 'id')
         ),
         'key' => array(
             'not_empty' => array('This field is requiered.')

@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class history_table extends model
+class history_table extends Model
 {
 
 	var $schema = "CREATE TABLE `history_table` (

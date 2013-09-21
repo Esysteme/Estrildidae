@@ -14,7 +14,6 @@ if ( empty($url[4]) || strstr($url[4], ">") )
 	$url[5] = 'empty';
 }
 
-debug($url);
 
 
 if ( count($data['pending']) > 0 )

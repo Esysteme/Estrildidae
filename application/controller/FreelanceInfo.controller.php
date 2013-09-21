@@ -10,7 +10,7 @@ class FreelanceInfo extends Controller
 
 	function index()
 	{
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$this->layout_name = false;
 		$this->view = false;
@@ -30,13 +30,13 @@ class FreelanceInfo extends Controller
 				$table['freelance_info'] = freelance_info::get_item($ref);
 				$table['freelance_info']['inserted'] = date('c');
 
-				$res = $_SQL->sql_save($table);
+				$res = $this->db['mysql_write']->sql_save($table);
 
 				if ( !$res )
 				{
 					debug($table);
 
-					debug($_SQL->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 
 					die();
 				}
@@ -46,7 +46,7 @@ class FreelanceInfo extends Controller
 
 	function send_email()
 	{
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$this->layout_name = false;
 		$this->view = false;
@@ -132,9 +132,9 @@ Tél : 06.27.63.89.78";
 		
 		$sql = "SELECT distinct email from freelance_info where email!= '' order by email";
 		
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 		
-		while($ob = $_SQL->sql_fetch_object($res))
+		while($ob = $this->db['mysql_write']->sql_fetch_object($res))
 		{
 			echo $ob->email."\n";
 			mail($ob->email, $sujet, $texte . $attachement, "Reply-to: $reply\nFrom:	" . $nomprenom . "<" . $from . ">\n" . $mail_mime);

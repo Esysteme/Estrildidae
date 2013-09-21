@@ -1,7 +1,7 @@
 <?php
 
 //use glial\synapse\Singleton;
-
+use \Glial\I18n\I18n;
 
 
 $sql = "select count(1) as cpt from user_main";
@@ -47,7 +47,7 @@ $_SITE['NumberSsp'] = $this->db['mysql_write']->sql_fetch_array($res);
 
 
 echo "<!DOCTYPE html>\n";
-echo "<html lang=\"" . $_LG->Get() . "\">";
+echo "<html lang=\"" . I18n::Get() . "\">";
 
 echo "<head>\n";
 echo "<meta charset=utf-8 />\n";
@@ -175,9 +175,8 @@ echo "<div style=\"float:right;\">
 		
 		<div style=\"float:left; line-height:18px\">" . __("Language") . " :&nbsp;</div>
 		<ul id=\"langage\">";
-echo "<li class=\"top\"><span class=\"item_lg\"><img src=\"" . IMG . "language/" . $_LG->Get() . ".gif\" width=\"18\" height=\"12\" border=\"0\" />
-		<span id=\"lg_main\"> " . \Glial\I18n\I18n::$languagesUTF8[\Glial\I18n\I18n::Get()] . "</span></span><ul class=\"sub\">\n";
-
+echo "<li class=\"top\"><span class=\"item_lg\"><img src=\"" . IMG . "language/" . I18n::Get() . ".gif\" width=\"18\" height=\"12\" border=\"0\" />
+		<span id=\"lg_main\"> " . I18n::$languagesUTF8[I18n::Get()] . "</span></span><ul class=\"sub\">\n";
 
 
 $lg = explode(",", LANGUAGE_AVAILABLE);
@@ -187,8 +186,8 @@ for ($i = 0; $i < $nbchoice; $i++)
 {
 
 
-	if ($lg[$i] != $_LG->Get())
-		echo "<li><a href=\"" . WWW_ROOT . $lg[$i] . "/" . $_GET['url'] . "\"><img class=\"" . $lg[$i] . "\" src=\"" . IMG . "main/1x1.png\" width=\"18\" height=\"12\" border=\"0\" /> " . $_LG->languagesUTF8[$lg[$i]] . "</a></li>\n";
+	if ($lg[$i] != I18n::Get())
+		echo "<li><a href=\"" . WWW_ROOT . $lg[$i] . "/" . $_GET['url'] . "\"><img class=\"" . $lg[$i] . "\" src=\"" . IMG . "main/1x1.png\" width=\"18\" height=\"12\" border=\"0\" /> " . I18n::$languagesUTF8[$lg[$i]] . "</a></li>\n";
 }
 
 echo "</ul>";

@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class link__species_author__user_main extends model
+class link__species_author__user_main extends Model
 {
 
 	var $schema = "CREATE TABLE `link__species_author__user_main` (

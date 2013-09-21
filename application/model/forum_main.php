@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class forum_main extends model
+class forum_main extends Model
 {
 
 	var $schema = "CREATE TABLE `forum_main` (

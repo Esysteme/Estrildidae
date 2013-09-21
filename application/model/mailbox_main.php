@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class mailbox_main extends model
+class mailbox_main extends Model
 {
 
 	var $schema = "CREATE TABLE `mailbox_main` (

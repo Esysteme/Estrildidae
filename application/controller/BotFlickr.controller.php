@@ -37,8 +37,8 @@ class BotFlickr extends Controller
 			inner join species_picture_id b ON a.id = b.id_species_picture_search
 			WHERE a.id_species_main = 9222";
 
-		$res = $_SQL->sql_query($sql);
-		$data['img'] = $_SQL->sql_to_array($res);
+		$res = $this->db['mysql_write']->sql_query($sql);
+		$data['img'] = $this->db['mysql_write']->sql_to_array($res);
 
 		$this->set('data', $data);
 	}
@@ -46,10 +46,10 @@ class BotFlickr extends Controller
 	function family()
 	{
 
-		$res = $GLOBALS['_SQL']->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
-		while ( $ob = $GLOBALS['_SQL']->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 			
 		}
@@ -105,9 +105,9 @@ class BotFlickr extends Controller
 			LEFT JOIN species_translation b ON a.id_nominal = b.id_row AND b.id_table = 7
 where a.id_family = 438";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 			$tab_name = array($ob->nominal);
 
@@ -127,20 +127,20 @@ where a.id_family = 438";
 						{
 							$tmp = array();
 							$sql = "SELECT count(1) as cpt, id FROM species_picture_in_wait where photo_id = '" . $data['img']['id'] . "'";
-							$res2 = $_SQL->sql_query($sql);
-							$ob2 = $_SQL->sql_fetch_object($res2);
+							$res2 = $this->db['mysql_write']->sql_query($sql);
+							$ob2 = $this->db['mysql_write']->sql_fetch_object($res2);
 
 							if ( $ob2->cpt != 0 )
 							{
 								echo "New photo found on : " . $url_to_get . "\n";
 								$tmp['species_picture_in_wait']['id'] = $ob2->id;
-								$GLOBALS['_SQL']->set_history_type(13);
+								$this->db['mysql_write']->set_history_type(13);
 							}
 							else
 							{
 								echo "Update photo found on : " . $url_to_get . "\n";
 								$tmp['species_picture_in_wait']['id_history_etat'] = 1;
-								$GLOBALS['_SQL']->set_history_type(3);
+								$this->db['mysql_write']->set_history_type(3);
 							}
 
 							$tmp['species_picture_in_wait']['photo_id'] = $data['img']['id'];
@@ -168,13 +168,13 @@ where a.id_family = 438";
 
 							if ( trim($data['img']['image']['mime']) === "image/jpeg" )
 							{
-								$GLOBALS['_SQL']->set_history_user(9);
+								$this->db['mysql_write']->set_history_user(9);
 
 
-								if ( !$_SQL->sql_save($tmp) )
+								if ( !$this->db['mysql_write']->sql_save($tmp) )
 								{
 									echo "#####################";
-									debug($GLOBALS['_SQL']->sql_error());
+									debug($this->db['mysql_write']->sql_error());
 									//die("Problem insertion data dans species_picture_in_wait");
 									sleep(5);
 								}
@@ -205,7 +205,7 @@ where a.id_family = 438";
 
 		
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT id_nominal , a.nominal,b.id_species_sub,   b.language, b.text as name
 		from species_tree_nominal a
@@ -215,9 +215,9 @@ where a.id_family = 438";
 		where a.id_family = 438 AND b.id_species_sub = 0 AND d.total_found is null
 		order by rand()";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 
 			echo Color::getColoredString($ob->nominal, "black", "green") . "\n";
@@ -234,7 +234,7 @@ where a.id_family = 438";
 			$search['species_picture_search']['date'] = date('Y-m-d H:i:s');
 			$search['species_picture_search']['id_species_source_main'] = 7;
 
-			$id_search = $_SQL->sql_save($search);
+			$id_search = $this->db['mysql_write']->sql_save($search);
 
 			if ( $id_search )
 			{
@@ -250,12 +250,12 @@ where a.id_family = 438";
 					$author['species_author']['surname'] = $url_to_get['author'];
 					$author['species_author']['date'] = date('Y-m-d H:i:s');
 
-					$id_author = $_SQL->sql_save($author);
+					$id_author = $this->db['mysql_write']->sql_save($author);
 
 					if (! $id_author )
 					{
 						//debug($author);
-						debug($_SQL->sql_error());
+						debug($this->db['mysql_write']->sql_error());
 						echo Color::getColoredString("Impossible to insert this author", "white", "red") . "\n";
 					}
 					
@@ -278,12 +278,12 @@ where a.id_family = 438";
 
 					//debug($pic_id);
 					
-					$id_picture = $_SQL->sql_save($pic_id);
+					$id_picture = $this->db['mysql_write']->sql_save($pic_id);
 					
 					if ( ! $id_picture)
 					{
 						//debug($pic_id);
-						debug($_SQL->sql_error());
+						debug($this->db['mysql_write']->sql_error());
 						
 						echo Color::getColoredString("Impossible to insert picture", "white", "red") . "\n";
 					}
@@ -294,10 +294,10 @@ where a.id_family = 438";
 						$pic_id['link__species_picture_id__species_picture_search']['id_species_picture_search'] = $id_search;
 						$pic_id['link__species_picture_id__species_picture_search']['date'] = date('Y-m-d H:i:s');
 
-						if ( !$_SQL->sql_save($pic_id) )
+						if ( !$this->db['mysql_write']->sql_save($pic_id) )
 						{
 							//debug($pic_id);
-							debug($_SQL->sql_error());
+							debug($this->db['mysql_write']->sql_error());
 							echo Color::getColoredString("ERROR INSERTION link__species_picture_id__species_picture_search", "white", "red") . "\n";
 							
 						}
@@ -308,7 +308,7 @@ where a.id_family = 438";
 			else
 			{
 				
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				echo Color::getColoredString("ERROR INSERTION species_picture_search", "white", "red") . "\n";
 			}
 			
@@ -370,14 +370,14 @@ where a.id_family = 438";
 		$this->layout_name = false;
 		include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
 		include_once (LIB . "wlHtmlDom.php");
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 		$sql = "SELECT * FROM species_picture_main where data != ''";
 
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i = 0;
-		while ( $ob = $_SQL->sql_fetch_object($res) )
+		while ( $ob = $this->db['mysql_write']->sql_fetch_object($res) )
 		{
 
 			$data = unserialize(base64_decode($ob->data));
@@ -389,7 +389,7 @@ where a.id_family = 438";
 				echo $i . " [" . date("Y-m-d H:i:s") . "] photo : " . $data['url'] . "\n";
 
 				$sql = "UPDATE species_picture_main SET latitude = '" . $data['gps']['latitude'] . "', longitude = '" . $data['gps']['longitude'] . "' WHERE id = '" . $ob->id . "'";
-				$_SQL->sql_query($sql);
+				$this->db['mysql_write']->sql_query($sql);
 
 				/*
 				  $pic = array();
@@ -400,10 +400,10 @@ where a.id_family = 438";
 
 				  echo $i . " [" . date("Y-m-d H:i:s") . "] photo : ".$data['url']."\n";
 
-				  if (! $_SQL->sql_save($pic))
+				  if (! $this->db['mysql_write']->sql_save($pic))
 				  {
 				  debug($pic);
-				  debug($_SQL->sql_error());
+				  debug($this->db['mysql_write']->sql_error());
 				  die();
 				  }
 

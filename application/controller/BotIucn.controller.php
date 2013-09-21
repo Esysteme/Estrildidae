@@ -24,7 +24,7 @@ class BotIucn extends Controller {
 
 	function get_species_iucn() {
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
@@ -37,17 +37,17 @@ class BotIucn extends Controller {
 
 			foreach ($data as $species)
 			{
-				$sql = "SELECT * FROM species_main where scientific_name = '" . $_SQL->sql_real_escape_string($species['scientific_name']) . "'";
-				$res = $_SQL->sql_query($sql);
+				$sql = "SELECT * FROM species_main where scientific_name = '" . $this->db['mysql_write']->sql_real_escape_string($species['scientific_name']) . "'";
+				$res = $this->db['mysql_write']->sql_query($sql);
 
 
 				$summary = iucn::get_species_summary($species['reference_id']);
 				//print_r($summary);
 
 
-				if ($_SQL->sql_num_rows($res) == 1)
+				if ($this->db['mysql_write']->sql_num_rows($res) == 1)
 				{
-					$ob = $_SQL->sql_fetch_object($res);
+					$ob = $this->db['mysql_write']->sql_fetch_object($res);
 					$id_species = $ob->id;
 				}
 				else
@@ -57,16 +57,16 @@ class BotIucn extends Controller {
 				}
 
 				$sql = "select * FROM species_source_detail WHERE reference_id ='" . $species['reference_id'] . "' AND id_species_source_main=1";
-				$res2 = $_SQL->sql_query($sql);
+				$res2 = $this->db['mysql_write']->sql_query($sql);
 
 				$save = array();
-				if ($_SQL->sql_num_rows($res2) == 0)
+				if ($this->db['mysql_write']->sql_num_rows($res2) == 0)
 				{
 					$save['species_source_detail']['date_created'] = $species['date'];
 				}
 				else
 				{
-					$ob2 = $_SQL->sql_fetch_object($res2);
+					$ob2 = $this->db['mysql_write']->sql_fetch_object($res2);
 					$save['species_source_detail']['id'] = $ob2->id;
 				}
 
@@ -76,11 +76,11 @@ class BotIucn extends Controller {
 				$save['species_source_detail']['id_species_source_main'] = 1;
 				$save['species_source_detail']['id_species_main'] = $id_species;
 
-				$id_species_source_detail = $_SQL->sql_save($save);
+				$id_species_source_detail = $this->db['mysql_write']->sql_save($save);
 
 				if (!$id_species_source_detail)
 				{
-					debug($_SQL->sql_error());
+					debug($this->db['mysql_write']->sql_error());
 					debug($save);
 					die();
 				}
@@ -103,9 +103,9 @@ class BotIucn extends Controller {
 					  "
 					 */
 
-					if (!$_SQL->sql_save($species_source_data))
+					if (!$this->db['mysql_write']->sql_save($species_source_data))
 					{
-						debug($_SQL->sql_error());
+						debug($this->db['mysql_write']->sql_error());
 						debug($species_source_data);
 						die();
 					}
@@ -125,7 +125,7 @@ class BotIucn extends Controller {
 	}
 
 	function get_species() {
-		//$_SQL = Singleton::getInstance(SQL_DRIVER);
+		//
 		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
 		include_once (LIB . "wlHtmlDom.php");
 
@@ -138,7 +138,7 @@ class BotIucn extends Controller {
 	}
 
 	function test_import() {
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		include_once(LIBRARY . "Glial/parser/iucn/iucn.php");
 		include_once(LIBRARY . "Glial/species/species.php");
 
@@ -167,15 +167,15 @@ class BotIucn extends Controller {
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 
 		$sql = "select id, id_species_main, reference_id FROM species_source_detail WHERE id_species_source_main=1 order by reference_id";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 1;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 
 			$habitat = iucn::get_species_classification($ob->reference_id);
 
@@ -185,9 +185,9 @@ class BotIucn extends Controller {
 			$species_source_data['species_source_data']['date'] = date("c");
 			$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($habitat), 9));
 
-			if (!$_SQL->sql_save($species_source_data))
+			if (!$this->db['mysql_write']->sql_save($species_source_data))
 			{
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				debug($species_source_data);
 				die();
 			}
@@ -209,7 +209,7 @@ class BotIucn extends Controller {
 		include_once(LIBRARY . "Glial/species/species.php");
 		include_once (LIB . "wlHtmlDom.php");
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 
 
 		$sql = "select a.id, id_species_main, reference_id FROM species_source_detail a
@@ -218,11 +218,11 @@ class BotIucn extends Controller {
 			GROUP BY reference_id
 			HAVING count(1) =1 
 order by FLOOR(`reference_id`)";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 
 		$i = 1;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 
 			$habitat = iucn::get_species_bibliography($ob->reference_id);
 
@@ -232,9 +232,9 @@ order by FLOOR(`reference_id`)";
 			$species_source_data['species_source_data']['date'] = date("c");
 			$species_source_data['species_source_data']['data'] = base64_encode(gzencode(json_encode($habitat), 9));
 
-			if (!$_SQL->sql_save($species_source_data))
+			if (!$this->db['mysql_write']->sql_save($species_source_data))
 			{
-				debug($_SQL->sql_error());
+				debug($this->db['mysql_write']->sql_error());
 				debug($species_source_data);
 				die();
 			}
@@ -254,12 +254,12 @@ order by FLOOR(`reference_id`)";
 
 		$this->layout_name = false;
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT * FROM species_source_data where type ='classifica'";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i =0;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 			$i++;
 
 			//echo $ob->data."\n";
@@ -275,7 +275,7 @@ order by FLOOR(`reference_id`)";
 					$habitat['species_habitat']['rank'] = $line['code'];
 					$habitat['species_habitat']['libelle'] = trim($line['libelle']);
 					
-					if (! $_SQL->sql_save($habitat))
+					if (! $this->db['mysql_write']->sql_save($habitat))
 					{
 						debug($habitat);
 						exit;
@@ -299,12 +299,12 @@ order by FLOOR(`reference_id`)";
 
 		$this->layout_name = false;
 
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$sql = "SELECT * FROM species_source_data where type ='bibliograp'";
-		$res = $_SQL->sql_query($sql);
+		$res = $this->db['mysql_write']->sql_query($sql);
 
 		$i =0;
-		while ($ob = $_SQL->sql_fetch_object($res)) {
+		while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
 			$i++;
 
 			//echo $ob->data."\n";
@@ -326,13 +326,13 @@ order by FLOOR(`reference_id`)";
 					
 					$book = array();
 					
-					$book['bibliography']['text'] = $_SQL->sql_real_escape_string(trim($line));
-					$book['bibliography']['crc32'] = crc32($_SQL->sql_real_escape_string(trim($line)));
+					$book['bibliography']['text'] = $this->db['mysql_write']->sql_real_escape_string(trim($line));
+					$book['bibliography']['crc32'] = crc32($this->db['mysql_write']->sql_real_escape_string(trim($line)));
 					echo $i."[".date("Y-m-d H:i:s")."] {$line}\n";
-					if (! $_SQL->sql_save($book))
+					if (! $this->db['mysql_write']->sql_save($book))
 					{
 						debug($book);
-						debug($_SQL->sql_error());
+						debug($this->db['mysql_write']->sql_error());
 						exit;
 						
 					}

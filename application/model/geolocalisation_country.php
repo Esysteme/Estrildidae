@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class geolocalisation_country extends model
+class geolocalisation_country extends Model
 {
 
 	// Nous donnons donc � Gliale la structure d'un enregistrement

@@ -36,7 +36,7 @@ class BotXenoCanto extends Controller {
 	
 	function get_song()
 	{
-		$_SQL = Singleton::getInstance(SQL_DRIVER);
+		
 		$data = unserialize(file_get_contents(TMP.'grab/xeno_canto.txt'));
 		
 		foreach($data as $elem)
@@ -47,16 +47,16 @@ class BotXenoCanto extends Controller {
 				continue;
 			}
 			
-			$sql = "SELECT * FROM species_main where scientific_name = '".$_SQL->sql_real_escape_string(trim($elem['scientific_name']))."'";
-			$res = $_SQL->sql_query($sql);
+			$sql = "SELECT * FROM species_main where scientific_name = '".$this->db['mysql_write']->sql_real_escape_string(trim($elem['scientific_name']))."'";
+			$res = $this->db['mysql_write']->sql_query($sql);
 			
-			while ($ob = $_SQL->sql_fetch_object($res))
+			while ($ob = $this->db['mysql_write']->sql_fetch_object($res))
 			{
 				
 				
 			}
 			
-			if ($_SQL->sql_num_rows($res) == 0)
+			if ($this->db['mysql_write']->sql_num_rows($res) == 0)
 			{
 				echo $elem['scientific_name']."\n";
 			}

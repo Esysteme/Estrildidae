@@ -1,10 +1,10 @@
 <?php
 
-namespace application\model;
+namespace Application\Model;
 
-use glial\synapse\model;
+use \Glial\Synapse\Model;
 
-class range_map_main extends model
+class range_map_main extends Model
 {
 
 	var $schema = "CREATE TABLE `range_map_main` (
