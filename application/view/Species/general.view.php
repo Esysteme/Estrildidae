@@ -212,7 +212,7 @@ foreach ( $data['translation'] as $tab )
 		}
 		echo '<div>';
 		//echo '<img src="' . IMG . '/language/'.$tab['language'].'.gif" width="18" height="12" border="0">';
-		echo '<b>' . $tab['print_name'] . ' :</b> ' . $tab['text'] . ' ';
+		echo '<b>' . __($tab['print_name']) . ' :</b> ' . $tab['text'] . ' ';
 		$lg = $tab['language'];
 
 		$j = 1;
@@ -298,6 +298,8 @@ echo '</div>';
 
 //debug($data['geographic_range']);
 
+
+
 echo "
 		<h3 class=\"item\">" . __("Identification") . "</h3>
 		<h3 class=\"item\">" . __("Habitat") . "</h3>
@@ -322,8 +324,9 @@ echo "</div>";
 
 $species_link = str_replace(" ", "_", $data['info'][0]['scientific_name']);
 
-if ( IS_AJAX )
+if ( IS_AJAX ) //hack for load google map
 {
 	echo '<img src="' . IMG . 'main/1x1.png" alt="" onload="initialize(\'' . $species_link . '\');" />';
 	
 }
+
