@@ -90,23 +90,20 @@ define('LIB', CORE_PATH . "lib" . DS);
 
 //echo "CORE_PATH: ".CORE_PATH."\n"; 
 //The absolute path to the webroot directory.
-define('WEBROOT_DIR', basename(dirname(__FILE__)) . DS);
+//define('WEBROOT_DIR', basename(dirname(__FILE__)) . DS);
 
 
 //echo "WEBROOT_DIR: ".WEBROOT_DIR."\n"; die();
 /*
   $path = explode("=", $_SERVER['QUERY_STRING']);
   $www_root = str_replace($path[1], "", $_SERVER['REQUEST_URI']);
-  define('WWW_ROOT', $www_root);
  * 
  * 
  */
 
 require(CONFIG."webroot.config.php");
-//define('WWW_ROOT', '/backup/species/');
 
 
-//define('WWW_ROOT', "http://www.estrildidae.net/");
 
 define('FARM1', "http://farm1.gdol.eu/");
 
