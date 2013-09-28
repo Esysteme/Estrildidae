@@ -109,9 +109,6 @@ Encourage the enhanced appreciation of the climate regulating functions of ecosy
 
 
 
-
-
-
 echo "<div id=\"box\">";
 
 
