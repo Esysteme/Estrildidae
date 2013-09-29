@@ -1,7 +1,8 @@
 <?php
 
-use \glial\synapse\singleton;
-use \glial\synapse\Controller;
+
+use \Glial\Synapse\Controller;
+use \Glial\I18n\I18n;
 
 class User extends Controller {
 
@@ -34,8 +35,6 @@ class User extends Controller {
 	}
 
 	function login($bypass = false) {
-
-		
 
 		if ($_SERVER['REQUEST_METHOD'] == "POST" || $bypass)
 		{
@@ -82,8 +81,8 @@ class User extends Controller {
 					{
 						$this->log($ob->id, false);
 
-						$msg = $GLOBALS['_LG']->getTranslation(__("Your Password is Incorrect! Please try again."));
-						$title = $GLOBALS['_LG']->getTranslation(__("Error"));
+						$msg = I18n::getTranslation(__("Your Password is Incorrect! Please try again."));
+						$title = I18n::getTranslation(__("Error"));
 
 						set_flash("error", $title, $msg);
 
@@ -94,8 +93,8 @@ class User extends Controller {
 				else
 				{
 
-					$msg = $GLOBALS['_LG']->getTranslation(__("Your login information was incorrect. Please try again."));
-					$title = $GLOBALS['_LG']->getTranslation(__("Invalid login !"));
+					$msg = I18n::getTranslation(__("Your login information was incorrect. Please try again."));
+					$title = I18n::getTranslation(__("Invalid login !"));
 
 					set_flash("error", $title, $msg);
 
@@ -108,8 +107,8 @@ class User extends Controller {
 			{
 				SetCookie("Passwd", "", time() + 60 * 60 * 24 * 365, '/', $_SERVER['SERVER_NAME'], false, true);
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Logout !"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("You have been fully disconnectionected from your account"));
+				$title = I18n::getTranslation(__("Logout !"));
+				$msg = I18n::getTranslation(__("You have been fully disconnectionected from your account"));
 
 				set_flash("success", $title, $msg);
 
@@ -291,8 +290,8 @@ class User extends Controller {
 			if (!empty($_COOKIE['IdUser']))
 			{
 
-				$msg = $GLOBALS['_LG']->getTranslation(__("You are already registered under the account id : ") . $_COOKIE['IdUser']);
-				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
+				$msg = I18n::getTranslation(__("You are already registered under the account id : ") . $_COOKIE['IdUser']);
+				$title = I18n::getTranslation(__("Error"));
 				set_flash("error", $title, $msg);
 				header("location: " . WWW_ROOT);
 				exit;
@@ -327,8 +326,8 @@ class User extends Controller {
 				$error = $this->db['mysql_write']->sql_error();
 				$_SESSION['ERROR'] = $error;
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Registration error"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("One or more problem came when you try to register your account, please verify your informations"));
+				$title = I18n::getTranslation(__("Registration error"));
+				$msg = I18n::getTranslation(__("One or more problem came when you try to register your account, please verify your informations"));
 
 				set_flash("error", $title, $msg);
 
@@ -349,20 +348,22 @@ class User extends Controller {
 			else
 			{
 
+                $link = "http://www.estrildidae.net";
+                
 				$subject = __("Confirm your registration on www.estrildidae.net");
 
 				$msg = __('Hello') . ' ' . $data['user_main']['firstname'] . ' ' . $data['user_main']['name'] . ' !<br />
 				' . __('Thank you for registering on estrildidae.net.') . '<br />
 				<br />
 				' . __("To finalise your registration, please click on the confirmation link below. Once you've done this, your registration will be complete.") . '<br />
-				' . __('Please') . ' <a href="' . LINK . 'user/confirmation/' . $data['user_main']['email'] . "/" . $data['user_main']['key_auth'] . '"> ' . __('click here') . '</a> ' . __('to confirm your registration
+				' . __('Please') . ' <a href="' . 'http://'.$_SERVER['SERVER_NAME'].LINK . 'user/confirmation/' . $data['user_main']['email'] . "/" . $data['user_main']['key_auth'] . '"> ' . __('click here') . '</a> ' . __('to confirm your registration
 				or copy and paste the following URL into your browser:') . '
-				' . LINK . 'user/confirmation/' . $data['user_main']['email'] . '/' . $data['user_main']['key_auth'] . '<br />
+				' .'http://'.$_SERVER['SERVER_NAME']. LINK . 'user/confirmation/' . $data['user_main']['email'] . '/' . $data['user_main']['key_auth'] . '<br />
                 <br />
 				' . __('Many thanks');
 
 
-				$msg = $GLOBALS['_LG']->getTranslation($msg);
+				$msg = I18n::getTranslation($msg);
 
 				$headers = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
@@ -380,8 +381,8 @@ class User extends Controller {
 				$msg .= __("In a few seconds you'll receive an email from our system with the link of validation of your account. Remember to configure your account preferences. Hope you can enjoy our services.") . "<br /><br />";
 				$msg .= __("Thank you for registering on Estrildidae.net!") . "<br/>";
 
-				$msg = $GLOBALS['_LG']->getTranslation($msg);
-				$title = $GLOBALS['_LG']->getTranslation(__("New user account created !"));
+				$msg = I18n::getTranslation($msg);
+				$title = I18n::getTranslation(__("New user account created !"));
 				set_flash("success", $title, $msg);
 
 
@@ -413,8 +414,8 @@ class User extends Controller {
 			if ($this->db['mysql_write']->sql_num_rows($res) === 0)
 			{
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("This email does not exist in our database"));
+				$title = I18n::getTranslation(__("Error"));
+				$msg = I18n::getTranslation(__("This email does not exist in our database"));
 				set_flash("error", $title, $msg);
 
 				$ret = array();
@@ -449,8 +450,8 @@ class User extends Controller {
                 <br />
 				' . __('Many thanks');
 
-				$subject = $GLOBALS['_LG']->getTranslation($subject);
-				$msg = $GLOBALS['_LG']->getTranslation($msg);
+				$subject = I18n::getTranslation($subject);
+				$msg = I18n::getTranslation($msg);
 
 				$headers = 'MIME-Version: 1.0' . "\r\n";
 				$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
@@ -464,8 +465,8 @@ class User extends Controller {
 
 				mail($ob->email, $subject, $msg, $headers) or die("error mail");
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Instructions sent !"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("In a few seconds you'll receive an email from our system with the informations to recover your password."));
+				$title = I18n::getTranslation(__("Instructions sent !"));
+				$msg = I18n::getTranslation(__("In a few seconds you'll receive an email from our system with the informations to recover your password."));
 				set_flash("success", $title, $msg);
 
 
@@ -490,8 +491,8 @@ class User extends Controller {
 
 		if ($this->db['mysql_write']->sql_num_rows($res) === 0)
 		{
-			$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-			$msg = $GLOBALS['_LG']->getTranslation(__("This link to recover your password is not valid anymore. Make a new request."));
+			$title = I18n::getTranslation(__("Error"));
+			$msg = I18n::getTranslation(__("This link to recover your password is not valid anymore. Make a new request."));
 			set_flash("error", $title, $msg);
 
 			header("location: " . LINK . "user/lost_password/" . $param);
@@ -530,8 +531,8 @@ class User extends Controller {
 					$_POST['password'] = $tmp['user_main']['password'];
 					$this->login(true);
 
-					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Your password has been updated successfully"));
+					$title = I18n::getTranslation(__("Success"));
+					$msg = I18n::getTranslation(__("Your password has been updated successfully"));
 
 					set_flash("success", $title, $msg);
 					header("location: " . LINK . "home/index");
@@ -542,8 +543,8 @@ class User extends Controller {
 					$error = $this->db['mysql_write']->sql_error();
 					$_SESSION['ERROR'] = $error;
 
-					$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("One or more problem came when you try to update your password, please verify your informations"));
+					$title = I18n::getTranslation(__("Error"));
+					$msg = I18n::getTranslation(__("One or more problem came when you try to update your password, please verify your informations"));
 					set_flash("error", $title, $msg);
 
 					header("location: " . LINK . "user/password_recover/" . $param[0] . "/" . $param[1]);
@@ -627,8 +628,8 @@ class User extends Controller {
 		}
 
 
-		$title = $GLOBALS['_LG']->getTranslation(__($title));
-		$msg = $GLOBALS['_LG']->getTranslation(__($msg));
+		$title = I18n::getTranslation(__($title));
+		$msg = I18n::getTranslation(__($msg));
 
 		//unset($_SESSION['msg_flash']);
 		set_flash($type, $title, $msg);
@@ -808,8 +809,8 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
 							$data['mailbox_main']['id_user_main__box'] = $_POST['mailbox_main']['id_user_main__to'];
 							if ($this->db['mysql_write']->sql_save($data))
 							{
-								$msg = $GLOBALS['_LG']->getTranslation(__("Your message has been sent."));
-								$title = $GLOBALS['_LG']->getTranslation(__("Success"));
+								$msg = I18n::getTranslation(__("Your message has been sent."));
+								$title = I18n::getTranslation(__("Success"));
 
 								set_flash("success", $title, $msg);
 

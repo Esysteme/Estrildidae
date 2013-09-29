@@ -60,7 +60,7 @@ class Convert extends Controller
     {
         $this->view = false;
         $this->layout_name = false;
-        
+
         $tables = $this->db['mysql_write']->getListTable();
         $lg_available = explode(",", LANGUAGE_AVAILABLE);
 
@@ -77,12 +77,35 @@ class Convert extends Controller
                     $sql = "delete from `" . $table . "` where file_found like '%controller/species.controller.php';";
                     echo $sql . EOL;
                     $this->db['mysql_write']->sql_query($sql);
-                    
-                    
+
+
                     $sql = "truncate table `" . $table . "`;";
                     $this->db['mysql_write']->sql_query($sql);
                 }
             }
+        }
+    }
+
+    function replaceI18n()
+    {
+
+        $this->view = false;
+        $this->layout_name = false;
+
+        $files = glob(APP_DIR . DS . "controller" . DS . "*.php");
+
+        foreach ($files as $filename) {
+
+
+            if (preg_match("#Convert#i", $filename)) {
+                continue;
+            }
+
+            echo $filename . EOL;
+
+            $data = file_get_contents($filename);
+            $data = str_replace('$GLOBALS[\'_LG\']->', 'I18n::', $data);
+            file_put_contents($filename, $data);
         }
     }
 

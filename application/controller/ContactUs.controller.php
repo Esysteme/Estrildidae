@@ -23,8 +23,8 @@ class ContactUs extends Controller
 
 			if ( $this->db['mysql_write']->sql_save($contact_us) )
 			{
-				$msg = $GLOBALS['_LG']->getTranslation(__('Your message has been sent'));
-				$title = $GLOBALS['_LG']->getTranslation(__("Success"));
+				$msg = I18n::getTranslation(__('Your message has been sent'));
+				$title = I18n::getTranslation(__("Success"));
 				set_flash("success", $title, $msg);
 
 				
@@ -37,8 +37,8 @@ class ContactUs extends Controller
 				$error = $this->db['mysql_write']->sql_error();
 				$_SESSION['ERROR'] = $error;
 				
-				$msg = $GLOBALS['_LG']->getTranslation(__('Please verify your informations'));
-				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
+				$msg = I18n::getTranslation(__('Please verify your informations'));
+				$title = I18n::getTranslation(__("Error"));
 				set_flash("error", $title, $msg);
 				
 				
