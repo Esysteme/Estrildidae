@@ -119,8 +119,8 @@ a:hover{  text-decoration: underline;}
 
 
 #view {vertical-align:top; padding-left:10px}
-#title h2 {font-size: 20px;margin-top:0px;margin-bottom:0px;}
-#title {margin-bottom:14px; padding-bottom:6px; border-bottom: #666 2px dotted;}
+h2 {font-size: 20px;margin-top:0px;margin-bottom:0px; margin-bottom:14px; padding-bottom:6px; border-bottom: #666 2px dotted;}
+
 
 
 #menu_cadre_arbre {width:250px}

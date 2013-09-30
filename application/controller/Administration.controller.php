@@ -166,7 +166,6 @@ class Administration extends Controller
     private function init()
     {
 
-        $_SQL = singleton::getInstance(SQL_DRIVER);
 
 
         if (true) { //ENVIRONEMENT

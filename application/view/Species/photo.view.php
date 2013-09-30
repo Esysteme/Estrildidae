@@ -17,8 +17,12 @@ foreach ($data['photo'] as $var)
 	{
 		if ($scientific_name != $var['scientific_name'])
 		{
-			echo '<div class="clear"></div>';
+			echo "</ul>";
+            echo '<div class="clear"></div>';
+            
+            
 			echo '<h3>' . $var['scientific_name'] . '</h3>';
+            echo '<ul class="onglet_pic">';
 			$scientific_name = $var['scientific_name'];
 		}
 	}
@@ -30,8 +34,17 @@ foreach ($data['photo'] as $var)
 	$url = LINK . "species/nominal/" . $species_name . "/photo/photo_detail/" . $var['id_photo'] . "/";
 
 
+        $pic['data-link'] = '';
+        $pic['data-target'] = "";
+        $pic['photo'] =  $img;
+        $pic['url'] = $url;
+        $pic['display-name'] = $var['nominal'];
+        $pic['name'] = $scientific_name;
+        
+        
+        \Glial\Species\Species::miniature($pic);
 
-	Species::html_pic($url, $img, $var['info_photo'], $species_name);
+	//Species::html_pic($url, $img, $var['info_photo'], $species_name);
 }
 
 echo "</div>";

@@ -163,8 +163,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 				if ( $this->db['mysql_write']->sql_save($comment) )
 				{
-					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Your comment has been added."));
+					$title = I18n::getTranslation(__("Success"));
+					$msg = I18n::getTranslation(__("Your comment has been added."));
 
 					set_flash("success", $title, $msg);
 					header("location: " . LINK . "photo/admin_crop/id_photo:" . $_POST['comment']['id'] . '/');
@@ -172,8 +172,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 				else
 				{
-					$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Please review the following issues that occurred"));
+					$title = I18n::getTranslation(__("Error"));
+					$msg = I18n::getTranslation(__("Please review the following issues that occurred"));
 
 					set_flash("error", $title, $msg);
 					header("location: " . LINK . "photo/admin_crop/id_photo:" . $_POST['comment']['id'] . '/');
@@ -252,8 +252,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					}
 
 
-					$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Please verify, you have selected the reason of your choice."));
+					$title = I18n::getTranslation(__("Error"));
+					$msg = I18n::getTranslation(__("Please verify, you have selected the reason of your choice."));
 
 					set_flash("error", $title, $msg);
 
@@ -290,8 +290,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 					$this->db['mysql_write']->set_history_type(8);
 					$this->db['mysql_write']->sql_delete($species_picture_in_wait);
 
-					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("The photo has been successfully deleted"));
+					$title = I18n::getTranslation(__("Success"));
+					$msg = I18n::getTranslation(__("The photo has been successfully deleted"));
 
 					set_flash("success", $title, $msg);
 				}
@@ -546,13 +546,13 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				if ( empty($_GET['id_species_picture_main']) )
 				{
 
-					$title = $GLOBALS['_LG']->getTranslation(__("Picture croped"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("The picture has been croped with success"));
+					$title = I18n::getTranslation(__("Picture croped"));
+					$msg = I18n::getTranslation(__("The picture has been croped with success"));
 				}
 				else
 				{
-					$title = $GLOBALS['_LG']->getTranslation(__("Picture updated"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("The picture has been updated with success"));
+					$title = I18n::getTranslation(__("Picture updated"));
+					$msg = I18n::getTranslation(__("The picture has been updated with success"));
 				}
 				set_flash("success", $title, $msg);
 
@@ -612,8 +612,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 				}
 
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-				$msg = $GLOBALS['_LG']->getTranslation($li);
+				$title = I18n::getTranslation(__("Error"));
+				$msg = I18n::getTranslation($li);
 
 				set_flash("error", $title, $msg);
 
@@ -774,14 +774,14 @@ WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "
 		{
 			if ( !empty($id_species_picture_main) || !empty($_GET['id_species_main']) )
 			{
-				$title = $GLOBALS['_LG']->getTranslation(__("Warning"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("The stock of photos is now empty!"));
+				$title = I18n::getTranslation(__("Warning"));
+				$msg = I18n::getTranslation(__("The stock of photos is now empty!"));
 				set_flash("caution", $title, $msg);
 			}
 			else
 			{
-				$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("The photo doesn't exist!"));
+				$title = I18n::getTranslation(__("Error"));
+				$msg = I18n::getTranslation(__("The photo doesn't exist!"));
 				set_flash("error", $title, $msg);
 			}
 
@@ -1012,8 +1012,8 @@ delay:0}
 			{
 
 
-				$title = $GLOBALS['_LG']->getTranslation(__("Warning"));
-				$msg = $GLOBALS['_LG']->getTranslation(__("This photo doesn't exist on server, we downloaded a new !"));
+				$title = I18n::getTranslation(__("Warning"));
+				$msg = I18n::getTranslation(__("This photo doesn't exist on server, we downloaded a new !"));
 				set_flash("caution", $title, $msg);
 
 				$cmd = "cd " . TMP . "photos_in_wait/; wget -nc " . $this->data['species']['0']['url_found'] . "";

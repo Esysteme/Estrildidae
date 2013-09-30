@@ -109,9 +109,6 @@ Encourage the enhanced appreciation of the climate regulating functions of ecosy
 
 
 
-
-
-
 echo "<div id=\"box\">";
 
 
@@ -130,6 +127,7 @@ echo "<p>".__("A personal project,")."</p>";
 echo '<p>'.__('The idea comes from one simple fact: to date no website proposes a comprehensive database on the different species / subspecies, for everyone to find whatever he wants as many photos, videos and any other items ... ').'</p>
 <p> '.__('For information on a species, you often see many sites, making it extremely long and difficult search yet simple. The primary purpose of site is to be a photo or video to each subspecies and encourage the most species where there is very little data to see at all.').'</p>
 <p>'.__('To achieve the aim was not to create an aditional ordinary site asking contributors to produce the content, but simply to use all the Internet to automatically retrieve data using robots and search engines while respecting the rights authors and citing references.').'</p><p>'.__('To improve the rendering of this site I would recommend using Firefox for some reason the site of choice will not be accessible for users of Internet Explorer (browser does not comply with the standarts of the W3C ). ').'</p>
+    <p><i>'.__("If any trouble with the website, you can contact me at :").' aurelien.lequoy＠estrildidae.net ('.__("you don’t copy/paste the email, it won’t work. You didn’t think I would post it like that in the open for all bots, right?").' ;) ).</i></p>
 <p class="right">'.__('Posted by').' : <a href="'.LINK.'user/profil/3">Aurélien LEQUOY</a></p><div class="clear"></div>';
 
 /*

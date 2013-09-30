@@ -1,6 +1,5 @@
 <?php
 
-use \Glial\Species\Species;
 
 $libelle = "";
 
@@ -8,18 +7,21 @@ $libelle = "";
 foreach ($data['species'] as $var)
 {
 
+            
 	if ($var['libelle'] != $libelle)
 	{
 		if ($libelle != "")
 		{
-			echo '<div class="clear"></div>';
+			echo "</ul>";
+            echo '<div class="clear"></div>';
 		}
 		
+        
 		
 		echo "<h3>".$var['libelle']."</h3>";
 		
 		$libelle = $var['libelle'];
-		
+		echo '<ul class="onglet_pic">';
 	}
 
 	
@@ -36,7 +38,18 @@ foreach ($data['species'] as $var)
 			.$var['order'].'/'.$var['family'].'/'.$var['genus'].'/'.str_replace(' ','_',$var['nominal']).'/'.$var['id_species_picture_main'].'-'.str_replace(' ','_',$var['nominal']).".jpg";
 	}
 	
+    
+            
+        $pic['data-link'] = '';
+        $pic['data-target'] = "";
+        $pic['photo'] =  $img;
+        $pic['url'] = $url;
+        $pic['display-name'] = $var['nominal'];
+        $pic['name'] = $var['nominal'];
+        
+        
+        \Glial\Species\Species::miniature($pic);
 
-	Species::html_pic($url, $img, $var['scientific_name'], $var['scientific_name']);
+	//Species::html_pic($url, $img, $var['scientific_name'], $var['scientific_name']);
 }
 

@@ -38,8 +38,8 @@ class Comment extends Controller {
 
 				if ($this->db['mysql_write']->sql_save($comment))
 				{
-					$title = $GLOBALS['_LG']->getTranslation(__("Success"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Your comment has been added."));
+					$title = I18n::getTranslation(__("Success"));
+					$msg = I18n::getTranslation(__("Your comment has been added."));
 
 					set_flash("success", $title, $msg);
 					header("location: " . LINK . "photo/admin_crop/id_photo:" . $_POST['comment']['id'] . '/');
@@ -47,8 +47,8 @@ class Comment extends Controller {
 				}
 				else
 				{
-					$title = $GLOBALS['_LG']->getTranslation(__("Error"));
-					$msg = $GLOBALS['_LG']->getTranslation(__("Please review the following issues that occurred"));
+					$title = I18n::getTranslation(__("Error"));
+					$msg = I18n::getTranslation(__("Please review the following issues that occurred"));
 
 					set_flash("error", $title, $msg);
 					header("location: " . LINK . "photo/admin_crop/id_photo:" . $_POST['comment']['id'] . '/');
