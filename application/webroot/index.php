@@ -105,7 +105,6 @@ require(CONFIG."webroot.config.php");
 
 
 
-define('FARM1', "http://farm1.gdol.eu/");
 
 /*
 switch($_SERVER['SERVER_NAME'])
@@ -138,4 +137,9 @@ if (isset($_GET['url']) && $_GET['url'] === 'favicon.ico')
 	}
 }
 
-
+if ($_SERVER['REMOTE_ADDR'] == "78.214.180.150")
+{
+	echo "<pre>";
+	print_r($_SERVER);
+	echo "</pre>";
+}
