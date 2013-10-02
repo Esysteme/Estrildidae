@@ -108,5 +108,10 @@ class Convert extends Controller
             file_put_contents($filename, $data);
         }
     }
+    
+    function cleanTranslation()
+    {
+        // 
+    }
 
 }

@@ -261,7 +261,6 @@ where a.id_family = 438";
 					
 					//delete from species_author where id > 1600
 					
-					
 					if ( empty($url_to_get['img']['url']) )
 					{
 						print_r($url_to_get);
@@ -269,7 +268,6 @@ where a.id_family = 438";
 					}
 
 					$pic_id = array();
-	
 					$pic_id['species_picture_id']['photo_id'] = flickr::get_photo_id($url_to_get['url']);
 					$pic_id['species_picture_id']['id_species_author'] = $id_author;
 					$pic_id['species_picture_id']['link'] = $url_to_get['url'];
@@ -293,6 +291,7 @@ where a.id_family = 438";
 						$pic_id['link__species_picture_id__species_picture_search']['id_species_picture_id'] = $id_picture;
 						$pic_id['link__species_picture_id__species_picture_search']['id_species_picture_search'] = $id_search;
 						$pic_id['link__species_picture_id__species_picture_search']['date'] = date('Y-m-d H:i:s');
+						$pic_id['link__species_picture_id__species_picture_search']['status'] = 2;
 
 						if ( !$this->db['mysql_write']->sql_save($pic_id) )
 						{

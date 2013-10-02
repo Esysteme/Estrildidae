@@ -35,7 +35,6 @@ define('IS_CLI', PHP_SAPI === 'cli');
 define('EOL',(IS_CLI)? PHP_EOL: "<br />");
 
 
-
 //Use the DS to separate the directories in other defines
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -105,7 +104,6 @@ require(CONFIG."webroot.config.php");
 
 
 
-define('FARM1', "http://farm1.gdol.eu/");
 
 /*
 switch($_SERVER['SERVER_NAME'])

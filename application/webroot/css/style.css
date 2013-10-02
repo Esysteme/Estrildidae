@@ -1607,7 +1607,10 @@ select.int{width:50px}
 
 .pending ol li{display:inline-block; padding:0 4px; cursor: pointer;border:#666 1px solid;margin-left:4px; background:#ddd;}
 
-.pending ul li:after{
+
+
+
+.pending ul li div:after{
 	width: 0px;
 	height: 0px;
 	border-left: 40px solid transparent;
@@ -1634,74 +1637,81 @@ select.int{width:50px}
 }
 
 
-.pending ul li{
+.pending ul li {
 
-    width: 150px;
-    height: 150px;
-	position:relative;
+    position:relative;
+    display: inline;
     float:left;
-	margin: 0px 5px 5px 0;
+	margin-right: 10px;
+    margin-bottom: 10px;
+	box-shadow: 4px 4px 5px #666;
+    border: #000 1px solid;
 	
-	box-shadow: 2px 2px 10px 0px rgba(0,0,0, 0.44);
 }
 
-.pending ul li:hover span{
+
+.pending ul div:hover  span{
 	display:block;
 	z-index: 1005;
 }
 
 
-.pending ul li.img_valid
+.pending ul li div.img_valid
 {
 	border:green 5px solid;
 }
-.pending ul li.img_valid:after{
-	border-top: 40px solid green;
+.pending ul li div.img_valid:after{
+	border-top: 44px solid green;
 }
-.pending ul li.img_valid:before {
+.pending ul li div.img_valid:before {
 	content: "\e08a";
 	font-size: 16px;
+    top:3px;
+    
 }
 
 
-.pending ul li.img_dunno
+.pending ul li div.img_dunno
 {
 	border:orange 5px solid;
 }
-.pending ul li.img_dunno:after{
-	border-top: 40px solid orange;
+.pending ul li div.img_dunno:after{
+	border-top: 44px solid orange;
 }
-.pending ul li.img_dunno:before {
+.pending ul li div.img_dunno:before {
 	content: "\e085";
 	font-size: 16px;
+        top:3px;
 }
 
-.pending ul li.img_invalid
+.pending ul li div.img_invalid
 {
 	border:red 5px solid;
 }
-.pending ul li.img_invalid:after{
-	border-top: 40px solid red;
+.pending ul li div.img_invalid:after{
+	border-top: 44px solid red;
 }
-.pending ul li.img_invalid:before {
+.pending ul li div.img_invalid:before {
 	content: "\e089";
 	font-size: 16px;
+        top:3px;
 }
 
 
-.pending ul li.img_duble
+.pending ul li div.img_duble
 {
 	border:#086eb8  5px solid;
 }
-.pending ul li.img_duble:after{
-	border-top:#086eb8 40px solid;
+.pending ul li div.img_duble:after{
+	border-top:#086eb8 44px solid;
 }
-.pending ul li.img_duble:before {
+.pending ul li div.img_duble:before {
 	content: "\e08f";
 	font-size: 16px;
+        top:3px;
 }
 
-.pending ul li:before {
+.pending ul li div:before {
 	position: absolute;
 	color: #fff;
 	right: 4px;

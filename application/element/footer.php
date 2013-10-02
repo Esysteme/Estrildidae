@@ -55,9 +55,6 @@ echo '<footer>';
 echo '</footer>';
 //#231E24
 
-if ( $_SERVER['SERVER_ADDR'] != "192.168.1.48" )
-{
-	echo '<div style="text-align:center;"><a href="http://www.birdingtop500.com/"><img src="http://www.birdingtop500.com/button.php?u=timan" width="150" height="56" alt="Fatbirder\'s Top 1000 Birding Websites" border="0" /></a></div>';
-}
+
 
 echo "</body>";

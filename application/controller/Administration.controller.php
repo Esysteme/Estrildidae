@@ -170,11 +170,17 @@ class Administration extends Controller
 
         if (true) { //ENVIRONEMENT
             $dir = APP_DIR . DS . "controller" . DS;
+            
             $sql = "TRUNCATE TABLE acl_controller";
+            
             $this->db['mysql_write']->sql_query($sql);
+            
             $sql = "TRUNCATE TABLE acl_action";
+            
             $this->db['mysql_write']->sql_query($sql);
+            
             $sql = "TRUNCATE TABLE acl_action_group";
+            
             $this->db['mysql_write']->sql_query($sql);
 
             if (is_dir($dir)) {
@@ -191,7 +197,7 @@ class Administration extends Controller
                             $name = $class_name[0];
 
                             if (!class_exists($name)) {
-                                echo $name . "<br />";
+                                echo $name . PHP_EOL;
                                 require($dir . $file);
                             }
 
@@ -208,7 +214,7 @@ class Administration extends Controller
                             $acl_action['acl_action']['id_acl_controller'] = $this->db['mysql_write']->sql_save($acl_controller);
 
                             if (!$acl_action['acl_action']['id_acl_controller']) {
-                                echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . "<br />";
+                                echo $file . " : already exist " . $acl_action['acl_action']['id_acl_controller'] . PHP_EOL;
                             }
 
                             unset($acl_controller['acl_controller']);
@@ -216,7 +222,7 @@ class Administration extends Controller
                                 $acl_action['acl_action']['name'] = $name;
 
                                 if (!$this->db['mysql_write']->sql_save($acl_action)) {
-                                    echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist<br />";
+                                    echo "&nbsp;&nbsp;&nbsp;&nbsp;" . $name . " : already exist" . EOL;
                                 }
                             }
 
