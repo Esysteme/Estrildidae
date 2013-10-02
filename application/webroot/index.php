@@ -136,4 +136,9 @@ if (isset($_GET['url']) && $_GET['url'] === 'favicon.ico')
 	}
 }
 
-
+if ($_SERVER['REMOTE_ADDR'] == "78.214.180.150")
+{
+	echo "<pre>";
+	print_r($_SERVER);
+	echo "</pre>";
+}
