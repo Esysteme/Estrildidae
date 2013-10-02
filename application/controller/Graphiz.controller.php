@@ -43,4 +43,12 @@ WHERE constraint_schema =  'species' order by REFERENCED_TABLE_NAME desc, TABLE_
         }
     }
 
+	function test()
+{
+	$this->layout_name = false;
+	$this->view = false;
+
+	echo "gg\n";
+}
+
 }
