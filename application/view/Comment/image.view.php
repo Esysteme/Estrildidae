@@ -13,7 +13,15 @@ if (!empty($data['comment'])) {
         $i++;
         ($i % 2 === 0) ? $couleur = "couleur2" : $couleur = "couleur1";
         echo '<tr class="' . $couleur . '">';
-        echo '<td class="photo"><img src="' . IMG . '/admin64/user3_64.png" height="64" widh="64" /></td>';
+        echo '<td class="photo">';
+
+        if (empty($comment['avatar'])) {
+            echo '<img src="' . IMG . '/64/user3_64.png" height="64" widh="64" />';
+        } else {
+            echo '<img src="' . IMG . '/user/64/'.$comment['avatar'].'" height="64" widh="64" />';
+        }
+
+        echo '</td>';
         echo '<td class="comment-text">';
 
 
@@ -25,7 +33,7 @@ if (!empty($data['comment'])) {
         echo '</div>';
 
 
-        if ($comment['id_language'] !== I18n::Get()) {
+        if ($comment['id_language'] !== I18n::Get() && $comment['comment'] == 1) {
 
             echo '<div class="comment-original">';
             echo '<img class="' . $comment['id_language'] . '" src="/backup/species/image/main/1x1.png" width="18" height="12" border="0"> ';
@@ -49,7 +57,7 @@ if (!empty($data['comment'])) {
 }
 
 
-$post = LINK . "comment/image/" . $data['id_photo'];
+$post = LINK . "comment/image/" . $data['id_photo']."/".$data['nominal']."/";
 
 
 //debug($post);

@@ -7,9 +7,6 @@
 
 
 
-
-
-
 if (!empty($data['list_stock'])) {
 
     echo '<table class="table" style="width:100%">';
@@ -33,9 +30,16 @@ if (!empty($data['list_stock'])) {
         $i++;
 
 
+        
+        $tab_scientific = explode(' ',$line['scientific_name']);
+        unset($tab_scientific[2]);
+        
+        $scientific_name = implode('_', $tab_scientific);
+        
+        
         echo '<tr>';
         echo '<th>' . $i . '</th>
-		<td><a href="'.LINK.'/species/nominal/Lonchura_atricapilla/breeder/">' . $line['scientific_name'] . '</a></td>
+		<td><a href="'.LINK.'/species/nominal/'.$scientific_name.'/breeder/">' . $line['scientific_name'] . '</a></td>
 
 		<td>' . $line['male'] . '</td>
 		<td>' . $line['female'] . '</td>

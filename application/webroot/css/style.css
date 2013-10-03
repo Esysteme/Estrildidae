@@ -1446,7 +1446,9 @@ input.shoutbox {width:120px}
 
 #result_2 h2 {font-size: 20px;margin-top:10px;margin-bottom:0px; border-bottom:#666 2px dotted}
 
-.cool   {margin-left:10px; margin-bottom: 8px; padding:5px; border:#000 1px solid; }
+.cool   {margin-right:10px; margin-bottom: 10px; padding:5px; border:#000 1px solid; 
+box-shadow: 4px 4px 5px #666;
+}
 
 
 h3 a { font-size: 12px}

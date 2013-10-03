@@ -170,17 +170,17 @@ class Administration extends Controller
 
         if (true) { //ENVIRONEMENT
             $dir = APP_DIR . DS . "controller" . DS;
-            
+
             $sql = "TRUNCATE TABLE acl_controller";
-            
+
             $this->db['mysql_write']->sql_query($sql);
-            
+
             $sql = "TRUNCATE TABLE acl_action";
-            
+
             $this->db['mysql_write']->sql_query($sql);
-            
+
             $sql = "TRUNCATE TABLE acl_action_group";
-            
+
             $this->db['mysql_write']->sql_query($sql);
 
             if (is_dir($dir)) {
@@ -273,6 +273,8 @@ class Administration extends Controller
             $this->add_acl("Member", "translation/admin_translation");
             $this->add_acl("Member", "user/user_main");
             $this->add_acl("Member", "author/");
+            $this->add_acl("Member", "stock/");
+            $this->rem_acl("Member", "species/breeder");
             $this->add_acl("Visitor", "author/");
             $this->add_acl("Visitor", "species/");
             $this->add_acl("Visitor", "home/");
@@ -291,6 +293,10 @@ class Administration extends Controller
             $this->add_acl("Visitor", "user/block_newsletter");
             $this->add_acl("Visitor", "user/confirmation");
             $this->add_acl("Visitor", "user/password_recover");
+            $this->add_acl("Visitor", "stock/");
+            $this->rem_acl("Visitor", "species/breeder");
+            
+            
             $sql = "SELECT id_group, b.name as id_action, c.name as id_controller FROM acl_action_group a
 		INNER JOIN acl_action b ON a.id_acl_action = b.id
 		INNER JOIN acl_controller c ON c.id = b.id_acl_controller";
@@ -333,7 +339,7 @@ class Administration extends Controller
             }
         } elseif (count($tree_id) == 2) {
 
-            $tree_id['0'] = \glial\utility\Inflector::camelize($tree_id['0']);
+            $tree_id['0'] = \Glial\Utility\Inflector::camelize($tree_id['0']);
 
             if ($tree_id['1'] === "") {
                 $sql = "select count(1) as cpt from `acl_controller` where name = '" . $tree_id['0'] . "'";
@@ -538,6 +544,73 @@ class " . $table . " extends Model\n{\nvar \$schema = \"";
         $data = glial\sgbd\mysql\backup::insert();
 
         //debug($data);
+    }
+
+    private function rem_acl($group, $tree)
+    {
+        $tree_id = explode("/", $tree);
+
+
+        if (count($tree_id) == 1) {
+            $sql = "select count(1) as cpt from `group` where name = '" . $group . "'";
+            $res = $this->db['mysql_write']->sql_query($sql);
+            $ob = $this->db['mysql_write']->sql_fetch_object($res);
+
+            if ($ob->cpt != 1) {
+                die("Group unknow !");
+            }
+        } elseif (count($tree_id) == 2) {
+            $tree_id['0'] = \Glial\Utility\Inflector::camelize($tree_id['0']);
+
+            if ($tree_id['1'] === "") {
+                $sql = "select count(1) as cpt from `acl_controller` where name = '" . $tree_id['0'] . "'";
+                $res = $this->db['mysql_write']->sql_query($sql);
+                $ob = $this->db['mysql_write']->sql_fetch_object($res);
+
+                if ($ob->cpt < 1) {
+                    die("Controller unknow !");
+                }
+            } else {
+                $sql = "select count(1) as cpt from `acl_action` where name = '" . $tree_id['1'] . "'";
+                $res = $this->db['mysql_write']->sql_query($sql);
+                $ob = $this->db['mysql_write']->sql_fetch_object($res);
+
+                if ($ob->cpt < 1) {
+                    echo "group : " . $group . "<br />";
+                    die("Acion unknow (" . $tree_id['1'] . ") !");
+                }
+            }
+        }
+
+
+        if (count($tree_id) == 1) {
+            $sql = "DELETE FROM acl_action_group a
+		INNER JOIN `group` c on c.id = a.id
+		WHERE c.name = '" . $group . "'";
+        } else
+        if (count($tree_id) == 2) {
+
+            if ($tree_id['1'] === "") {
+                $sql = "DELETE a.* FROM acl_action_group a
+                INNER JOIN `group` c on c.id = a.id
+                INNER JOIN acl_action
+                WHERE c.name = '" . $group . "' AND a.name = '" . $tree_id['0'] . "'";
+            } else {
+                $sql = "DELETE a.* 
+                    FROM acl_action_group a
+                LEFT JOIN `group` c on 1 = 1
+               inner join acl_action e ON e.id = a.id_acl_action
+                INNER JOIN acl_controller d ON d.id = e.id_acl_controller
+			WHERE c.name = '" . $group . "' AND d.name = '" . $tree_id['0'] . "' AND e.name = '" . $tree_id['1'] . "'";
+                
+                
+                echo $sql."\n";
+            }
+        } else {
+            die("Must be XX/YY with last '/'  XX/YY/");
+        }
+
+        $this->db['mysql_write']->sql_query($sql);
     }
 
 }

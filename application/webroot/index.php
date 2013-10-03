@@ -135,10 +135,3 @@ if (isset($_GET['url']) && $_GET['url'] === 'favicon.ico')
 		trigger_error("Gliale core could not be found. Check the value of CORE_PATH in application/webroot/index.php.  It should point to the directory containing your " . DS . "gliale core directory and your " . DS . "vendors root directory.", E_USER_ERROR);
 	}
 }
-
-if ($_SERVER['REMOTE_ADDR'] == "78.214.180.150")
-{
-	echo "<pre>";
-	print_r($_SERVER);
-	echo "</pre>";
-}

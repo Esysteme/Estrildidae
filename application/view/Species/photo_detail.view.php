@@ -1,6 +1,7 @@
 <?php
 
 
+
 $id_node = "node-".uniqid();
 
 $var = $data['photo'][0];
@@ -37,7 +38,7 @@ echo __("Found on") . " : <a href=\"" . $var['url_context'] . "\" target=\"_BLAN
 
 
 echo '<div id="'.$id_node.'">';
-\Glial\Synapse\FactoryController::addNode("comment",  "image", array($var['id_photo']));
+\Glial\Synapse\FactoryController::addNode("comment",  "image", array($var['id_photo'],$var['nominal'] ));
 echo '</div>';
 
 
