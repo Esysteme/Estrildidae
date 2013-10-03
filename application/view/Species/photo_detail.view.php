@@ -37,7 +37,7 @@ echo __("Found on") . " : <a href=\"" . $var['url_context'] . "\" target=\"_BLAN
 
 
 echo '<div id="'.$id_node.'">';
-\glial\synapse\FactoryController::addNode("comment",  "image", array($var['id_photo']));
+\Glial\Synapse\FactoryController::addNode("comment",  "image", array($var['id_photo']));
 echo '</div>';
 
 

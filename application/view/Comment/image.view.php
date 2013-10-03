@@ -1,63 +1,60 @@
 <?php
 
-echo "<h3>".__("Comments")."</h3>";
+use \Glial\I18n\I18n;
 
-if (!empty($data['comment']))
-{
+echo "<h3>" . __("Comments") . "</h3>";
 
-	echo '<table class="comment">';
-	
-	$i =0;
-	foreach ($data['comment'] as $comment)
-	{
-		$i++;
-		($i % 2 === 0)? $couleur = "couleur2":$couleur = "couleur1";
-		echo '<tr class="'.$couleur.'">';
-		echo '<td class="photo"><img src="' . IMG . '/admin64/user3_64.png" height="64" widh="64" /></td>';
-		echo '<td class="comment-text">';
-		
-		
-		echo '<div class="comment-author">';
-		//echo '<span class="right"><a href="">'.__('Answer').'</a></span>';
-		echo '<img src="' . IMG . 'country/type1/' . mb_strtolower($comment['iso'], 'utf-8') . '.gif" title="" width="18" height="12" alt="" /> ';
-		echo '<a title="" href="' . LINK . 'user/profil/' . $comment['id'] . '"><b>' . $comment['firstname'] . ' ' . $comment['name'] . '</b></a>';
-		echo ' ' . $comment['date'];
-		echo '</div>';
-		
-		
-		if ($comment['id_language'] !== $GLOBALS['_LG']->Get())
-		{
-			
-			echo '<div class="comment-original">';
-			echo '<img class="'.$comment['id_language'].'" src="/backup/species/image/main/1x1.png" width="18" height="12" border="0"> ';
-				//.__("Original :").
-			echo $comment['text']."</div>";
-			
-			echo '<b>'.__("Translated automatically :"). "</b><br /> ".__($comment['text'],$comment['id_language']);
-		}
-		else
-		{
-			echo  $comment['text'];
-		}
-		
-		
-			
-		echo '</td>';
+if (!empty($data['comment'])) {
+
+    echo '<table class="comment">';
+
+    $i = 0;
+    foreach ($data['comment'] as $comment) {
+        $i++;
+        ($i % 2 === 0) ? $couleur = "couleur2" : $couleur = "couleur1";
+        echo '<tr class="' . $couleur . '">';
+        echo '<td class="photo"><img src="' . IMG . '/admin64/user3_64.png" height="64" widh="64" /></td>';
+        echo '<td class="comment-text">';
 
 
-		echo "</tr>";
-	}
+        echo '<div class="comment-author">';
+        //echo '<span class="right"><a href="">'.__('Answer').'</a></span>';
+        echo '<img src="' . IMG . 'country/type1/' . mb_strtolower($comment['iso'], 'utf-8') . '.gif" title="" width="18" height="12" alt="" /> ';
+        echo '<a title="" href="' . LINK . 'user/profil/' . $comment['id'] . '"><b>' . $comment['firstname'] . ' ' . $comment['name'] . '</b></a>';
+        echo ' ' . $comment['date'];
+        echo '</div>';
 
-	echo "</table>";
+
+        if ($comment['id_language'] !== I18n::Get()) {
+
+            echo '<div class="comment-original">';
+            echo '<img class="' . $comment['id_language'] . '" src="/backup/species/image/main/1x1.png" width="18" height="12" border="0"> ';
+            //.__("Original :").
+            echo $comment['text'] . "</div>";
+
+            echo '<b>' . __("Translated automatically :") . "</b><br /> " . __($comment['text'], $comment['id_language']);
+        } else {
+            echo $comment['text'];
+        }
+
+
+
+        echo '</td>';
+
+
+        echo "</tr>";
+    }
+
+    echo "</table>";
 }
 
 
-$post = LINK."comment/image/".$data['id_photo'];
+$post = LINK . "comment/image/" . $data['id_photo'];
 
 
 //debug($post);
 
-echo '<form action="'.$post.'" method="post">';
+echo '<form action="' . $post . '" method="post">';
 echo '<div class="post">
 <table><tr><td>
 

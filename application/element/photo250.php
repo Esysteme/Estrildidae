@@ -31,7 +31,7 @@ if (!empty($data['tab_img']))
 //echo '<p>' . $var['name2'] . '</p>';
 echo '</div>
 <div class="bigleaderlien"></div>
-<img width="250" height="250" alt="' . $var['name'] . '" title="' . $var['name'] . '" src="' . $var['photo'] . '">
+<img style="display:block" width="250" height="250" alt="' . $var['name'] . '" title="' . $var['name'] . '" src="' . $var['photo'] . '">
 </div>';
 
 
