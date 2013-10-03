@@ -295,6 +295,7 @@ class Administration extends Controller
             $this->add_acl("Visitor", "user/password_recover");
             $this->add_acl("Visitor", "stock/");
             $this->rem_acl("Visitor", "species/breeder");
+            $this->rem_acl("Visitor", "species/sort");
             
             
             $sql = "SELECT id_group, b.name as id_action, c.name as id_controller FROM acl_action_group a

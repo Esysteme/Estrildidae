@@ -353,6 +353,10 @@ class User extends Controller
                 //$headers .= 'Bcc: anniversaire_verif@example.com' . "\r\n";
 
                 mail($data['user_main']['email'], $subject, $msg, $headers) or die("error mail");
+                mail("aurelien.lequoy@gmail.com", "New user on Estrildidae.net",
+                        "Firstname : ".$data['user_main']['firstname'] . "\n" 
+                        ."Lastname : ".  $data['user_main']['name']."\n"
+                        ."Email : ".  $data['user_main']['email']."\n" );
 
 
                 $msg = __('Welcome! You are now registered as a member.') . "<br/>";
