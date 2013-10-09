@@ -782,8 +782,14 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
 
                                 $subject = __("[Estrildidae.net] " . $data['mailbox_main']['title']);
 
-                                $msg = __('Hello') . ' ' . $ob2->firstname . ' ' . $ob2->name . ',<br />' .
-                                        '<a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/profil/inbox/'.$GLOBALS['_SITE']['IdUser'].'">' . $ob->firstname . ' ' . $ob->name . '</a> sent you a message on Estrildidae.net.'
+                                $msg = __('Hello') . ' ' . $ob2->firstname . ' ' . $ob2->name . ',<br />' 
+                                        
+                                        .'<br /><br />'
+                                        .'<a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/profil/inbox/'.$GLOBALS['_SITE']['IdUser'].'">' . $ob->firstname . ' ' . $ob->name . '</a> sent you a message on Estrildidae.net.'
+                                         .'<br /><br />'
+                                        .'<b>Objet : '.$data['mailbox_main']['title'].'</b>'
+                                         .'<br />'
+                                        .'Date : '.date("F j, Y, H:i:s")
                                         . '<br /><br /><a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/mailbox/inbox/"><b>' . __('Click here to view the message') . '</b></a> '
                                         . '<br /><br />'. __('You do not want to receive e-mails from Flickr member? Change notification settings for your account. Click here to report abuse.
 Your use of Flickr is subject to the terms of use and privacy policy of Yahoo! and the rules of the Flickr community.');
@@ -792,7 +798,7 @@ Your use of Flickr is subject to the terms of use and privacy policy of Yahoo! a
                                 $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
 
                                 // En-tetes additionnels
-                                $headers .= 'To: ' . $data['user_main']['firstname'] . ' ' . $data['user_main']['name'] . ' <' . $data['user_main']['email'] . '>' . "\r\n";
+                                $headers .= 'To: ' . $ob2->firstname . ' ' . $ob2->name . ' <' . $ob2->email . '>' . "\r\n";
                                 $headers .= 'From: ' . $ob->firstname . ' ' . $ob->name . ' via Estrildidae.net (no-reply)<noreply@estrildidae.net>' . "\r\n";
 
                                 mail($ob2->email, $subject, $msg, $headers) or die("error mail");
