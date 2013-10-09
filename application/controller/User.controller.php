@@ -766,6 +766,8 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
 
                                 //send mail
                                 I18n::SetDefault("en");
+                                I18n::load("en");
+                                
                                 $sql = "SELECT * FROM user_main WHERE id=" . $GLOBALS['_SITE']['IdUser'];
 
                                 $res = $this->db['mysql_write']->sql_query($sql);
@@ -801,9 +803,9 @@ Your use of Estrildidae is subject to the terms of use and privacy policy of Est
                                 $headers .= 'To: ' . $ob2->firstname . ' ' . $ob2->name . ' <' . $ob2->email . '>' . "\r\n";
                                 $headers .= 'From: ' . $ob->firstname . ' ' . $ob->name . ' via Estrildidae.net (no-reply)<noreply@estrildidae.net>' . "\r\n";
 
-                                
+
                                 $msg = I18n::getTranslation($msg);
-                                
+
                                 mail($ob2->email, $subject, $msg, $headers) or die("error mail");
 
 
