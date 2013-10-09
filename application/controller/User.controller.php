@@ -783,9 +783,9 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
                                 $subject = __("[Estrildidae.net] " . $data['mailbox_main']['title']);
 
                                 $msg = __('Hello') . ' ' . $ob2->firstname . ' ' . $ob2->name . ',<br />' .
-                                        '' . $ob->firstname . ' ' . $ob->name . ' sent you a message on Estrildidae.net'
+                                        '<a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/profil/inbox/'.$GLOBALS['_SITE']['IdUser'].'">' . $ob->firstname . ' ' . $ob->name . '</a> sent you a message on Estrildidae.net.'
                                         . '<br /><br /><a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/mailbox/inbox/"><b>' . __('Click here to view the message') . '</b></a> '
-                                        . __('You do not want to receive e-mails from Flickr member? Change notification settings for your account. Click here to report abuse.
+                                        . '<br /><br />'. __('You do not want to receive e-mails from Flickr member? Change notification settings for your account. Click here to report abuse.
 Your use of Flickr is subject to the terms of use and privacy policy of Yahoo! and the rules of the Flickr community.');
 
                                 $headers = 'MIME-Version: 1.0' . "\r\n";
@@ -797,6 +797,8 @@ Your use of Flickr is subject to the terms of use and privacy policy of Yahoo! a
 
                                 mail($ob2->email, $subject, $msg, $headers) or die("error mail");
 
+                                
+                                die();
                                 //end mail
 
                                 $msg = I18n::getTranslation(__("Your message has been sent."));
