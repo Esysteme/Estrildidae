@@ -108,10 +108,29 @@ class Convert extends Controller
             file_put_contents($filename, $data);
         }
     }
-    
+
     function cleanTranslation()
     {
-        // 
+        $this->view = false;
+        $this->layout_name = false;
+    
+        
+        $sql = "SELECT * FROM  `scientific_name_translation` WHERE  `text` LIKE  '%\\'%' order by id desc";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        
+        while ($ob = $this->db['mysql_write']->sql_fetch_object($res))
+        {
+            echo stripslashes($ob->text)."\n";
+            
+            $sql = "UPDATE `scientific_name_translation` 
+                SET `text` = '".$this->db['mysql_write']->sql_real_escape_string(stripslashes($ob->text))."'
+                WHERE id = ".$ob->id;
+            
+            echo $sql."\n";
+            
+            $this->db['mysql_write']->sql_query($sql);
+        }
+        
     }
 
 }

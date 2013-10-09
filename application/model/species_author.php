@@ -31,9 +31,6 @@ class species_author extends Model
 		'email' => array(
 			'email' => array('your email is not valid')
 		),
-		'surname' => array(
-			'not_empty' => array('This field is requiered.')
-		),
 		'main_page' => array(
 			'not_empty' => array('This field is requiered.')
 		),

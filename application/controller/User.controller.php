@@ -353,10 +353,9 @@ class User extends Controller
                 //$headers .= 'Bcc: anniversaire_verif@example.com' . "\r\n";
 
                 mail($data['user_main']['email'], $subject, $msg, $headers) or die("error mail");
-                mail("aurelien.lequoy@gmail.com", "New user on Estrildidae.net",
-                        "Firstname : ".$data['user_main']['firstname'] . "\n" 
-                        ."Lastname : ".  $data['user_main']['name']."\n"
-                        ."Email : ".  $data['user_main']['email']."\n" );
+                mail("aurelien.lequoy@gmail.com", "New user on Estrildidae.net", "Firstname : " . $data['user_main']['firstname'] . "\n"
+                        . "Lastname : " . $data['user_main']['name'] . "\n"
+                        . "Email : " . $data['user_main']['email'] . "\n");
 
 
                 $msg = __('Welcome! You are now registered as a member.') . "<br/>";
@@ -750,7 +749,7 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
             case "compose":
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-                    debug($_POST);
+
 
                     if (!empty($_POST['mailbox_main']['id_user_main__to'])) {
                         $data = array();
@@ -774,6 +773,39 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
                             } else {
                                 die("Problem insertion boite 2");
                             }
+
+                            $sql = "SELECT * FROM user_main WHERE id=" . $GLOBALS['_SITE']['IdUser'];
+
+                            $res = $this->db['mysql_write']->sql_query($sql);
+                            $ob = $this->db['mysql_write']->sql_fetch_object($res);
+
+
+
+                            $sql = "SELECT * FROM user_main WHERE id=" . $_POST['mailbox_main']['id_user_main__to'];
+
+                            $res = $this->db['mysql_write']->sql_query($sql);
+                            $ob2 = $this->db['mysql_write']->sql_fetch_object($res);
+
+
+                            //send mail here
+
+                            $subject = __("[Estrildidae.net] " . $data['mailbox_main']['title']);
+
+                            $msg = __('Hello') . ' ' . $ob2->firstname . ' ' . $ob2->name . ',<br />' .
+                                    '' . $ob->firstname . ' ' . $ob->name . ' sent you a message on Estrildidae.net'
+                                    . '<br /><br /><a href="' . 'http://' . $_SERVER['SERVER_NAME'] . 'en' . 'user/mailbox/inbox/"><b>' . __('Click here to view the message') . '</b></a> '
+                                    . __('You do not want to receive e-mails from Flickr member? Change notification settings for your account. Click here to report abuse.
+Your use of Flickr is subject to the terms of use and privacy policy of Yahoo! and the rules of the Flickr community.');
+
+                            $headers = 'MIME-Version: 1.0' . "\r\n";
+                            $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+
+                            // En-tetes additionnels
+                            $headers .= 'To: ' . $data['user_main']['firstname'] . ' ' . $data['user_main']['name'] . ' <' . $data['user_main']['email'] . '>' . "\r\n";
+                            $headers .= 'From: ' . $ob->firstname . ' ' . $ob->name . ' via Estrildidae.net (no-reply)<noreply@estrildidae.net>' . "\r\n";
+                            
+                             mail($ob2->email, $subject, $msg, $headers) or die("error mail");
+                            
                         } else {
                             die("Problem insertion boite 1");
                         }

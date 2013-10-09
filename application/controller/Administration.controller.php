@@ -244,6 +244,28 @@ class Administration extends Controller
             $this->db['mysql_write']->sql_query($sql);
             // &#2157;etre dans un fichier de config ?
             $this->add_acl("Super administrator", "*");
+            
+            $this->add_acl("Visitor", "author/");
+            $this->add_acl("Visitor", "species/");
+            $this->add_acl("Visitor", "home/");
+            $this->add_acl("Visitor", "who_we_are/");
+            $this->add_acl("Visitor", "media/");
+            $this->add_acl("Visitor", "download/");
+            $this->add_acl("Visitor", "search/");
+            $this->add_acl("Visitor", "partner/");
+            $this->add_acl("Visitor", "contact_us/");
+            $this->add_acl("Visitor", "faq/");
+            $this->add_acl("Visitor", "user/register");
+            $this->add_acl("Visitor", "user/lost_password");
+            $this->add_acl("Visitor", "user/is_logged");
+            $this->add_acl("Visitor", "user/login");
+            $this->add_acl("Visitor", "user/city");
+            $this->add_acl("Visitor", "user/block_newsletter");
+            $this->add_acl("Visitor", "user/confirmation");
+            $this->add_acl("Visitor", "user/password_recover");
+            $this->add_acl("Visitor", "stock/");
+            //$this->rem_acl("Visitor", "species/breeder");
+            //$this->rem_acl("Visitor", "species/sort");
             $this->add_acl("Member", "user/block_last_registered");
             $this->add_acl("Member", "user/block_last_online");
             $this->add_acl("Member", "forum/");
@@ -274,28 +296,9 @@ class Administration extends Controller
             $this->add_acl("Member", "user/user_main");
             $this->add_acl("Member", "author/");
             $this->add_acl("Member", "stock/");
-            $this->rem_acl("Member", "species/breeder");
-            $this->add_acl("Visitor", "author/");
-            $this->add_acl("Visitor", "species/");
-            $this->add_acl("Visitor", "home/");
-            $this->add_acl("Visitor", "who_we_are/");
-            $this->add_acl("Visitor", "media/");
-            $this->add_acl("Visitor", "download/");
-            $this->add_acl("Visitor", "search/");
-            $this->add_acl("Visitor", "partner/");
-            $this->add_acl("Visitor", "contact_us/");
-            $this->add_acl("Visitor", "faq/");
-            $this->add_acl("Visitor", "user/register");
-            $this->add_acl("Visitor", "user/lost_password");
-            $this->add_acl("Visitor", "user/is_logged");
-            $this->add_acl("Visitor", "user/login");
-            $this->add_acl("Visitor", "user/city");
-            $this->add_acl("Visitor", "user/block_newsletter");
-            $this->add_acl("Visitor", "user/confirmation");
-            $this->add_acl("Visitor", "user/password_recover");
-            $this->add_acl("Visitor", "stock/");
-            $this->rem_acl("Visitor", "species/breeder");
-            $this->rem_acl("Visitor", "species/sort");
+            //$this->rem_acl("Member", "species/breeder");
+
+            $this->add_acl("Member", "species/sort");
             
             
             $sql = "SELECT id_group, b.name as id_action, c.name as id_controller FROM acl_action_group a

@@ -1700,6 +1700,11 @@ select.int{width:50px}
 }
 
 
+.pending ul li div.img_norm
+{
+	border:#eee  5px solid;
+}
+
 .pending ul li div.img_duble
 {
 	border:#086eb8  5px solid;
