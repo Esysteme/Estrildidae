@@ -5,7 +5,7 @@ if ( !empty($data['breeder']) )
 
 	echo '<table class="table" style="width:100%">';
 	echo '<tr>';
-	echo '<th></th><th>' . __("Name") . '</th><th>' . __("Country") . '</th><th>' . __("City") . '</th><th>' . __("Male") . '</th><th>' . __("Female") . '</th><th>' . __("Unknow") . '</th><th>' . __("Total") . '</th>';
+	echo '<th></th><th>' . __("Name") . '</th><th>' . __("Country") . '</th><th>' . __("City") . '</th><th>' . __("Male") . '</th><th>' . __("Female") . '</th><th>' . __("Unknown") . '</th><th>' . __("Total") . '</th>';
 	echo '</tr>';
 
 

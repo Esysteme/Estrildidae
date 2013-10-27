@@ -569,6 +569,8 @@ where is_valid ='1' order by points DESC LIMIT 50";
 
 
          */
+
+
         if (!empty($_GET['id_species_picture_main'])) {
 
             $sql = "SELECT a.id_species_main, a.*, c.`scientific_name`,b.id as id_photo, b.*, c.scientific_name,e.*,z.*
@@ -1087,6 +1089,365 @@ $('#searchLoc').trigger('click');
 ";
     }
 
+    function edit($param)
+    {
+        $this->layout_name = "admin";
+        $this->title = __("Edit a picture");
+        $this->ariane = "> <a href=\"" . LINK . "media/\">" . __("Medis") . "</a> > " . $this->title;
+
+
+
+        if (!empty($_GET['id_species_picture_main'])) {
+
+            $sql = "SELECT a.id_species_main, a.*, c.`scientific_name`,b.id as id_photo, b.*, c.scientific_name,e.*,z.*
+			FROM `species_tree_id` a
+			INNER JOIN species_picture_main b ON b.id_species_main = a.id_species_main
+			INNER JOIN species_main c ON c.id = a.id_species_main
+			INNER JOIN species_tree_name e ON e.id = a.id_species_main
+			LEFT JOIN species_translation z ON z.id_row = a.id_species_main and id_table = 7
+			WHERE b.id = '" . $this->db['mysql_write']->sql_real_escape_string($_GET['id_species_picture_main']) . "'";
+
+            $id_species_picture_main = $_GET['id_species_picture_main'];
+        } else {
+            $contrainte = "";
+
+            if (!empty($_GET['id_photo'])) {
+                $contrainte .= " and b.id = '" . $this->db['mysql_write']->sql_real_escape_string($_GET['id_photo']) . "' ";
+            }
+
+
+            if (!empty($_GET['id_species_main'])) {
+                $contrainte .= " AND b.id_species_main = '" . $_GET['id_species_main'] . "' ";
+            } else {
+                //$contrainte .= " AND id_species_family = 438 ";
+            }
+
+            /*
+              $sql = "SELECT count(1) FROM `species_tree_id` a
+              INNER JOIN species_picture_in_wait b ON b.id_species_main = a.id_species_main
+              where id_history_etat = '1' " . $contrainte;
+
+              //echo $sql;
+
+              $r = $this->db['mysql_write']->sql_query($sql);
+              $d = mysql_fetch_row($r);
+
+              $rand = rand(0, $d[0]);
+              if (empty($rand))
+              $rand = 0;
+              if ($d[0] == 1)
+              $rand = 0;
+             */
+            $sql = "SELECT a.id_species_main, a.*, c.`scientific_name`,b.id as id_photo, b.*, c.scientific_name,e.*,z.*
+			FROM `species_tree_id` a
+			INNER JOIN species_picture_in_wait b ON b.id_species_main = a.id_species_main
+			INNER JOIN species_main c ON c.id = a.id_species_main
+			INNER JOIN species_tree_name e ON e.id = a.id_species_main
+			LEFT JOIN species_translation z ON z.id_row = a.id_species_main and id_table = 7
+			WHERE b.id_history_etat = '1'
+			" . $contrainte . " 
+			ORDER BY RAND()
+			LIMIT 1";
+
+//echo $sql;
+        }
+
+
+        $res = $this->db['mysql_write']->sql_query($sql);
+
+
+
+        if (mysql_num_rows($res) > 0) {
+            $this->data['species'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+
+            $sql = "SELECT a.date, c.title, c.point,b.name, b.id, b.firstname,d.iso 
+FROM history_main a
+INNER JOIN user_main b ON a.id_user_main = b.id
+INNER JOIN history_action c ON c.id = a.id_history_action
+INNER JOIN geolocalisation_country d ON b.id_geolocalisation_country = d.id
+WHERE line = " . $this->data['species'][0]['id_photo'] . " AND id_history_table in(9,10)
+ORDER BY a.id asc";
+            $res22 = $this->db['mysql_write']->sql_query($sql);
+            $this->data['history'] = $this->db['mysql_write']->sql_to_array($res22);
+
+            $_LG = singleton::getInstance("Language");
+            $lg = explode(",", LANGUAGE_AVAILABLE);
+            $nbchoice = count($lg);
+
+            for ($i = 0; $i < $nbchoice; $i++) {
+                $this->data['geolocalisation_country'][$i]['libelle'] = $_LG->languagesUTF8[$lg[$i]];
+                $this->data['geolocalisation_country'][$i]['id'] = $lg[$i];
+            }
+            $this->data['default_lg'] = $_LG->Get();
+
+//commentaire
+
+            $sql = "SELECT * FROM comment__species_picture_main a
+INNER JOIN user_main b ON a.id_user_main = b.id
+INNER JOIN 	geolocalisation_country c ON b.id_geolocalisation_country = c.id
+WHERE a.id_species_picture_main = '" . $this->data['species'][0]['id_photo'] . "'";
+            $res22 = $this->db['mysql_write']->sql_query($sql);
+            $this->data['comment'] = $this->db['mysql_write']->sql_to_array($res22);
+        } else {
+            if (!empty($id_species_picture_main) || !empty($_GET['id_species_main'])) {
+                $title = I18n::getTranslation(__("Warning"));
+                $msg = I18n::getTranslation(__("The stock of photos is now empty!"));
+                set_flash("caution", $title, $msg);
+            } else {
+                $title = I18n::getTranslation(__("Error"));
+                $msg = I18n::getTranslation(__("The photo doesn't exist!"));
+                set_flash("error", $title, $msg);
+            }
+
+
+            if (!empty($_GET['id_species_main'])) {
+                $sql = "SELECT scientific_name from species_main where id ='" . $this->db['mysql_write']->sql_real_escape_string($_GET['id_species_main']) . "'";
+                $res = $this->db['mysql_write']->sql_query($sql);
+
+                while ($ob = $this->db['mysql_write']->sql_fetch_object($res)) {
+                    $name = str_replace(' ', '_', $ob->scientific_name);
+
+                    //$_SESSION['HTTP_REFERER']
+                    header("location: " . LINK . "species/nominal/" . $name . "/");
+                    die();
+                }
+
+                die("problem redirection not good");
+            } else {
+                header("location: " . LINK . "administration/");
+            }
+
+            exit;
+        }
+
+
+        if (!empty($this->data['species']['0']['crop'])) {
+            $crop = explode(";", $this->data['species']['0']['crop']);
+        } else {
+            $crop = array(0, 0, 250, 250);
+        }
+
+
+
+        $this->javascript = array("jquery-1.6.4.min.js",
+            "http://maps.googleapis.com/maps/api/js?language=en&sensor=false&region=US",
+            "jquery.imgareaselect.pack.js",
+            "jquery.autocomplete.min.js",
+            "setmap.js");
+
+
+
+
+
+        $this->code_javascript[] = '$("#species_picture_main-id_author-auto").autocomplete("' . LINK . 'user/author/", {
+mustMatch: true,
+autoFill: true,
+max: 100,
+scrollHeight: 302,
+delay:0}
+);';
+
+
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_kingdom order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_kingdom'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_phylum WHERE id_species_kingdom = " . $this->data['species']['0']['id_species_kingdom'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_phylum'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_class WHERE id_species_phylum = " . $this->data['species']['0']['id_species_phylum'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_class'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_order WHERE id_species_class = " . $this->data['species']['0']['id_species_class'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_order'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_family WHERE id_species_order = " . $this->data['species']['0']['id_species_order'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_family'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_genus WHERE id_species_family = " . $this->data['species']['0']['id_species_family'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_genus'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_main WHERE id_species_genus = " . $this->data['species']['0']['id_species_genus'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_main'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+        $sql = "SELECT id, scientific_name as libelle FROM species_sub WHERE id_species_main = " . $this->data['species']['0']['id_species_main'] . " order By scientific_name";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['species_sub'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+
+        $sql = "SELECT id, libelle as libelle FROM licence order By id";
+        $res = $this->db['mysql_write']->sql_query($sql);
+        $this->data['licence'] = $this->db['mysql_write']->sql_to_array($res);
+
+
+
+
+//accept
+        $sql = "SELECT id, libelle as libelle, type FROM species_picture_info where `type` = 1 order BY type, cf_order";
+        $res = $this->db['mysql_write']->sql_query($sql);
+
+        $i = 0;
+        while ($ob = mysql_fetch_object($res)) {
+            $i++;
+
+            $this->data['pic_info'][$i]['id'] = $ob->id;
+            $this->data['pic_info'][$i]['libelle'] = __($ob->libelle);
+
+            if (empty($this->data['species']['0']['id_species_picture_info'])) {
+                $this->data['species']['0']['id_species_picture_info'] = 0;
+            }
+        }
+
+
+//refuse
+        $sql = "SELECT id, libelle as libelle, type FROM species_picture_info where `type` = 3 order BY type, cf_order";
+        $res = $this->db['mysql_write']->sql_query($sql);
+
+        $i = 0;
+        while ($ob = mysql_fetch_object($res)) {
+            $i++;
+
+            $this->data['pic_info2'][$i]['id'] = $ob->id;
+            $this->data['pic_info2'][$i]['libelle'] = __($ob->libelle);
+
+            if (empty($this->data['species']['0']['id_species_picture_info2'])) {
+                $this->data['species']['0']['id_species_picture_info2'] = 0;
+            }
+        }
+
+
+// should be removed
+        if (empty($this->data['species']['0']['data'])) {
+
+            include_once(LIBRARY . "Glial/parser/flickr/flickr.php");
+            include_once (LIB . "wlHtmlDom.php");
+
+
+
+//use gliale\flickr;
+            $this->data['img'] = flickr::get_photo_info($this->data['species']['0']['url_context']);
+
+            if ($this->data['img']) {
+
+                unset($tmp);
+                $tmp['species_picture_in_wait']['id'] = $this->data['species']['0']['id_photo'];
+                $tmp['species_picture_in_wait']['data'] = base64_encode(serialize($this->data['img']));
+
+                $this->db['mysql_write']->set_history_user(9);
+                $this->db['mysql_write']->set_history_type(10);
+                if (!$this->db['mysql_write']->sql_save($tmp)) {
+                    die("Problem insertion data dans species_picture_in_wait");
+                    set_flash("error", "Error", "Hum really strange !");
+                }
+            }
+        } else {
+            $this->data['img'] = unserialize(base64_decode($this->data['species']['0']['data']));
+        }
+
+//debug(TMP);
+
+        $file = TMP . "photos_in_wait/" . $this->data['species'][0]["name"];
+
+        if ($this->data['img']) {
+            if (file_exists($file)) {
+
+
+                $size = getimagesize($file);
+
+                switch ($size['mime']) {
+                    case "image/gif":
+
+                        $cmd = "rm " . TMP . "photos_in_wait/" . $this->data['species'][0]["name"];
+                        shell_exec($cmd);
+
+                        $cmd = "cd " . TMP . "photos_in_wait/; wget -nc " . $this->data['img']['photo'] . "";
+
+                        shell_exec($cmd);
+
+                        $elem = explode("/", $this->data['img']['photo']);
+
+                        $this->data['species'][0]["name"] = $elem[count($elem) - 1];
+
+                        $file = TMP . "photos_in_wait/" . $this->data['species'][0]["name"];
+//die();
+
+                        break;
+                    case "image/jpeg":
+//echo "Image is a jpeg";
+                        break;
+                    case "image/png":
+//echo "Image is a png";
+                        break;
+                    case "image/bmp":
+//echo "Image is a bmp";
+                        break;
+                }
+            }
+        }
+
+        if (!file_exists($file)) {
+            if (!file_exists($this->data['species']['0']['url_found'])) {
+
+
+                $title = I18n::getTranslation(__("Warning"));
+                $msg = I18n::getTranslation(__("This photo doesn't exist on server, we downloaded a new !"));
+                set_flash("caution", $title, $msg);
+
+                $cmd = "cd " . TMP . "photos_in_wait/; wget -nc " . $this->data['species']['0']['url_found'] . "";
+                shell_exec($cmd);
+            } else {
+                die("not found : " . $this->data['species']['0']['url_found']);
+
+                header("location: " . LINK . "photo/admin_crop/");
+            }
+        }
+
+        if ($this->data['species'][0]["width"] > SIZE_SITE_MAX) {
+            include_once LIB . 'imageprocessor.lib.php';
+
+            $ImageProcessor = new ImageProcessor();
+            $ImageProcessor->Load(TMP . "photos_in_wait/" . $this->data['species'][0]["name"]);
+            $ImageProcessor->Resize(SIZE_SITE_MAX, null, RESIZE_STRETCH);
+//$ImageProcessor->Rotate(90);
+            $ImageProcessor->Save(TMP . "picture/" . SIZE_SITE_MAX . "/" . $this->data['species'][0]["name"], 100);
+        } else {
+            $cmd = "cp " . TMP . "photos_in_wait/" . $this->data['species'][0]["name"] . " " . TMP . "picture/" . SIZE_SITE_MAX . "/" . $this->data['species'][0]["name"];
+            shell_exec($cmd);
+        }
+
+
+
+
+//debug($this->data['img']);
+//debug($this->data['species']);
+        $this->set('data', $this->data);
+
+
+
+        $size = getimagesize(TMP . "picture/" . SIZE_SITE_MAX . "/" . $this->data['species'][0]["name"]);
+        
+        
+        $this->js_for_edit($crop,$size );
+    }
+
     function get_options($param)
     {
 //debug($param);
@@ -1243,6 +1604,166 @@ AND a.id_history_etat =1";
           LEFT JOIN species_picture_main c ON c.id = a.id
           where c.id is not null
          */
+    }
+
+    private function js_for_edit($crop,$size )
+    {
+
+        $this->code_javascript[] = "$('#forum_post-id_language').change(function() {
+$('#flag').removeAttr('class').addClass($('#forum_post-id_language').val());
+});";
+
+        $this->code_javascript[] = "
+function preview(img, selection) {
+if (!selection.width || !selection.height)
+return;
+
+var scaleX = " . SIZE_MINIATURE_SMALL . " / selection.width;
+var scaleY = " . SIZE_MINIATURE_SMALL . " / selection.height;
+
+$('#preview img').css({
+width: Math.round(scaleX * " . $size[0] . "),
+height: Math.round(scaleY * " . $size[1] . "),
+marginLeft: -Math.round(scaleX * selection.x1),
+marginTop: -Math.round(scaleY * selection.y1)
+});
+
+$('#species_picture_main-crop_x1').val(selection.x1);
+$('#species_picture_main-crop_y1').val(selection.y1);
+$('#species_picture_main-crop_x2').val(selection.x2);
+$('#species_picture_main-crop_y2').val(selection.y2);
+$('#species_picture_main-crop_weight').val(selection.width);
+$('#species_picture_main-crop_height').val(selection.height);    
+}
+
+$('#none-id_species_kingdom').change(function() {
+
+$('#none-id_species_phylum').load('" . LINK . "photo/get_options/species_phylum/'+$('#none-id_species_kingdom').val());
+$('#none-id_species_class').html('');
+$('#none-id_species_order').html('');
+$('#none-id_species_family').html('');
+$('#none-id_species_genus').html('');
+$('#species_picture_main-id_species_main').html('');
+$('#species_picture_main-id_species_sub').html('');
+});
+
+$('#none-id_species_phylum').change(function() {
+$('#none-id_species_class').load('" . LINK . "photo/get_options/species_class/'+$('#none-id_species_phylum').val());
+$('#none-id_species_order').html('');
+$('#none-id_species_family').html('');
+$('#none-id_species_genus').html('');
+$('#species_picture_main-id_species_main').html('');
+$('#species_picture_main-id_species_sub').html('');
+});
+
+
+$('#none-id_species_class').change(function() {
+$('#none-id_species_order').load('" . LINK . "photo/get_options/species_order/'+$('#none-id_species_class').val());
+$('#none-id_species_family').html('');
+$('#none-id_species_genus').html('');
+$('#species_picture_main-id_species_main').html('');
+$('#species_picture_main-id_species_sub').html('');
+});
+
+$('#none-id_species_order').change(function() {
+$('#none-id_species_family').load('" . LINK . "photo/get_options/species_family/'+$('#none-id_species_order').val());
+$('#none-id_species_genus').html('');
+$('#species_picture_main-id_species_main').html('');
+$('#species_picture_main-id_species_sub').html('');
+});
+
+$('#none-id_species_family').change(function() {
+$('#none-id_species_genus').load('" . LINK . "photo/get_options/species_genus/'+$('#none-id_species_family').val());
+$('#species_picture_main-id_species_main').html('');
+$('#species_picture_main-id_species_sub').html('');
+});
+
+$('#none-id_species_genus').change(function() {
+$('#species_picture_main-id_species_main').load('" . LINK . "photo/get_options/species_main/'+$('#none-id_species_genus').val());
+$('#species_picture_main-id_species_sub').html('');
+});
+
+$('#species_picture_main-id_species_main').change(function() {
+$('#species_picture_main-id_species_sub').load('" . LINK . "photo/get_options/species_sub/'+$('#species_picture_main-id_species_main').val());
+});
+
+$(function () {
+var ias = $('#photo').imgAreaSelect({ aspectRatio: '1:1', 
+onSelectChange: preview,
+x1: " . $crop[0] . ", y1: " . $crop[1] . ", x2: " . $crop[2] . ", y2: " . $crop[3] . ",
+onInit: preview,
+minHeight: 250,
+minWidth: 250,
+handles: true
+});
+
+});";
+        /*
+          $this->code_javascript[] = "$(function () {
+
+          /*
+          $('#form-map').setmap({
+
+          drop: function ( latitude, longitude, fullAddress ) {
+          $('#lat').val(latitude);
+          $('#lng').val(longitude);
+          $('#location').val(fullAddress);
+          },
+
+          map: {
+          zoom: 4, // zoom level: from 0 to 20; higher is closer
+          zoomControls: 'small', // 'small' or 'large' - defines whether a zoom slider will be present
+          type: 'roadmap', // map type: hybrid, terrain, roadmap, satellite
+          draggable: true, // should the users be able to drag the map
+          disabled: true, // creates a static map with no visual, mouse or keyboard controls
+          streetView: false // streetview controls
+
+          }
+
+
+          });
+
+
+          $('#searchLoc').bind('click', function () {
+          $('#form-map').setmap('setAddress', $('#location').val(), function ( latitude, longitude, fullAddress ) {
+          $('#lat').val(latitude);
+          $('#lng').val(longitude);
+          $('#location').val(fullAddress);
+          });
+          });
+
+          $('#location').bind('keyup', function ( e ) {
+          if( e.keyCode === 13 ) {
+          $('#searchLoc').trigger('click');
+          }
+          });
+
+          });
+
+          "; */
+
+        $this->code_javascript[] = "
+$('#form-map').setmap().setmap('setAddress', 'Meru District, Eastern, Kenya', function ( lat, lng, address ) {
+$('#lat').val(lat);
+$('#lng').val(lng);
+$('#location').val(adress);
+});
+
+
+$('#searchLoc').bind('click', function () {
+$('#form-map').setmap('setAddress', $('#location').val(), function ( latitude, longitude, fullAddress ) {
+$('#lat').val(latitude);
+$('#lng').val(longitude);
+$('#location').val(fullAddress);
+});
+});
+
+$('#location').bind('keyup', function ( e ) {
+if( e.keyCode === 13 ) {
+$('#searchLoc').trigger('click');
+}
+});
+";
     }
 
 }

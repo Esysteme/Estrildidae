@@ -767,7 +767,7 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
                                 //send mail
                                 I18n::SetDefault("en");
                                 I18n::load("en");
-                                
+
                                 $sql = "SELECT * FROM user_main WHERE id=" . $GLOBALS['_SITE']['IdUser'];
 
                                 $res = $this->db['mysql_write']->sql_query($sql);
@@ -783,7 +783,7 @@ where a.id ='" . $this->db['mysql_write']->sql_real_escape_string($GLOBALS['_SIT
 
                                 //send mail here
 
-                                $subject = "[Estrildidae.net] " . $data['mailbox_main']['title'];
+                                $subject = "[Estrildidae.net] " . html_entity_decode($data['mailbox_main']['title'], ENT_COMPAT, 'UTF-8');
 
                                 $msg = __('Hello') . ' ' . $ob2->firstname . ' ' . $ob2->name . ',<br />'
                                         . '<br /><br />'

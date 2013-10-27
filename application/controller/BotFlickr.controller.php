@@ -184,16 +184,10 @@ where a.id_family = 438";
 
 
         /*
-
           1887808
-
           1889104-1887808
           Memory usage : 1889104 Mo
           3
-
-
-
-
          */
 //Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/www/species/repository/glial/Glial/Sgbd/Sql/Sql.php on line 114
 //Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 8192 bytes) in /home/www/species/repository/glial/Glial/Sgbd/Sql/Sql.php on line 114
@@ -202,7 +196,7 @@ where a.id_family = 438";
 		INNER JOIN scientific_name_translation b ON a.id_nominal= b.id_species_main
 		INNER JOIN language c ON b.language = c.iso3
 		LEFT JOIN species_picture_search d ON d.tag_search = b.text AND c.iso3 = d.language
-		where a.id_family = 438 AND b.id_species_sub = 0 AND d.total_found is null
+		where a.id_family = 438 AND d.total_found is null AND b.is_black_list !=1
 		order by nominal, b.text";
 
         $res = $this->db['mysql_write']->sql_query($sql);
