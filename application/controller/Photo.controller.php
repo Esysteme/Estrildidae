@@ -1468,7 +1468,8 @@ delay:0}
         $this->layout_name = false;
 
 
-        $sql = "SELECT id, scientific_name as libelle FROM `" . mysql_real_escape_string($table) . "` WHERE `" . $id_table[$table] . "` = " . mysql_real_escape_string($id) . " order By scientific_name";
+        $sql = "SELECT id, scientific_name as libelle FROM `" . $this->db['mysql_write']->sql_real_escape_string($table) . "` 
+            WHERE `" . $id_table[$table] . "` = " . $this->db['mysql_write']->sql_real_escape_string($id) . " order By scientific_name";
         $res = $this->db['mysql_write']->sql_query($sql);
 
         if ($table == "species_sub") {
