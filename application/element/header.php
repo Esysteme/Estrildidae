@@ -74,7 +74,7 @@ echo '<link type="text/css" href="http://fonts.googleapis.com/css?family=Coda" r
 
 
 
-if ($_SERVER['SERVER_ADDR'] != "192.168.1.48")
+if ($_SERVER['SERVER_ADDR'] != "192.168.1.13")
 {
 	echo '<script type="text/javascript">';
 

@@ -451,5 +451,48 @@ where a.id_family = 438";
         }
     }
 
+    function getFullInfos()
+    {
+        $this->view = false;
+        $this->layout_name = false;
+        $sql = "SELECT * FROM species.species_picture_id where status = 1;";
+
+        $res = $this->db['default']->sql_query($sql);
+
+
+        while ($ob = $this->db['default']->sql_fetch_object($res)) {
+
+            $data = Flickr::getPhotoInfo($ob->link);
+
+            //debug($data);
+            echo $ob->id . EOL;
+        }
+    }
+
+    /*
+     * Update data from flickr from existing row from species_picture_main
+     */
+    function recoverData()
+    {
+        $this->view = false;
+        $this->layout_name = false;
+        $sql = "SELECT * FROM species.species_picture_main where id_history_etat = 1;";
+
+        $res = $this->db['default']->sql_query($sql);
+        
+        while ($ob = $this->db['default']->sql_fetch_object($res)) {
+
+            $data = Flickr::getPhotoInfo($ob->url_context);
+
+            //debug($data);
+            echo $ob->id . EOL;
+            $row = array();
+            $row['species_picture_data']['id'] = $ob->id;
+            $row['species_picture_data']['data'] = base64_encode(serialize($data));
+            
+            $this->db['default']->sql_save($row);
+        }
+    }
+
 }
 

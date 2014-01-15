@@ -43,9 +43,6 @@ class forum_topic extends Model
 		'subject' => array(
 			'not_empty' => array('This field is requiered.')
 		),
-		'posted' => array(
-			'time' => array('This must be a time.')
-		),
 		'first_post_id' => array(
 			'numeric' => array('This must be an int.')
 		),

@@ -1,6 +1,7 @@
 <?php
 
-echo "Topics: Active | Unanswered<br />";
+
+//echo "Topics: Active | Unanswered<br />";
 
 
 
@@ -37,7 +38,6 @@ foreach ($out['category'] as $cat)
 		if ( empty($forum['description']) )
 		{
 			$forum['description'] = __("Any discution about")." ".$forum['name'];
-		
 		}
 		
 		echo '
@@ -47,13 +47,13 @@ foreach ($out['category'] as $cat)
 					<div class="icon"><div class="nosize">1</div></div>
 						<div class="tclcon">
 							<div>
-								<h4><a href="'.LINK.'forum/view/'.$link.'/">'.$forum['name'].'</a></h4>
+								<h4><a href="'.LINK.'forum/index/'.$link.'/">'.$forum['name'].'</a></h4>
 								<div class="forumdesc">'.$forum['description'].'</div>
 							</div>
 						</div>
 				</td>
-				<td class="tc2">319</td>
-				<td class="tc3">3,244</td>
+				<td class="tc2">'.$forum['cpt_topic'].'</td>
+				<td class="tc3">'.$forum['cpt_post'].'</td>
 				<td class="tcr"><a href="viewtopic.php?pid=42881#p42881">2011-10-19 00:01:56</a><br /><span class="byuser">by Franz</span></td>
 			</tr>
 		</tbody>';
@@ -64,7 +64,28 @@ foreach ($out['category'] as $cat)
 }
 
 
+$nb_elem = count(explode('-',$out['path']));
 
+if ($nb_elem < 11) {
+    $id_node = "node-" . uniqid();
+    echo '<div id="' . $id_node . '">';
+    
+    \Glial\Synapse\FactoryController::addNode("forum", "category", array($out['path']));
+    echo '</div>';
+}
+
+
+
+
+
+$id_node = "node-" . uniqid();
+echo '<div id="' . $id_node . '">';
+\Glial\Synapse\FactoryController::addNode("forum", "topic", array($out['path']));
+echo '</div>';
+
+
+
+/*
 echo '
 <div class="block" id="brdstats">
 	<h2><span>Informations sur les forums</span></h2>
@@ -113,7 +134,7 @@ echo '
 		</div>
 	</div>
 </div>';
-
+*/
 
 	
 	
